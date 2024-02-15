@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Sports Tracker</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="welcome_message">Welcome to Your Sport Tracker App!</string>
+    <string name="hint_enter_name">Enter Your Name</string>
+    <string name="button_next">Next</string>
+
+    <string name="user_prefs">bho</string>
+    <string name="user_name">Marco</string>
+    <string name="user_hint">muoviti</string>
+    <string name="welcome_next">Next</string>
+    <string name="key_welcome_completed">key_welcome_completed</string>
+</resources>
