@@ -18,6 +18,13 @@
         android:theme="@style/Theme.Esamedazero"
         tools:targetApi="31">
 
+
+        <!-- DA IMPELEMENTARE UN EVENTUALE STILE
+        <activity android:name=".activity.LoginActivity"
+            android:theme="@style/Theme.RunManagement"/>
+        -->
+        <activity android:name=".activity.LoginActivity"/>
+
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
