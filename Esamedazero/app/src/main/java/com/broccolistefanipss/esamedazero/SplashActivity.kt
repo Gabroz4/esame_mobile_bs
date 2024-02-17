@@ -6,7 +6,7 @@ import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.activity.WelcomeActivity
 
-class MainActivity : AppCompatActivity() {
+class SplashActivity : AppCompatActivity() {
 
     private val loadingDelay: Long = 2000 // 2 seconds
     private val handler = Handler(Looper.getMainLooper())
@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private fun delay() {
         // Using Handler with lambda for delayed execution
         handler.postDelayed({
-            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+            val intent = Intent(this@SplashActivity, WelcomeActivity::class.java)
             startActivity(intent)
             finish()
         }, loadingDelay)
