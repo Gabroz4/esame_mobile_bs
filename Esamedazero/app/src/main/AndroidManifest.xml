@@ -33,8 +33,13 @@
             android:exported="false"
             android:label="@string/title_activity_bot_menu" />
         <activity
+            android:name=".activity.WelcomeActivity"
+            android:exported="false"
+            android:label="@string/title_welcome_activity" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,28 +1,35 @@
 package com.broccolistefanipss.esamedazero
-
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
+import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.activity.WelcomeActivity
 
 class MainActivity : AppCompatActivity() {
-    private var delayHandler : Handler? = null
-    private val loading_delay: Long = 2000 //2 sec
+
+    private val loadingDelay: Long = 2000 // 2 seconds
+    private val handler = Handler(Looper.getMainLooper())
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        delayHandler?.postDelayed(mRunnable, loading_delay)
+        delay()
+    }
 
+    private fun delay() {
+        // Using Handler with lambda for delayed execution
+        handler.postDelayed({
+            val intent = Intent(this@MainActivity, WelcomeActivity::class.java)
+            startActivity(intent)
+            finish()
+        }, loadingDelay)
     }
-    private val mRunnable : Runnable = Runnable {
-        val intent = Intent(this, WelcomeActivity::class.java)
-        startActivity(intent)
-        finish()
-    }
+
     override fun onDestroy() {
+        // Remove the callbacks when the activity is destroyed to avoid memory leaks
+        handler.removeCallbacksAndMessages(null)
         super.onDestroy()
-        delayHandler?.removeCallbacks(mRunnable)
     }
 }
