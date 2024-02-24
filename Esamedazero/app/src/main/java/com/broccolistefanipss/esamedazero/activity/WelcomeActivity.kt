@@ -5,6 +5,8 @@ import android.widget.Button
 import com.broccolistefanipss.esamedazero.R
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import com.broccolistefanipss.esamedazero.global.DB
 
 class WelcomeActivity: AppCompatActivity() {
 
