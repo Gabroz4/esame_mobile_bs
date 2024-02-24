@@ -9,62 +9,85 @@
         android:id="@+id/nextButton"
         android:layout_width="160dp"
         android:layout_height="51dp"
-        android:layout_marginBottom="44dp"
         android:text="Next"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <EditText
-        android:id="@+id/peso"
-        android:layout_width="91dp"
-        android:layout_height="38dp"
-        android:ems="10"
-        android:inputType="number"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="253dp" />
-
-    <EditText
-        android:id="@+id/altezza"
-        android:layout_width="80dp"
-        android:layout_height="36dp"
-        android:ems="10"
-        android:inputType="number"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="205dp" />
-
-    <EditText
-        android:id="@+id/eta"
-        android:layout_width="83dp"
-        android:layout_height="34dp"
-        android:ems="10"
-        android:inputType="number"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="153dp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userName"
-        android:layout_width="133dp"
-        android:layout_height="wrap_content"
-        android:hint="username"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="36dp" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/sesso"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:hint="sesso"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="93dp" />
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.929" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/obiettivo"
-        android:layout_width="179dp"
-        android:layout_height="44dp"
+        android:layout_width="204dp"
+        android:layout_height="87dp"
         android:hint="obiettivo"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="305dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.135"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.608" />
+
+    <EditText
+        android:id="@+id/eta"
+        android:layout_width="151dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/altezza"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.951" />
+
+    <EditText
+        android:id="@+id/peso"
+        android:layout_width="140dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/obiettivo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.099"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/userName"
+        android:layout_width="172dp"
+        android:layout_height="52dp"
+        android:hint="username"
+        app:layout_constraintBottom_toTopOf="@+id/sesso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.953" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/sesso"
+        android:layout_width="161dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="12dp"
+        android:hint="sesso"
+        app:layout_constraintBottom_toTopOf="@+id/eta"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.124"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <EditText
+        android:id="@+id/altezza"
+        android:layout_width="120dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="32dp"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toTopOf="@+id/peso"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.106"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

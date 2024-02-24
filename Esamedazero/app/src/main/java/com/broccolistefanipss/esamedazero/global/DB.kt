@@ -17,7 +17,11 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Ver
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        onCreate(db)
+        // Drop the existing Utente table
+        db.execSQL("DROP TABLE IF EXISTS Utente")
+
+        // Recreate the Utente table
+        db.execSQL(SqlTable.Utente)
     }
 
     //Funzione per runnare una query
@@ -121,7 +125,7 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Ver
         // Check if the name already exists
         if (!isNameExists(userName)) {
             val sqlQuery = "INSERT INTO Utente(userName, Sesso, Eta, Altezza, Peso, Obiettivo) " +
-                    "VALUES('$userName', $sesso, $eta, $altezza, $peso, '$obiettivo')"
+                    "VALUES('$userName', '$sesso', $eta, $altezza, $peso, '$obiettivo')"
             executeQuery(sqlQuery)
             logUtenteTable()
 
@@ -143,7 +147,7 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Ver
 
 
     companion object{
-        private const val DB_Version = 1
+        private const val DB_Version = 2
         private const val DB_Name="Sports Tracker"
 
     }

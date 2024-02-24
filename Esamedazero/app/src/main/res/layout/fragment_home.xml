@@ -6,28 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/userName"
-        android:layout_width="72dp"
-        android:layout_height="30dp"
-        android:text="userName"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="45dp" />
-
-    <TextView
-        android:id="@+id/sesso"
-        android:layout_width="45dp"
-        android:layout_height="29dp"
-        android:text="sesso"
-        tools:layout_editor_absoluteX="95dp"
-        tools:layout_editor_absoluteY="45dp" />
-
-    <TextView
         android:id="@+id/obiettivo"
         android:layout_width="58dp"
         android:layout_height="29dp"
         android:text="obiettivo"
-        tools:layout_editor_absoluteX="337dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteX="21dp"
+        tools:layout_editor_absoluteY="662dp" />
+
+    <TextView
+        android:id="@+id/userName"
+        android:layout_width="357dp"
+        android:layout_height="419dp"
+        android:text="userName"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="89dp" />
 
     <EditText
         android:id="@+id/etaHome"
@@ -35,8 +27,8 @@
         android:layout_height="30dp"
         android:ems="10"
         android:inputType="number"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteX="79dp"
+        tools:layout_editor_absoluteY="560dp" />
 
     <EditText
         android:id="@+id/altezzaHome"
@@ -44,8 +36,8 @@
         android:layout_height="30dp"
         android:ems="10"
         android:inputType="number"
-        tools:layout_editor_absoluteX="211dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteX="79dp"
+        tools:layout_editor_absoluteY="610dp" />
 
     <EditText
         android:id="@+id/pesoHome"
@@ -53,7 +45,15 @@
         android:layout_height="30dp"
         android:ems="10"
         android:inputType="number"
-        tools:layout_editor_absoluteX="271dp"
-        tools:layout_editor_absoluteY="44dp" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="610dp" />
+
+    <TextView
+        android:id="@+id/sesso"
+        android:layout_width="45dp"
+        android:layout_height="29dp"
+        android:text="sesso"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="561dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
