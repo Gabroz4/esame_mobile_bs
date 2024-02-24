@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.se.omapi.Session
+import android.text.LoginFilter.UsernameFilterGMail
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -15,24 +16,19 @@ import com.broccolistefanipss.esamedazero.model.Utente
 
 class SplashActivity : AppCompatActivity() {
 
-    private var user: Utente = Utente()
+
     private val loadingDelay: Long = 2000 // 2 seconds
     private val handler = Handler(Looper.getMainLooper())
-    var db: DB?=null
-    var session: SessionManager?=null
-
-    var user.userName = findViewById<TextView>(R.id.userName)
-    var userSesso = findViewById<TextView>(R.id.sesso)
-    var userName = findViewById<TextView>(R.id.userName)
-    var userName = findViewById<TextView>(R.id.userName)
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        db = DB(this)
-        db?.insertData() //inserire dati da schermata welcome
-        db?.getData()
+
+
+
+
+
         delay()
     }
 

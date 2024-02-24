@@ -32,7 +32,7 @@ class HomeFragment : Fragment() {
         val utenteList: List<Utente> = db.getData()
 
         // Display the data in a TextView (Modify based on your UI layout)
-        val textView: TextView = binding.nomeTextView
+        val textView: TextView = binding.userName
         val displayText = buildDisplayText(utenteList)
         textView.text = displayText
 
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
         val stringBuilder = StringBuilder()
 
         for (utente in utenteList) {
-            stringBuilder.append("userName: ${utente.username}, Sesso: ${utente.sesso}\n")
+            stringBuilder.append("userName: ${utente.userName}, Sesso: ${utente.sesso}\n")
             // Append other relevant data
 
         }

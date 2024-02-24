@@ -60,7 +60,7 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Ver
                             cursor.getString(sessoIndex) ?: "",
                             cursor.getInt(etaIndex),
                             cursor.getInt(altezzaIndex),
-                            cursor.getInt(pesoIndex),
+                            cursor.getDouble(pesoIndex),
                             cursor.getString(obiettivoIndex) ?: ""
                         )
 
@@ -117,11 +117,11 @@ class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Ver
         }
     }
     // Usage in your insertData function
-    fun insertData(userName: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
+    fun insertData(userName: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
         // Check if the name already exists
         if (!isNameExists(userName)) {
-            val sqlQuery = "INSERT INTO Utente(userName, Eta, Altezza, Peso, Obiettivo) " +
-                    "VALUES('$userName', $eta, $altezza, $peso, '$obiettivo')"
+            val sqlQuery = "INSERT INTO Utente(userName, Sesso, Eta, Altezza, Peso, Obiettivo) " +
+                    "VALUES('$userName', $sesso, $eta, $altezza, $peso, '$obiettivo')"
             executeQuery(sqlQuery)
             logUtenteTable()
 

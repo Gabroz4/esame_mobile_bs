@@ -14,14 +14,6 @@
         tools:layout_editor_absoluteY="45dp" />
 
     <TextView
-        android:id="@+id/eta"
-        android:layout_width="28dp"
-        android:layout_height="29dp"
-        android:text="eta"
-        tools:layout_editor_absoluteX="150dp"
-        tools:layout_editor_absoluteY="46dp" />
-
-    <TextView
         android:id="@+id/sesso"
         android:layout_width="45dp"
         android:layout_height="29dp"
@@ -30,27 +22,38 @@
         tools:layout_editor_absoluteY="45dp" />
 
     <TextView
-        android:id="@+id/altezza"
-        android:layout_width="48dp"
-        android:layout_height="29dp"
-        android:text="altezza"
-        tools:layout_editor_absoluteX="192dp"
-        tools:layout_editor_absoluteY="45dp" />
-
-    <TextView
-        android:id="@+id/peso"
-        android:layout_width="52dp"
-        android:layout_height="28dp"
-        android:text="peso"
-        tools:layout_editor_absoluteX="249dp"
-        tools:layout_editor_absoluteY="45dp" />
-
-    <TextView
         android:id="@+id/obiettivo"
         android:layout_width="58dp"
         android:layout_height="29dp"
         android:text="obiettivo"
-        tools:layout_editor_absoluteX="312dp"
-        tools:layout_editor_absoluteY="45dp" />
+        tools:layout_editor_absoluteX="337dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <EditText
+        android:id="@+id/etaHome"
+        android:layout_width="54dp"
+        android:layout_height="30dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <EditText
+        android:id="@+id/altezzaHome"
+        android:layout_width="44dp"
+        android:layout_height="30dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="211dp"
+        tools:layout_editor_absoluteY="44dp" />
+
+    <EditText
+        android:id="@+id/pesoHome"
+        android:layout_width="55dp"
+        android:layout_height="30dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="271dp"
+        tools:layout_editor_absoluteY="44dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

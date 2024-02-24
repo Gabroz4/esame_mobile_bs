@@ -16,52 +16,55 @@
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/userName"
-        android:layout_width="72dp"
-        android:layout_height="30dp"
-        android:text="userName"
+    <EditText
+        android:id="@+id/peso"
+        android:layout_width="91dp"
+        android:layout_height="38dp"
+        android:ems="10"
+        android:inputType="number"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="74dp" />
+        tools:layout_editor_absoluteY="253dp" />
 
-    <TextView
-        android:id="@+id/eta"
-        android:layout_width="28dp"
-        android:layout_height="29dp"
-        android:text="eta"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="161dp" />
-
-    <TextView
-        android:id="@+id/sesso"
-        android:layout_width="45dp"
-        android:layout_height="29dp"
-        android:text="sesso"
-        tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="119dp" />
-
-    <TextView
+    <EditText
         android:id="@+id/altezza"
-        android:layout_width="48dp"
-        android:layout_height="29dp"
-        android:text="altezza"
+        android:layout_width="80dp"
+        android:layout_height="36dp"
+        android:ems="10"
+        android:inputType="number"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="205dp" />
 
-    <TextView
-        android:id="@+id/peso"
-        android:layout_width="52dp"
-        android:layout_height="28dp"
-        android:text="peso"
+    <EditText
+        android:id="@+id/eta"
+        android:layout_width="83dp"
+        android:layout_height="34dp"
+        android:ems="10"
+        android:inputType="number"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="251dp" />
+        tools:layout_editor_absoluteY="153dp" />
 
-    <TextView
-        android:id="@+id/obiettivo"
-        android:layout_width="58dp"
-        android:layout_height="29dp"
-        android:text="obiettivo"
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/userName"
+        android:layout_width="133dp"
+        android:layout_height="wrap_content"
+        android:hint="username"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="294dp" />
+        tools:layout_editor_absoluteY="36dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/sesso"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:hint="sesso"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="93dp" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/obiettivo"
+        android:layout_width="179dp"
+        android:layout_height="44dp"
+        android:hint="obiettivo"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="305dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
