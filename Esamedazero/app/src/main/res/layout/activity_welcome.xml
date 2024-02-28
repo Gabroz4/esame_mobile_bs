@@ -1,102 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context="com.broccolistefanipss.esamedazero.activity.WelcomeActivity">
 
     <TextView
         android:id="@+id/Titolo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Benvenuto in Sport Tracker!!"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/nextButton"
-        android:layout_width="160dp"
-        android:layout_height="51dp"
-        android:text="Avanti"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="24sp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.929" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp"/>
+
+    <EditText
+        android:id="@+id/userName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="username"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/Titolo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <EditText
+        android:id="@+id/sesso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="sesso"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/userName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
 
     <EditText
         android:id="@+id/eta"
-        android:layout_width="151dp"
-        android:layout_height="54dp"
-        android:layout_marginTop="180dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:hint="Età"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.061"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/sesso"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/peso"
-        android:layout_width="140dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:hint="Peso"
-        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.059"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sesso" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/userName"
-        android:layout_width="172dp"
-        android:layout_height="52dp"
-        android:layout_marginTop="104dp"
-        android:hint="username"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/sesso"
-        android:layout_width="161dp"
-        android:layout_height="49dp"
-        android:layout_marginTop="20dp"
-        android:hint="sesso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.064"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/altezza" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
 
     <EditText
         android:id="@+id/altezza"
-        android:layout_width="120dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="12dp"
-        android:ems="10"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:hint="Altezza"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.054"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/eta"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/eta" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <EditText
+        android:id="@+id/peso"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Peso"
+        android:inputType="number"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/altezza"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
 
     <Spinner
         android:id="@+id/spinnerOptions"
-        android:layout_width="332dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="208dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintTop_toBottomOf="@id/peso"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintWidth_percent="0.8"/>
+
+    <Button
+        android:id="@+id/nextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Avanti"
+        app:layout_constraintTop_toBottomOf="@id/spinnerOptions"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

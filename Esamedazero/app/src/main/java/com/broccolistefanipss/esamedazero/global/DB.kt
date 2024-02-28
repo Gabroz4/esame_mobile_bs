@@ -1,155 +1,111 @@
 package com.broccolistefanipss.esamedazero.global
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
-import com.broccolistefanipss.esamedazero.manager.SharedPrefs
+import com.broccolistefanipss.esamedazero.model.TrainingSession
 import com.broccolistefanipss.esamedazero.model.Utente
-import java.lang.Exception
 
-class DB(val context: Context) : SQLiteOpenHelper(context, DB_Name, null, DB_Version) {
+class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase?) {
         db?.execSQL(SqlTable.Utente)
+        db?.execSQL(SqlTable.TrainingSessions)
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        // Drop the existing Utente table
+        db.execSQL("DROP TABLE IF EXISTS TrainingSessions")
         db.execSQL("DROP TABLE IF EXISTS Utente")
-
-        // Recreate the Utente table
-        db.execSQL(SqlTable.Utente)
+        onCreate(db)
     }
-
-    //Funzione per runnare una query
-    fun executeQuery(sql:String):Boolean{
-        try {
-            val database = this.writableDatabase
-            database.execSQL(sql)
-        }catch (e:Exception){
-            e.printStackTrace()
-            return false
-        }
-        return true
-    }
-
-
-    //Funzione per il recupero dei dati
-    fun getData(): List<Utente> {
-        val utenteList = mutableListOf<Utente>()
-        var cursor: Cursor? = null
-        try {
-            val database = this.readableDatabase
-            cursor = database.rawQuery("SELECT * FROM Utente", null)
-            if (cursor != null && cursor.count > 0) {
-                val usernameIndex = cursor.getColumnIndex("userName")
-                val sessoIndex = cursor.getColumnIndex("Sesso") // Add other column indices as needed
-                val etaIndex = cursor.getColumnIndex("Eta")
-                val altezzaIndex = cursor.getColumnIndex("Altezza")
-                val pesoIndex = cursor.getColumnIndex("Peso")
-                val obiettivoIndex = cursor.getColumnIndex("Obiettivo")
-
-                if (usernameIndex >= 0) {
-                    cursor.moveToFirst()
-                    do {
-                        val userName = cursor.getString(usernameIndex) ?: "Default Value"
-                        Log.d("Utente", "userName: $userName")
-
-                        // Instantiate Utente with necessary parameters
-                        val utente = Utente(
-                            userName,
-                            cursor.getString(sessoIndex) ?: "",
-                            cursor.getInt(etaIndex),
-                            cursor.getInt(altezzaIndex),
-                            cursor.getDouble(pesoIndex),
-                            cursor.getString(obiettivoIndex) ?: ""
-                        )
-
-                        utenteList.add(utente)
-                    } while (cursor.moveToNext())
-                } else {
-                    Log.e("Utente", "Column 'userName' not found in cursor")
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            cursor?.close()
-        }
-
-        return utenteList
-    }
-
-
 
     fun logUtenteTable() {
-        var cursor: Cursor? = null
-        try {
-            val database = this.readableDatabase
-            cursor = database.rawQuery("SELECT * FROM Utente", null)
-
-            if (cursor != null && cursor.count > 0) {
-                val usernameIndex = cursor.getColumnIndex("userName")
-                val sessoIndex = cursor.getColumnIndex("Sesso")
-                val etaIndex = cursor.getColumnIndex("Eta")
-                val altezzaIndex = cursor.getColumnIndex("Altezza")
-                val pesoIndex = cursor.getColumnIndex("Peso")
-                val obiettivoIndex = cursor.getColumnIndex("Obiettivo")
-
-                cursor.moveToFirst()
-                do {
-                    val userName = if (usernameIndex >= 0) cursor.getString(usernameIndex) else "N/A"
-                    val sesso = if (sessoIndex >= 0) cursor.getString(sessoIndex) else "N/A"
-                    val eta = if (etaIndex >= 0) cursor.getInt(etaIndex) else -1
-                    val altezza = if (altezzaIndex >= 0) cursor.getInt(altezzaIndex) else -1
-                    val peso = if (pesoIndex >= 0) cursor.getInt(pesoIndex) else -1
-                    val obiettivo = if (obiettivoIndex >= 0) cursor.getString(obiettivoIndex) else "N/A"
-
-                    val rowData = "userName: $userName, Sesso: $sesso, " +
-                            "Età: $eta, Altezza: $altezza, Peso: $peso, Obiettivo: $obiettivo"
-
-                    Log.d("Utente", rowData)
-                } while (cursor.moveToNext())
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM Utente", null)
+        with(cursor) {
+            while (moveToNext()) {
+                val userName = getString(getColumnIndexOrThrow("userName"))
+                val sesso = getString(getColumnIndexOrThrow("Sesso"))
+                val eta = getInt(getColumnIndexOrThrow("Eta"))
+                val altezza = getInt(getColumnIndexOrThrow("Altezza"))
+                val peso = getDouble(getColumnIndexOrThrow("Peso"))
+                val obiettivo = getString(getColumnIndexOrThrow("Obiettivo"))
+                Log.d("UtenteTable", "User: $userName, Sesso: $sesso, Età: $eta, Altezza: $altezza, Peso: $peso, Obiettivo: $obiettivo")
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            cursor?.close()
+            close()
         }
     }
-    // Usage in your insertData function
-    fun insertData(userName: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
-        // Check if the name already exists
-        if (!isNameExists(userName)) {
-            val sqlQuery = "INSERT INTO Utente(userName, Sesso, Eta, Altezza, Peso, Obiettivo) " +
-                    "VALUES('$userName', '$sesso', $eta, $altezza, $peso, '$obiettivo')"
-            executeQuery(sqlQuery)
-            logUtenteTable()
 
+    // Insert user data
+    fun insertData(userName: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
+        if (!isNameExists(userName)) {
+            val sqlQuery = "INSERT INTO Utente(userName, Sesso, Eta, Altezza, Peso, Obiettivo) VALUES(?, ?, ?, ?, ?, ?)"
+            val database = this.writableDatabase
+            database.execSQL(sqlQuery, arrayOf(userName, sesso, eta, altezza, peso, obiettivo))
+            logUtenteTable() // Consider removing or securing this for production to protect user data
         } else {
-            // Handle the case where the name already exists (e.g., show a message or perform some action)
             Log.d("Utente", "userName '$userName' already exists in the database")
         }
     }
 
+
+    // Check if the userName exists
     private fun isNameExists(userName: String): Boolean {
         val database = readableDatabase
-        val cursor = database.rawQuery("SELECT * FROM Utente WHERE userName = ?", arrayOf(userName))
-        val exists = cursor.count > 0
-        cursor.close()
-        return exists
+        database.rawQuery("SELECT * FROM Utente WHERE userName = ?", arrayOf(userName)).use { cursor ->
+            return cursor.count > 0
+        }
     }
 
-
-
-
-    companion object{
-        private const val DB_Version = 2
-        private const val DB_Name="Sports Tracker"
-
+    // Insert training session data
+    fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, trainingType: String) {
+        val sqlQuery = "INSERT INTO TrainingSessions(userName, sessionDate, duration, trainingType) VALUES(?, ?, ?, ?)"
+        val database = this.writableDatabase
+        database.execSQL(sqlQuery, arrayOf(userName, sessionDate, duration, trainingType))
     }
 
+    fun getUserTrainingSessions(userName: String): List<TrainingSession> {
+        val trainingSessionsList = mutableListOf<TrainingSession>()
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM TrainingSessions WHERE userName = ?", arrayOf(userName))
+        with(cursor) {
+            while (moveToNext()) {
+                val sessionId = getInt(getColumnIndexOrThrow("sessionId"))
+                val sessionDate = getString(getColumnIndexOrThrow("sessionDate"))
+                val duration = getInt(getColumnIndexOrThrow("duration"))
+                val trainingType = getString(getColumnIndexOrThrow("trainingType"))
+                trainingSessionsList.add(TrainingSession(sessionId, userName, sessionDate, duration, trainingType))
+            }
+            close()
+        }
+        return trainingSessionsList
+    }
+
+    // Retrieve user data
+    fun getData(): List<Utente> {
+        val utenteList = mutableListOf<Utente>()
+        val query = "SELECT * FROM Utente"
+        val database = this.readableDatabase
+        database.rawQuery(query, null).use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
+                    val sesso = cursor.getString(cursor.getColumnIndexOrThrow("Sesso"))
+                    val eta = cursor.getInt(cursor.getColumnIndexOrThrow("Eta"))
+                    val altezza = cursor.getInt(cursor.getColumnIndexOrThrow("Altezza"))
+                    val peso = cursor.getDouble(cursor.getColumnIndexOrThrow("Peso"))
+                    val obiettivo = cursor.getString(cursor.getColumnIndexOrThrow("Obiettivo"))
+
+                    utenteList.add(Utente(userName, sesso, eta, altezza, peso, obiettivo))
+                } while (cursor.moveToNext())
+            }
+        }
+        return utenteList
+    }
+
+    companion object {
+        private const val DB_VERSION = 2
+        private const val DB_NAME = "SportsTracker.db"
+    }
 }
