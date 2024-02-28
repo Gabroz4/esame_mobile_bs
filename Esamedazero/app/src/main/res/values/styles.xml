@@ -8,10 +8,10 @@
 
     <!-- Splash screen theme. -->
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/black</item> //da cambiare
+        <item name="windowSplashScreenBackground">@color/splashbkg</item> <!-- da cambiare -->
         <item name="windowSplashScreenAnimatedIcon">@drawable/loading_screen</item>
         <item name="postSplashScreenTheme">@style/AppTheme</item>
         <!-- If you have a specific icon animation, set it here -->
-        <item name="windowSplashScreenAnimationDuration">500</item> <!-- Example duration -->
+        <item name="windowSplashScreenAnimationDuration">2000</item> <!-- Example duration -->
     </style>
 </resources>

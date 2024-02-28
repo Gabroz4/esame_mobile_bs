@@ -23,7 +23,7 @@
         <activity android:name=".activity.LoginActivity"
             android:theme="@style/Theme.RunManagement"/>
         -->
-        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.LoginManager"/>
 
         <!--
              TODO: Before you run your application, you need a Google Maps API key.

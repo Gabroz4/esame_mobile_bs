@@ -23,7 +23,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-        // Initialize your EditText and Spinner fields
+        // inizializza TextEditor e Spinner
         userNameEditText = findViewById(R.id.userName)
         sessoEditText = findViewById(R.id.sesso)
         etaEditText = findViewById(R.id.eta)

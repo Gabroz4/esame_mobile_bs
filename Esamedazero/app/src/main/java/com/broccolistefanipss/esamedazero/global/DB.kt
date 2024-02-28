@@ -14,13 +14,14 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         db?.execSQL(SqlTable.TrainingSessions)
     }
 
-    // funzioni per upgrade del DB
+    // in caso upgrade verisone DB
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         db.execSQL("DROP TABLE IF EXISTS TrainingSessions")
         db.execSQL("DROP TABLE IF EXISTS User")
         onCreate(db)
     }
 
+    // log in console degli utenti (debugging)
     fun logUserTable() {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM User", null)
@@ -66,6 +67,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         database.execSQL(sqlQuery, arrayOf(userName, sessionDate, duration, trainingType, burntCalories))
     }
 
+    // dati allenamenti singolo utente
     fun getUserTrainingSessions(userName: String): List<TrainingSession> {
         val trainingSessionsList = mutableListOf<TrainingSession>()
         val db = this.readableDatabase
@@ -84,7 +86,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         return trainingSessionsList
     }
 
-    // Retrieve user data
+    // dati degli utenti
     fun getData(): List<User> {
         val userList = mutableListOf<User>()
         val query = "SELECT * FROM User"
