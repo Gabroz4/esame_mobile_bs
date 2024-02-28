@@ -31,11 +31,11 @@ class WelcomeActivity : AppCompatActivity() {
         pesoEditText = findViewById(R.id.peso)
         objectiveSpinner = findViewById(R.id.spinnerOptions)
 
-        // Initialize the spinner with the two options
-        val options = arrayOf("Lose weight", "Enhance performance")
+        // spinner con due opzioni
+        val options = arrayOf("Perdi peso", "Migliora")
         objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
 
-        // Set up the button click listener
+
         val nextButton = findViewById<Button>(R.id.nextButton)
         nextButton.setOnClickListener {
             saveUserData()
@@ -43,7 +43,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun saveUserData() {
-        // Extract user input from the EditText fields and spinner
+        // prendi info utenti da editText e spinner
         val userNameString = userNameEditText.text.toString()
         val sessoString = sessoEditText.text.toString()
         val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
@@ -51,10 +51,10 @@ class WelcomeActivity : AppCompatActivity() {
         val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
-        // Assuming DB class has an insertData method to handle user data insertion
+        // inserisci dati
         DB(this).insertData(userNameString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
-        // After saving the data, navigate to the next activity
+        // vai a prossima activity
         startActivity(Intent(this, BotMenuActivity::class.java))
     }
 }

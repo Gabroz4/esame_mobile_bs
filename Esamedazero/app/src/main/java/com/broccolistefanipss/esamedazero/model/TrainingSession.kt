@@ -5,5 +5,6 @@ data class TrainingSession(
     val userName: String,
     val sessionDate: String,
     val duration: Int,
-    val trainingType: String
+    val trainingType: String,
+    val burntCalories: Int
 )

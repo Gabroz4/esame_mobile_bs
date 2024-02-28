@@ -6,10 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.broccolistefanipss.esamedazero.databinding.FragmentHomeBinding
 import com.broccolistefanipss.esamedazero.global.DB
-import com.broccolistefanipss.esamedazero.model.Utente
+import com.broccolistefanipss.esamedazero.model.User
 
 class HomeFragment : Fragment() {
 
@@ -29,21 +28,21 @@ class HomeFragment : Fragment() {
         db = DB(requireContext())
 
         // Assuming you have a method in DB to fetch data
-        val utenteList: List<Utente> = db.getData()
+        val userList: List<User> = db.getData()
 
         // Display the data in a TextView (Modify based on your UI layout)
-        val textView: TextView = binding.userName
-        val displayText = buildDisplayText(utenteList)
+        val textView: TextView = binding.homeUserName
+        val displayText = buildDisplayText(userList)
         textView.text = displayText
 
         return root
     }
 
-    private fun buildDisplayText(utenteList: List<Utente>): String {
+    private fun buildDisplayText(userList: List<User>): String {
         val stringBuilder = StringBuilder()
 
-        for (utente in utenteList) {
-            stringBuilder.append("userName: ${utente.userName}, Sesso: ${utente.sesso}\n")
+        for (user in userList) {
+            stringBuilder.append("userName: ${user.userName}, Sesso: ${user.sesso}\n")
             // Append other relevant data
 
         }

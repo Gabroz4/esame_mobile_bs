@@ -1,8 +1,6 @@
 package com.broccolistefanipss.esamedazero.model
 
-import android.widget.TextView
-
-data class Utente(
+data class User(
     val userName: String,
     val sesso: String,
     val eta: Int,

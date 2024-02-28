@@ -1,8 +1,8 @@
 package com.broccolistefanipss.esamedazero.global
 
 object SqlTable {
-    val Utente = """
-        CREATE TABLE Utente (
+    val User = """
+        CREATE TABLE User (
             userName TEXT PRIMARY KEY,
             Sesso TEXT,
             Eta INTEGER,
@@ -10,7 +10,7 @@ object SqlTable {
             Peso INTEGER,
             Obiettivo TEXT
         )
-    """.trimIndent()
+    """.trimIndent() //pulizia dati in input
 
     val TrainingSessions = """
         CREATE TABLE TrainingSessions (
@@ -19,7 +19,7 @@ object SqlTable {
             sessionDate TEXT,
             duration INTEGER,
             trainingType TEXT,
-            FOREIGN KEY(userName) REFERENCES Utente(userName) ON DELETE CASCADE
+            FOREIGN KEY(userName) REFERENCES User(userName) ON DELETE CASCADE
         )
     """.trimIndent()
 }

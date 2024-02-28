@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.broccolistefanipss.esamedazero.R
-import com.broccolistefanipss.esamedazero.model.Utente
+import com.broccolistefanipss.esamedazero.model.User
 
-class DataAdapter(private val dataList: List<Utente>) : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
+class DataAdapter(private val dataList: List<User>) : RecyclerView.Adapter<DataAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val userNameTextView: TextView = itemView.findViewById(R.id.userName)
