@@ -16,7 +16,7 @@ class DataAdapter(private val dataList: List<Utente>) : RecyclerView.Adapter<Dat
         val etaTextView: TextView = itemView.findViewById(R.id.eta)
         val altezzaTextView: TextView = itemView.findViewById(R.id.altezza)
         val pesoTextView: TextView = itemView.findViewById(R.id.peso)
-        val obiettivoTextView: TextView = itemView.findViewById(R.id.obiettivo)
+        //val obiettivoTextView: TextView = itemView.findViewById(R.id.obiettivo)
         // Add other TextViews for other columns
     }
 
@@ -32,7 +32,7 @@ class DataAdapter(private val dataList: List<Utente>) : RecyclerView.Adapter<Dat
         holder.etaTextView.text = currentItem.eta.toString()
         holder.altezzaTextView.text = currentItem.altezza.toString()
         holder.pesoTextView.text = currentItem.peso.toString()
-        holder.obiettivoTextView.text = currentItem.obiettivo
+        //holder.obiettivoTextView.text = currentItem.obiettivo
         // Bind other data to TextViews
     }
 

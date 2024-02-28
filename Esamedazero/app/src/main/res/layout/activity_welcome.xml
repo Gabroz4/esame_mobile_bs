@@ -5,11 +5,22 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <TextView
+        android:id="@+id/Titolo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Benvenuto in Sport Tracker!!"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Button
         android:id="@+id/nextButton"
         android:layout_width="160dp"
         android:layout_height="51dp"
-        android:text="Next"
+        android:text="Avanti"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.47"
@@ -17,77 +28,75 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.929" />
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/obiettivo"
-        android:layout_width="204dp"
-        android:layout_height="87dp"
-        android:hint="obiettivo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.135"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.608" />
-
     <EditText
         android:id="@+id/eta"
         android:layout_width="151dp"
         android:layout_height="54dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginTop="180dp"
         android:ems="10"
+        android:hint="Età"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/altezza"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.119"
+        app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.951" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/peso"
         android:layout_width="140dp"
         android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
+        android:hint="Peso"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/obiettivo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.099"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.059"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sesso" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/userName"
         android:layout_width="172dp"
         android:layout_height="52dp"
+        android:layout_marginTop="104dp"
         android:hint="username"
-        app:layout_constraintBottom_toTopOf="@+id/sesso"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintHorizontal_bias="0.066"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.953" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/sesso"
         android:layout_width="161dp"
         android:layout_height="49dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginTop="20dp"
         android:hint="sesso"
-        app:layout_constraintBottom_toTopOf="@+id/eta"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.124"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.064"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/altezza" />
 
     <EditText
         android:id="@+id/altezza"
         android:layout_width="120dp"
         android:layout_height="57dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="12dp"
         android:ems="10"
+        android:hint="Altezza"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/peso"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.106"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/eta" />
+
+    <Spinner
+        android:id="@+id/spinnerOptions"
+        android:layout_width="332dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="60dp"
+        android:layout_marginBottom="208dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

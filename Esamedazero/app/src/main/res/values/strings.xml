@@ -6,4 +6,9 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_welcome_activity">Welcome</string>
 
+    <string-array name="options_array">
+        <item>Dimagrire</item>
+        <item>migliorare</item>
+    </string-array>
+
 </resources>

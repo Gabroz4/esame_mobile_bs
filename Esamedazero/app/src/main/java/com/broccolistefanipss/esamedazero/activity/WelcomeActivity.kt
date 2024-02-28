@@ -14,6 +14,8 @@ import com.broccolistefanipss.esamedazero.manager.SessionManager
 //import com.broccolistefanipss.esamedazero.manager.SharedPrefs.Companion.eta
 //import com.broccolistefanipss.esamedazero.manager.SharedPrefs.Companion.sesso
 import com.broccolistefanipss.esamedazero.model.Utente
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 class WelcomeActivity: AppCompatActivity() {
 
@@ -35,7 +37,7 @@ class WelcomeActivity: AppCompatActivity() {
 
         userName = findViewById(R.id.userName)
         sesso = findViewById(R.id.sesso)
-        obiettivo = findViewById(R.id.obiettivo)
+        //obiettivo = findViewById(R.id.obiettivo)
         etaEditText = findViewById(R.id.eta)
         altezzaEditText = findViewById(R.id.altezza)
         pesoEditText = findViewById(R.id.peso)
@@ -68,7 +70,19 @@ class WelcomeActivity: AppCompatActivity() {
                 0
             }
 
-            db?.insertData(userNameString, sessoString, etaValue, altezzaValue, pesoValue, obiettivoString)
+            val spinner = findViewById<Spinner>(R.id.spinnerOptions)
+
+            ArrayAdapter.createFromResource(
+                this,
+                R.array.options_array,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                spinner.adapter = adapter
+            }
+            val selectedOption = spinner.selectedItem.toString()
+
+            db?.insertData(userNameString, sessoString, etaValue, altezzaValue, pesoValue, selectedOption)
             db?.getData()
 
             startActivity(intent)
