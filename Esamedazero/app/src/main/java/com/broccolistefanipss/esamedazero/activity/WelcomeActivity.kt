@@ -35,7 +35,6 @@ class WelcomeActivity : AppCompatActivity() {
         val options = arrayOf("Perdi peso", "Migliora")
         objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
 
-
         val nextButton = findViewById<Button>(R.id.nextButton)
         nextButton.setOnClickListener {
             saveUserData()

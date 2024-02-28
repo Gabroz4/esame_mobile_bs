@@ -1,6 +1,6 @@
 package com.broccolistefanipss.esamedazero.model
 
-data class User(
+data class User (
     val userName: String,
     val sesso: String,
     val eta: Int,
