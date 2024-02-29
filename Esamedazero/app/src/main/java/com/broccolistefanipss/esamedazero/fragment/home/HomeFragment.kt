@@ -24,11 +24,10 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
 
         viewModel.users.observe(viewLifecycleOwner) { userList ->
-            // Mostra i dati in TextView
+            // mostra i dati in TextView
             val displayText = buildDisplayText(userList)
             binding.homeUserName.text = displayText
         }
-
         return root
     }
 

@@ -45,7 +45,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             val sqlQuery = "INSERT INTO User(userName, Sesso, Eta, Altezza, Peso, Obiettivo) VALUES(?, ?, ?, ?, ?, ?)"
             val database = this.writableDatabase
             database.execSQL(sqlQuery, arrayOf(userName, sesso, eta, altezza, peso, obiettivo))
-            logUserTable() // Consider removing or securing this for production to protect user data
+            logUserTable() // da rimuovere dopo
         } else {
             Log.d("Utente", "userName '$userName' esiste già nel database")
         }
@@ -86,8 +86,14 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         return trainingSessionsList
     }
 
+    //fun getSingleUser(): User {
+    //    val db = this.readableDatabase
+    //    val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ?", arrayOf(userName))
+//
+    //}
+
     // dati degli utenti
-    fun getData(): List<User> {
+    fun getUsers(): List<User> {
         val userList = mutableListOf<User>()
         val query = "SELECT * FROM User"
         val database = this.readableDatabase
