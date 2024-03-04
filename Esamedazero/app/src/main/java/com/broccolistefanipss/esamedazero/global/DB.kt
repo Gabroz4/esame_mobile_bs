@@ -28,23 +28,24 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         with(cursor) {
             while (moveToNext()) {
                 val userName = getString(getColumnIndexOrThrow("userName"))
+                val password = getString(getColumnIndexOrThrow("password"))
                 val sesso = getString(getColumnIndexOrThrow("Sesso"))
                 val eta = getInt(getColumnIndexOrThrow("Eta"))
                 val altezza = getInt(getColumnIndexOrThrow("Altezza"))
                 val peso = getDouble(getColumnIndexOrThrow("Peso"))
                 val obiettivo = getString(getColumnIndexOrThrow("Obiettivo"))
-                Log.d("UserTable", "User: $userName, Sesso: $sesso, Età: $eta, Altezza: $altezza, Peso: $peso, Obiettivo: $obiettivo")
+                Log.d("UserTable", "User: $userName, Password: $password, Sesso: $sesso, Età: $eta, Altezza: $altezza, Peso: $peso, Obiettivo: $obiettivo")
             }
             close()
         }
     }
 
     // inserisci user
-    fun insertData(userName: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
+    fun insertUser(userName: String, password: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
         if (!isNameExists(userName)) {
-            val sqlQuery = "INSERT INTO User(userName, Sesso, Eta, Altezza, Peso, Obiettivo) VALUES(?, ?, ?, ?, ?, ?)"
+            val sqlQuery = "INSERT INTO User(userName, password, Sesso, Eta, Altezza, Peso, Obiettivo) VALUES(?, ?, ?, ?, ?, ?, ?)"
             val database = this.writableDatabase
-            database.execSQL(sqlQuery, arrayOf(userName, sesso, eta, altezza, peso, obiettivo))
+            database.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
             logUserTable() // Consider removing or securing this for production to protect user data
         } else {
             Log.d("Utente", "userName '$userName' esiste già nel database")
@@ -95,21 +96,30 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             if (cursor.moveToFirst()) {
                 do {
                     val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
+                    val password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
                     val sesso = cursor.getString(cursor.getColumnIndexOrThrow("Sesso"))
                     val eta = cursor.getInt(cursor.getColumnIndexOrThrow("Eta"))
                     val altezza = cursor.getInt(cursor.getColumnIndexOrThrow("Altezza"))
                     val peso = cursor.getDouble(cursor.getColumnIndexOrThrow("Peso"))
                     val obiettivo = cursor.getString(cursor.getColumnIndexOrThrow("Obiettivo"))
 
-                    userList.add(User(userName, sesso, eta, altezza, peso, obiettivo))
+                    userList.add(User(userName, password, sesso, eta, altezza, peso, obiettivo))
                 } while (cursor.moveToNext())
             }
         }
         return userList
     }
 
+    fun userLogin(userName: String, password: String): Boolean {
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ? AND password = ?", arrayOf(userName, password))
+        val userExists = cursor.count > 0
+        cursor.close()
+        return userExists
+    }
+
     companion object {
-        private const val DB_VERSION = 3
+        private const val DB_VERSION = 5
         private const val DB_NAME = "SportsTracker.db"
     }
 }

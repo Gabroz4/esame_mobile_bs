@@ -51,7 +51,8 @@ class WelcomeActivity : AppCompatActivity() {
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
         // inserisci dati
-        DB(this).insertData(userNameString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
+        // modifica password!
+        DB(this).insertUser(userNameString, "password", sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
         // vai a prossima activity
         startActivity(Intent(this, BotMenuActivity::class.java))

@@ -1,4 +1,4 @@
-package com.broccolistefanipss.esamedazero.global
+package com.broccolistefanipss.esamedazero.adapter
 
 import android.view.LayoutInflater
 import android.view.View

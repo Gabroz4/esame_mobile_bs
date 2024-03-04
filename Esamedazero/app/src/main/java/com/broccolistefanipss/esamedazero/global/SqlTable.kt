@@ -4,6 +4,7 @@ object SqlTable {
     val User = """
         CREATE TABLE User (
             userName TEXT PRIMARY KEY,
+            password TEXT,
             Sesso TEXT,
             Eta INTEGER,
             Altezza INTEGER,

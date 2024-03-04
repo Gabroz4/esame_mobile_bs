@@ -1,24 +1,21 @@
-package com.broccolistefanipss.esamedazero.fragment.home
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.broccolistefanipss.esamedazero.global.DB
-import com.broccolistefanipss.esamedazero.model.User
+import com.broccolistefanipss.esamedazero.manager.SessionManager
+import com.broccolistefanipss.esamedazero.model.TrainingSession
 import kotlinx.coroutines.launch
 
-class HomeViewModel(private val db: DB) : ViewModel() {
-    private val _users = MutableLiveData<List<User>>()
-    val users: LiveData<List<User>> = _users
+val sessionManager = SessionManager
 
-    init {
-        loadUsers()
-    }
+class HomeViewModel(private val db: DB, private val userName: String) : ViewModel() {
+    private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
+    val trainingSessions: LiveData<List<TrainingSession>> = _trainingSessions
 
-    private fun loadUsers() {
+    fun loadTrainingSessionsForUser() {
         viewModelScope.launch {
-            _users.value = db.getData()
+            _trainingSessions.value = db.getUserTrainingSessions(userName)
         }
     }
 }
