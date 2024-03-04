@@ -20,7 +20,7 @@ class SessionManager(context: Context) {
 
     fun setLogin(isLoggedIn: Boolean) {
         editor.putBoolean(KeyIsLoggedIn, isLoggedIn)
-        editor.commit()
+        editor.commit() // non blocca main thread
         Log.d(Tag, "Sessione modificata")
     }
 
