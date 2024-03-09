@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import com.broccolistefanipss.esamedazero.activity.BotMenuActivity
 import com.broccolistefanipss.esamedazero.activity.WelcomeActivity
+import com.broccolistefanipss.esamedazero.manager.SessionManager
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +19,18 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        startActivity(Intent(this, WelcomeActivity::class.java))
-        finish() // termina asttività, impedisce di tornare allo splash
+        // Controlla se l'utente è già loggato
+        val sessionManager = SessionManager(this)
+        if (sessionManager.isLoggedIn) {
+            // Reindirizza l'utente alla BotMenuActivity
+            val intent = Intent(this, BotMenuActivity::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // Avvia la WelcomeActivity
+            startActivity(Intent(this, WelcomeActivity::class.java))
+            finish() // termina asttività, impedisce di tornare allo splash
+        }
     }
 }
+

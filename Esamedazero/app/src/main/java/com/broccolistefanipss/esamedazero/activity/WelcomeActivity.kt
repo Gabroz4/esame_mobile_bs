@@ -9,6 +9,7 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.global.DB
+import com.broccolistefanipss.esamedazero.manager.SessionManager
 
 class WelcomeActivity : AppCompatActivity() {
 
@@ -22,6 +23,15 @@ class WelcomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
+
+        // Controlla se l'utente è già loggato
+        val sessionManager = SessionManager(this)
+        if (sessionManager.isLoggedIn) {
+            // Reindirizza l'utente alla BotMenuActivity
+            val intent = Intent(this, BotMenuActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         // inizializza TextEditor e Spinner
         userNameEditText = findViewById(R.id.userName)
@@ -54,7 +64,8 @@ class WelcomeActivity : AppCompatActivity() {
         // modifica password!
         DB(this).insertUser(userNameString, "password", sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
-        // vai a prossima activity
-        startActivity(Intent(this, BotMenuActivity::class.java))
+        // vai a LoginActivity
+        startActivity(Intent(this, LoginActivity::class.java))
+        finish() // termina WelcomeActivity
     }
 }
