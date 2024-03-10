@@ -14,6 +14,7 @@ import com.broccolistefanipss.esamedazero.manager.SessionManager
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var userNameEditText: EditText
+    private lateinit var passwordEditText: EditText  // Aggiunta password EditText
     private lateinit var sessoEditText: EditText
     private lateinit var etaEditText: EditText
     private lateinit var altezzaEditText: EditText
@@ -33,15 +34,16 @@ class WelcomeActivity : AppCompatActivity() {
             finish()
         }
 
-        // inizializza TextEditor e Spinner
+        // Inizializza EditText e Spinner
         userNameEditText = findViewById(R.id.userName)
+        passwordEditText = findViewById(R.id.password)
         sessoEditText = findViewById(R.id.sesso)
         etaEditText = findViewById(R.id.eta)
         altezzaEditText = findViewById(R.id.altezza)
         pesoEditText = findViewById(R.id.peso)
         objectiveSpinner = findViewById(R.id.spinnerOptions)
 
-        // spinner con due opzioni
+        // Spinner con due opzioni
         val options = arrayOf("Perdi peso", "Migliora")
         objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
 
@@ -52,20 +54,20 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun saveUserData() {
-        // prendi info utenti da editText e spinner
+        // Prendi info utenti da EditText e Spinner
         val userNameString = userNameEditText.text.toString()
+        val passwordString = passwordEditText.text.toString()  // Ottieni la password dall'EditText
         val sessoString = sessoEditText.text.toString()
         val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
         val altezzaValue = altezzaEditText.text.toString().toIntOrNull() ?: 0
         val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
-        // inserisci dati
-        // modifica password!
-        DB(this).insertUser(userNameString, "password", sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
+        // Inserisci dati
+        DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
-        // vai a LoginActivity
+        // Vai a LoginActivity
         startActivity(Intent(this, LoginActivity::class.java))
-        finish() // termina WelcomeActivity
+        finish() // Termina WelcomeActivity
     }
 }

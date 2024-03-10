@@ -45,6 +45,10 @@
             android:exported="false"
             android:label="@string/title_activity_bot_menu" />
         <activity
+            android:name=".activity.LoginActivity"
+            android:exported="false"
+            android:label="@string/login" />
+        <activity
             android:name=".activity.WelcomeActivity"
             android:exported="false"
             android:label="@string/title_welcome_activity" />
