@@ -54,6 +54,7 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, BotMenuActivity::class.java)
                 startActivity(intent)
                 finish() // Termina LoginActivity
+
             } else {
                 // Se il login fallisce, mostra un messaggio all'utente
                 Toast.makeText(this, "Login fallito. Riprova.", Toast.LENGTH_SHORT).show()
