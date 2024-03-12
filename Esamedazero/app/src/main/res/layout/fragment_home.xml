@@ -21,8 +21,8 @@
 
     <TextView
         android:id="@+id/homeUserName"
-        android:layout_width="385dp"
-        android:layout_height="62dp"
+        android:layout_width="383dp"
+        android:layout_height="79dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/trainingSessionsRecyclerView"
         app:layout_constraintTop_toTopOf="parent"

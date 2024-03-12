@@ -25,7 +25,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-        // Controlla se l'utente è già loggato
+         //Controlla se l'utente è già loggato
         val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
             // Reindirizza l'utente alla BotMenuActivity

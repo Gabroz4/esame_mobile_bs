@@ -14,13 +14,14 @@ object SqlTable {
     """.trimIndent() //pulizia dati in input
 
     val TrainingSessions = """
-        CREATE TABLE TrainingSessions (
-            sessionId INTEGER PRIMARY KEY AUTOINCREMENT,
-            userName TEXT,
-            sessionDate TEXT,
-            duration INTEGER,
-            trainingType TEXT,
-            FOREIGN KEY(userName) REFERENCES User(userName) ON DELETE CASCADE
-        )
-    """.trimIndent()
+    CREATE TABLE TrainingSessions (
+        sessionId INTEGER PRIMARY KEY AUTOINCREMENT,
+        userName TEXT,
+        sessionDate TEXT,
+        duration INTEGER,
+        trainingType TEXT,
+        burntCalories INTEGER,
+        FOREIGN KEY(userName) REFERENCES User(userName) ON DELETE CASCADE
+    )
+""".trimIndent()
 }
