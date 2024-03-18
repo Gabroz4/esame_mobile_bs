@@ -5,9 +5,11 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_welcome_activity">Welcome</string>
+    <string name="title_user">User</string>
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">login</string>
+
 
     <string-array name="options_array">
         <item>Dimagrire</item>

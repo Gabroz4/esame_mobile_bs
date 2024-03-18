@@ -24,6 +24,7 @@ class BotMenuActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val toolbar: Toolbar = binding.toolbar
 
+
         // Set the Toolbar as the ActionBar
         setSupportActionBar(toolbar)
 
@@ -32,7 +33,7 @@ class BotMenuActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_user
             )
         )
 
