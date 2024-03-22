@@ -18,6 +18,6 @@
 
     <item
         android:id="@+id/navigation_user"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/ic_user_black"
         android:title="@string/title_user"/>
 </menu>
