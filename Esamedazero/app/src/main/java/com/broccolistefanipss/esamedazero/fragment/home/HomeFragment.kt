@@ -1,6 +1,5 @@
 package com.broccolistefanipss.esamedazero.fragment.home
 
-// Importazioni necessarie.
 import HomeViewModel
 import TrainingSessionAdapter
 import android.os.Bundle

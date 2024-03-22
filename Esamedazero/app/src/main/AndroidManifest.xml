@@ -28,6 +28,7 @@
             android:theme="@style/Theme.RunManagement"/>
         -->
         <activity android:name=".manager.LoginManager"/>
+        <activity android:name=".activity.NewTrainingActivity"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

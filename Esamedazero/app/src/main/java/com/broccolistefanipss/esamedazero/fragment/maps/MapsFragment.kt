@@ -16,11 +16,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.broccolistefanipss.esamedazero.activity.NewTrainingActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -41,10 +44,24 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             }
         }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+    /*override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+        return binding.root
+    }*/
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentMapsBinding.inflate(inflater, container, false)
+
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        // Setup the button click listener to start NewTrainingActivity
+        _binding!!.addTrainingButton.setOnClickListener {
+            val intent = Intent(context, NewTrainingActivity::class.java)
+            startActivity(intent)
+        }
+
         return binding.root
     }
 
