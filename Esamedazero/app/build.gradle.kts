@@ -43,6 +43,8 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:17.0.0")
     implementation ("com.google.android.gms:play-services-maps:17.0.1")
     implementation("androidx.core:core-ktx:1.9.0")
+    implementation ("androidx.activity:activity-ktx:1.3.1")
+    implementation ("androidx.fragment:fragment-ktx:1.3.6")
     implementation ("androidx.core:core-splashscreen:1.0.0-alpha01")
     implementation ("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.appcompat:appcompat:1.6.1")
