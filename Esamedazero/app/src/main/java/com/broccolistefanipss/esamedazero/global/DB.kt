@@ -99,14 +99,33 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
     // Recupera i dati degli utenti.
     fun getData(): List<User> {
-        // Logica simile a getUserTrainingSessions, ometto i dettagli per brevità.
-        return listOf() // Placeholder per la lista di utenti.
+        val userList = mutableListOf<User>()
+        val query = "SELECT * FROM User"
+        val database = this.readableDatabase
+        database.rawQuery(query, null).use { cursor ->
+            if (cursor.moveToFirst()) {
+                do {
+                    val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
+                    val password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
+                    val sesso = cursor.getString(cursor.getColumnIndexOrThrow("Sesso"))
+                    val eta = cursor.getInt(cursor.getColumnIndexOrThrow("Eta"))
+                    val altezza = cursor.getInt(cursor.getColumnIndexOrThrow("Altezza"))
+                    val peso = cursor.getDouble(cursor.getColumnIndexOrThrow("Peso"))
+                    val obiettivo = cursor.getString(cursor.getColumnIndexOrThrow("Obiettivo"))
+
+                    userList.add(User(userName, password, sesso, eta, altezza, peso, obiettivo))
+                } while (cursor.moveToNext())
+            }
+        }
+        return userList
     }
 
-    // Verifica le credenziali di login di un utente.
     fun userLogin(userName: String, password: String): Boolean {
-        // Implementazione omessa per brevità.
-        return false
+        val db = this.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ? AND password = ?", arrayOf(userName, password))
+        val userExists = cursor.count > 0
+        cursor.close()
+        return userExists
     }
 
     companion object {

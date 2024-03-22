@@ -40,7 +40,7 @@ android {
 }
 
 dependencies {
-
+    implementation ("com.google.android.gms:play-services-maps:17.0.1")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation ("androidx.core:core-splashscreen:1.0.0-alpha01")
     implementation ("androidx.core:core-splashscreen:1.0.1")
