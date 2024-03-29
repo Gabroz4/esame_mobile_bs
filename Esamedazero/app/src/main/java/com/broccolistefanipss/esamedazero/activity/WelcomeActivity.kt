@@ -1,7 +1,9 @@
 package com.broccolistefanipss.esamedazero.activity
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -25,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_welcome)
 
-         //Controlla se l'utente è già loggato
+        //Controlla se l'utente è già loggato
         val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
             // Reindirizza l'utente alla BotMenuActivity
@@ -63,11 +65,41 @@ class WelcomeActivity : AppCompatActivity() {
         val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
-        // Inserisci dati
+        // Inserisci dati nel database
         DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
+
+        // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
+        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue, "")
 
         // Vai a LoginActivity
         startActivity(Intent(this, LoginActivity::class.java))
         finish() // Termina WelcomeActivity
+    }
+
+    // Metodo per salvare i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
+    private fun saveToSharedPreferences(
+        userName: String?,
+        sesso: String,
+        eta: Int,
+        altezza: Int,
+        peso: Int,
+        obiettivo: String
+    ) {
+        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("userName", userName)
+        editor.putString("sesso", sesso)
+        editor.putInt("eta", eta)
+        editor.putInt("altezza", altezza)
+        editor.putInt("peso", peso)
+        editor.putString("obiettivo", "")
+        editor.apply()
+
+        // Aggiungi log per visualizzare ciò che viene salvato nelle SharedPreferences
+        Log.d("WelcomeActivity", "Username: $userName")
+        Log.d("WelcomeActivity", "Sesso: $sesso")
+        Log.d("WelcomeActivity", "Età: $eta")
+        Log.d("WelcomeActivity", "Altezza: $altezza")
+        Log.d("WelcomeActivity", "Peso: $peso")
     }
 }
