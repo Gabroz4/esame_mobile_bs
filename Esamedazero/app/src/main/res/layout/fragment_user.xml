@@ -4,71 +4,108 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <!-- TextView per visualizzare i dati dell'utente -->
+    <!-- TextView for displaying user data -->
+
+    <ImageView
+        android:id="@+id/profilePicture"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="92dp"
+        android:src="@drawable/male_default_profile"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/changeProfilePictureButton"
+        android:layout_width="114dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="8dp"
+        android:text="Cambia"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/profilePicture"
+        app:layout_constraintVertical_bias="0.004" />
+
     <TextView
         android:id="@+id/UserProfile"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="132dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="48dp"
         android:text="UserName"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toTopOf="@+id/profilePicture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.081"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/SexProfile"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="264dp"
         android:text="Sesso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/UserProfile" />
-
-    <TextView
-        android:id="@+id/AgeProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="20dp"
-        android:text="Eta"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.071"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SexProfile" />
-
-    <TextView
-        android:id="@+id/HeightProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="24dp"
-        android:text="Altezza"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/AgeProfile" />
-
-    <TextView
-        android:id="@+id/WeightProfile"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="28dp"
-        android:text="Peso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.073"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HeightProfile" />
+        app:layout_constraintTop_toBottomOf="@id/UserProfile" />
 
     <TextView
         android:id="@+id/objectiveProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="28dp"
-        android:text="obiettivo"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="24dp"
+        android:text="Obiettivo"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/WeightProfile" />
+        app:layout_constraintTop_toBottomOf="@id/WeightProfile" />
+
+    <TextView
+        android:id="@+id/AgeProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="20dp"
+        android:text="Eta"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/SexProfile" />
+
+    <TextView
+        android:id="@+id/WeightProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="24dp"
+        android:text="Peso"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/HeightProfile" />
+
+    <TextView
+        android:id="@+id/HeightProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="20dp"
+        android:text="Altezza"
+        android:textColor="@android:color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/AgeProfile" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -17,7 +17,7 @@ class DataAdapter(private val dataList: List<User>) : RecyclerView.Adapter<DataA
         // Inizializza le variabili per ogni elemento dell'interfaccia utente presente nell'item della lista.
         // Utilizza findViewById per trovare ogni componente nell'itemView.
         val userNameTextView: TextView = itemView.findViewById(R.id.userName)
-        val sessoTextView: TextView = itemView.findViewById(R.id.sesso)
+        val sessoTextView: TextView = itemView.findViewById(R.id.spinnerSesso)
         val etaTextView: TextView = itemView.findViewById(R.id.eta)
         val altezzaTextView: TextView = itemView.findViewById(R.id.altezza)
         val pesoTextView: TextView = itemView.findViewById(R.id.peso)

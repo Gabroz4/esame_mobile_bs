@@ -17,7 +17,7 @@ class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var userNameEditText: EditText
     private lateinit var passwordEditText: EditText  // Aggiunta password EditText
-    private lateinit var sessoEditText: EditText
+    private lateinit var sessoSpinner: Spinner
     private lateinit var etaEditText: EditText
     private lateinit var altezzaEditText: EditText
     private lateinit var pesoEditText: EditText
@@ -39,15 +39,18 @@ class WelcomeActivity : AppCompatActivity() {
         // Inizializza EditText e Spinner
         userNameEditText = findViewById(R.id.userName)
         passwordEditText = findViewById(R.id.password)
-        sessoEditText = findViewById(R.id.sesso)
+        sessoSpinner = findViewById(R.id.spinnerSesso)
         etaEditText = findViewById(R.id.eta)
         altezzaEditText = findViewById(R.id.altezza)
         pesoEditText = findViewById(R.id.peso)
-        objectiveSpinner = findViewById(R.id.spinnerOptions)
+        objectiveSpinner = findViewById(R.id.spinnerObiettivo)
 
         // Spinner con due opzioni
-        val options = arrayOf("Perdi peso", "Migliora")
-        objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, options)
+        val objectiveOptions : Array<String> = resources.getStringArray(R.array.objectives_array)
+        objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, objectiveOptions)
+
+        val sessoOptions : Array<String> = resources.getStringArray(R.array.sesso_array)
+        objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, sessoOptions)
 
         val nextButton = findViewById<Button>(R.id.nextButton)
         nextButton.setOnClickListener {
@@ -59,7 +62,7 @@ class WelcomeActivity : AppCompatActivity() {
         // Prendi info utenti da EditText e Spinner
         val userNameString = userNameEditText.text.toString()
         val passwordString = passwordEditText.text.toString()  // Ottieni la password dall'EditText
-        val sessoString = sessoEditText.text.toString()
+        val sessoString = sessoSpinner.selectedItem.toString()
         val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
         val altezzaValue = altezzaEditText.text.toString().toIntOrNull() ?: 0
         val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
@@ -92,7 +95,7 @@ class WelcomeActivity : AppCompatActivity() {
         editor.putInt("eta", eta)
         editor.putInt("altezza", altezza)
         editor.putInt("peso", peso)
-        editor.putString("obiettivo", "")
+        editor.putString("obiettivo", obiettivo)
         editor.apply()
 
         // Aggiungi log per visualizzare ciò che viene salvato nelle SharedPreferences
@@ -101,5 +104,6 @@ class WelcomeActivity : AppCompatActivity() {
         Log.d("WelcomeActivity", "Età: $eta")
         Log.d("WelcomeActivity", "Altezza: $altezza")
         Log.d("WelcomeActivity", "Peso: $peso")
+        Log.d("WelcomeActivity", "Obiettivo: $obiettivo")
     }
 }
