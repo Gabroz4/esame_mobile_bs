@@ -1,4 +1,4 @@
-package com.broccolistefanipss.esamedazero.fragment.notifications
+package com.broccolistefanipss.esamedazero.fragment.calendar
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.broccolistefanipss.esamedazero.databinding.FragmentNotificationsBinding
+import com.broccolistefanipss.esamedazero.databinding.FragmentCalendarBinding
 
 class CalendarFragment : Fragment() {
 
-    private var _binding: FragmentNotificationsBinding? = null
+    private var _binding: FragmentCalendarBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -25,7 +25,7 @@ class CalendarFragment : Fragment() {
         val notificationsViewModel =
             ViewModelProvider(this).get(CalendarViewModel::class.java)
 
-        _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
+        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val textView: TextView = binding.textNotifications

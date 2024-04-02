@@ -67,20 +67,20 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private fun checkLocationPermission() {
         when {
-            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
                 enableMyLocation()
             }
             else -> {
                 // Directly ask for the permission.
                 // In a real-world scenario, you should provide an additional rationale to the user if the permission was not granted
                 // and the user would benefit from additional context for the use of the permission.
-                requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+                requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
         }
     }
 
     private fun enableMyLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
         map.isMyLocationEnabled = true
@@ -93,7 +93,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
-        if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 location?.let {
                     val userLocation = LatLng(it.latitude, it.longitude)

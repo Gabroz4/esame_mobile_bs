@@ -39,9 +39,14 @@ public class SharedPrefs {
         }
 
         // Recupera un intero dalle preferenze condivise usando la chiave specificata.
-        fun getInt(context: Context, key: String): Int {
+        fun getInt(context: Context, key: Int): Int {
             // Ritorna il valore associato alla chiave, o 0 se non esiste tale chiave.
-            return getPrefs(context).getInt(key, 0)
+            return getPrefs(context).getInt(key.toString(), 0)
+        }
+
+        fun getDouble(context: Context, key: Double): Float {
+            // Ritorna il valore associato alla chiave, o 0 se non esiste tale chiave.
+            return getPrefs(context).getFloat(key.toString(), 0F)
         }
 
         // Pulisce tutte le preferenze condivise.

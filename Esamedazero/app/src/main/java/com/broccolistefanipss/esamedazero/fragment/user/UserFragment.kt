@@ -1,7 +1,5 @@
 package com.broccolistefanipss.esamedazero.fragment.user
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.broccolistefanipss.esamedazero.databinding.FragmentUserBinding
+import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.manager.SharedPrefs
-import sessionManager
+import com.broccolistefanipss.esamedazero.model.User
 
 class UserFragment : Fragment() {
 
@@ -29,11 +28,17 @@ class UserFragment : Fragment() {
         //val userName = SharedPrefs.getString(requireContext(), SharedPrefs.userName) ?: ""
         val sessionManager = SessionManager(requireContext())
         val userName = sessionManager.userName ?: ""
+        val database = DB(requireContext())
+        val utente: User? = database.getUserData(userName)
 
-        //val sex = SharedPrefs.getString(requireContext(), SharedPrefs.sesso) ?: ""
-        //val age = SharedPrefs.getInt(requireContext(), SharedPrefs.eta) ?: 0
-        //val height = SharedPrefs.getInt(requireContext(), SharedPrefs.altezza) ?: 0
-        //val weight = SharedPrefs.getInt(requireContext(), SharedPrefs.peso) ?: 0
+        //val sex = utente?.let { SharedPrefs.getString(requireContext(), it.sesso) } ?: ""
+        //val age = utente?.let { SharedPrefs.getInt(requireContext(), it.eta) } ?: 0
+        //val height = utente?.let { SharedPrefs.getInt(requireContext(), it.altezza) } ?: 0
+        //val weight = utente?.let { SharedPrefs.getDouble(requireContext(), it.peso) } ?: 0
+        val sex = utente?.sesso ?: ""
+        val age = utente?.eta ?: 0
+        val height = utente?.altezza ?: 0
+        val weight = utente?.peso ?: 0
 
 
 

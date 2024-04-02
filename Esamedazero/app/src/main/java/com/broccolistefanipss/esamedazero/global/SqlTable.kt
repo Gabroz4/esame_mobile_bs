@@ -5,11 +5,11 @@ object SqlTable {
         CREATE TABLE User (
             userName TEXT PRIMARY KEY,
             password TEXT,
-            Sesso TEXT,
-            Eta INTEGER,
-            Altezza INTEGER,
-            Peso INTEGER,
-            Obiettivo TEXT
+            sesso TEXT,
+            eta INTEGER,
+            altezza INTEGER,
+            peso INTEGER,
+            obiettivo TEXT
         )
     """.trimIndent() //pulizia dati in input
 
