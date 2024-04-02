@@ -39,6 +39,7 @@ class UserFragment : Fragment() {
         val age = utente?.eta ?: 0
         val height = utente?.altezza ?: 0
         val weight = utente?.peso ?: 0
+        val objective = utente?.obiettivo ?: 0
 
 
 
@@ -48,6 +49,7 @@ class UserFragment : Fragment() {
         Log.d("UserFragment", "eta: $age")
         Log.d("UserFragment", "altezza: $height")
         Log.d("UserFragment", "peso: $weight")
+        Log.d("UserFragment", "peso: $objective")
 
         // Imposta i valori recuperati nei TextView del layout
         binding.UserProfile.text = userName
@@ -55,6 +57,7 @@ class UserFragment : Fragment() {
         binding.AgeProfile.text = age.toString()
         binding.HeightProfile.text = height.toString()
         binding.WeightProfile.text = weight.toString()
+        binding.objectiveProfile.text = objective.toString()
 
         // Controllo di tutti i valori salvati nelle SharedPreferences
         //val sharedPreferences = requireContext().getSharedPreferences("UserData", Context.MODE_PRIVATE)

@@ -62,7 +62,7 @@
         app:layout_constraintTop_toBottomOf="@+id/HeightProfile" />
 
     <TextView
-        android:id="@+id/obiettivo"
+        android:id="@+id/objectiveProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="28dp"
