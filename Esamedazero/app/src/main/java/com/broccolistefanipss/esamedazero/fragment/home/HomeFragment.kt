@@ -1,7 +1,7 @@
 package com.broccolistefanipss.esamedazero.fragment.home
 
 import HomeViewModel
-import TrainingSessionAdapter
+import com.broccolistefanipss.esamedazero.adapter.TrainingSessionAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View

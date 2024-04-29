@@ -50,7 +50,7 @@ class WelcomeActivity : AppCompatActivity() {
         objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, objectiveOptions)
 
         val sessoOptions : Array<String> = resources.getStringArray(R.array.sesso_array)
-        objectiveSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, sessoOptions)
+        sessoSpinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, sessoOptions)
 
         val nextButton = findViewById<Button>(R.id.nextButton)
         nextButton.setOnClickListener {

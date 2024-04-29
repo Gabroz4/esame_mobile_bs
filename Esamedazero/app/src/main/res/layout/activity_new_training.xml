@@ -14,7 +14,19 @@
         app:layout_constraintBottom_toTopOf="@+id/startStopButton"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.081" />
+
+    <TextView
+        android:id="@+id/timeTextView"
+        android:layout_width="60dp"
+        android:layout_height="27dp"
+        android:text="00:00:00"
+        app:layout_constraintBottom_toTopOf="@+id/startStopButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="0.478" />
 
     <Button
         android:id="@+id/startStopButton"

@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Esamedazero</string>
     <string name="title_activity_bot_menu">BotMenuActivity</string>
+    <string name="title_activity_newtraining">NewTrainingActivity</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Maps</string>
     <string name="title_user">User</string>
