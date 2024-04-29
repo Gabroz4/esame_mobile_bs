@@ -45,7 +45,6 @@ class UserFragment : Fragment() {
         val objective = utente?.obiettivo ?: 0
 
 
-
         // Log dei dati recuperati
         Log.d("UserFragment", "userName: $userName")
         Log.d("UserFragment", "sesso: $sex")

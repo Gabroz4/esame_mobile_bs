@@ -58,6 +58,7 @@ class WelcomeActivity : AppCompatActivity() {
         }
     }
 
+
     private fun saveUserData() {
         // Prendi info utenti da EditText e Spinner
         val userNameString = userNameEditText.text.toString()
