@@ -5,12 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
 import com.broccolistefanipss.esamedazero.databinding.FragmentUserBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
-import com.broccolistefanipss.esamedazero.manager.SharedPrefs
 import com.broccolistefanipss.esamedazero.model.User
 
 class UserFragment : Fragment() {

@@ -82,6 +82,12 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         database.execSQL(sqlQuery, arrayOf(userName, sessionDate, duration, trainingType, burntCalories))
     }
 
+    // Funzione per ottenere la data corrente nel formato desiderato (es: "2024-08-20")
+    private fun getCurrentDate(): String {
+        val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
+        return formatter.format(java.util.Date())
+    }
+
     // Recupera le sessioni di allenamento per un utente specifico.
     fun getUserTrainingSessions(userName: String): List<TrainingSession> {
         val trainingSessionsList = mutableListOf<TrainingSession>()

@@ -1,11 +1,7 @@
 package com.broccolistefanipss.esamedazero.manager
 
 import android.content.Context
-import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.global.DB
-import com.broccolistefanipss.esamedazero.manager.SessionManager
 
 class LoginManager(private val context: Context) {
 
