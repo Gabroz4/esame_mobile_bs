@@ -7,6 +7,7 @@ import android.hardware.SensorManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.esamedazero.global.DB
@@ -127,6 +128,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         // Inserisci la sessione nel database
         val db = DB(this)
         db.insertTrainingSession(userName, sessionDate, duration, trainingType, burntCalories)
+        Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $duration, $trainingType, $burntCalories")
     }
 
     private fun getCurrentDate(): String {

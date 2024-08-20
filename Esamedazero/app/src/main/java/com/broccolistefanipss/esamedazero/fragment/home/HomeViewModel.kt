@@ -1,26 +1,31 @@
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.broccolistefanipss.esamedazero.global.DB
-import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.model.TrainingSession
 import kotlinx.coroutines.launch
 
-val sessionManager = SessionManager
+class HomeViewModel : ViewModel() {
 
-// Definisce la classe HomeViewModel che estende ViewModel.
-// ViewModel fornisce i dati per l'UI e sopravvive ai cambiamenti di configurazione come rotazioni dello schermo.
-class HomeViewModel(private val db: DB, private val userName: String) : ViewModel() {
+    private lateinit var db: DB
+    private lateinit var userName: String
+
     private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
-    val trainingSessions: LiveData<List<TrainingSession>> = _trainingSessions
+    val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
 
-    fun loadTrainingSessionsForUser() {
+    // Inizializza il DB e il nome utente
+    fun initialize(context: Context, userName: String) {
+        this.db = DB(context)
+        this.userName = userName
+        loadTrainingSessions()
+    }
+
+    // Carica le sessioni di allenamento in un thread separato
+    private fun loadTrainingSessions() {
         viewModelScope.launch {
-            // Qui si assume che il metodo db.getUserTrainingSessions(userName) restituisca una lista di oggetti TrainingSession
-            // per l'utente specificato dal campo userName del ViewModel.
             val sessions = db.getUserTrainingSessions(userName)
-            // Utilizza postValue per assegnare i dati a _trainingSessions su un thread non principale.
             _trainingSessions.postValue(sessions)
         }
     }

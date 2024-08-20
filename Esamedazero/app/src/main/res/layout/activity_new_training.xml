@@ -19,8 +19,8 @@
 
     <TextView
         android:id="@+id/timeTextView"
-        android:layout_width="60dp"
-        android:layout_height="27dp"
+        android:layout_width="172dp"
+        android:layout_height="72dp"
         android:text="00:00:00"
         app:layout_constraintBottom_toTopOf="@+id/startStopButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,15 +30,14 @@
 
     <TextView
         android:id="@+id/calorieTextView"
-        android:layout_width="60dp"
-        android:layout_height="27dp"
+        android:layout_width="169dp"
+        android:layout_height="76dp"
         android:text="0"
         app:layout_constraintBottom_toTopOf="@+id/startStopButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="0.572" />
+        app:layout_constraintVertical_bias="0.633" />
 
     <Button
         android:id="@+id/startStopButton"

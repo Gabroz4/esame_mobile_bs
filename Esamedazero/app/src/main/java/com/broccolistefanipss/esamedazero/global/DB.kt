@@ -92,16 +92,29 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     fun getUserTrainingSessions(userName: String): List<TrainingSession> {
         val trainingSessionsList = mutableListOf<TrainingSession>()
         val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM TrainingSessions WHERE userName = ?", arrayOf(userName))
-        with(cursor) {
-            while (moveToNext()) {
-                // Estrae i dati di ogni sessione e aggiunge alla lista.
-                // Ometto i dettagli per brevità.
+
+        // Utilizza il cursore all'interno di un blocco "use" per garantire la chiusura.
+        db.rawQuery("SELECT * FROM TrainingSessions WHERE userName = ?", arrayOf(userName)).use { cursor ->
+            while (cursor.moveToNext()) {
+                // Estrai i dati da ogni colonna del cursore
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("sessionId"))
+                val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
+                val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
+                val trainingType = cursor.getString(cursor.getColumnIndexOrThrow("trainingType"))
+                val burntCalories = cursor.getInt(cursor.getColumnIndexOrThrow("burntCalories"))
+
+                // Crea un oggetto TrainingSession con i dati estratti
+                val trainingSession = TrainingSession(id, userName, sessionDate, duration, trainingType, burntCalories)
+
+                // Aggiungi l'oggetto alla lista
+                trainingSessionsList.add(trainingSession)
             }
-            close()
         }
+        Log.d("NewTrainingActivity", "Sessioni salvate: $trainingSessionsList")
         return trainingSessionsList
     }
+
+
 
     // Recupera i dati degli utenti.
     fun getData(): List<User> {

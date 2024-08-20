@@ -39,17 +39,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
                 enableMyLocation()
+                getLastKnownLocation()
             } else {
                 // Permission was denied. Handle the case where the user denies the permission.
             }
         }
 
-    /*override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentMapsBinding.inflate(inflater, container, false)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-        return binding.root
-    }*/
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
 
@@ -69,11 +64,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         when {
             ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
                 enableMyLocation()
+                getLastKnownLocation()
             }
             else -> {
                 // Directly ask for the permission.
-                // In a real-world scenario, you should provide an additional rationale to the user if the permission was not granted
-                // and the user would benefit from additional context for the use of the permission.
                 requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
         }
@@ -84,13 +78,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             return
         }
         map.isMyLocationEnabled = true
-        // Now you can proceed with getting the last known location or starting location updates
     }
 
-    override fun onMapReady(googleMap: GoogleMap) {
-        map = googleMap
-        checkLocationPermission()
-
+    private fun getLastKnownLocation() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
         if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -102,6 +92,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+        checkLocationPermission()
     }
 
     override fun onDestroyView() {
