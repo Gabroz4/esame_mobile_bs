@@ -1,5 +1,6 @@
 package com.broccolistefanipss.esamedazero.activity
 
+import android.content.Context
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -9,11 +10,13 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.math.sqrt
 
 class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
@@ -28,10 +31,13 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private var totalAcceleration: Double = 0.0
     private var calorieCount: Double = 0.0
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewTrainingBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         // Setup sensore accelerometro
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -40,13 +46,13 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.startStopButton.setOnClickListener {
             if (!isRunning) {
                 isRunning = true
-                binding.startStopButton.text = "Stop"
+                binding.startStopButton.text = R.string.stop.toString()
                 startTime = System.currentTimeMillis()
                 startTimer()
                 startAccelerometer()
             } else {
                 isRunning = false
-                binding.startStopButton.text = "Start"
+                binding.startStopButton.text = R.string.start.toString()
                 stopTimer()
                 stopAccelerometer()
                 saveTrainingSession() // Salva la sessione d'allenamento nel database
@@ -75,6 +81,10 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun stopTimer() {
+        if (isRunning) {
+            val currentTime = System.currentTimeMillis()
+            elapsedTime += currentTime - startTime // Aggiorna elapsedTime
+        }
         timerHandler.removeCallbacks(timerRunnable)
     }
 
@@ -104,7 +114,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val z = event.values[2]
 
             // Calcolo la magnitudo dell'accelerazione
-            val accelerationMagnitude = Math.sqrt((x * x + y * y + z * z).toDouble())
+            val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
 
             // Aggiungi la magnitudo totale per l'uso nel calcolo delle calorie
             totalAcceleration += accelerationMagnitude
@@ -119,20 +129,25 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun saveTrainingSession() {
-        val userName = "nome_utente" // Sostituisci con il nome dell'utente corrente
+        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+
+        val userName = sharedPreferences.getString("userName", null) // Sostituisci con il nome dell'utente corrente
         val sessionDate = getCurrentDate() // Ottieni la data corrente in formato stringa
-        val duration = (elapsedTime / 1000).toInt() // Converti la durata in secondi
-        val trainingType = "tipo_allenamento" // Sostituisci con il tipo di allenamento
+        //val duration = (elapsedTime / 1000).toInt() // Converti la durata in secondi
+        val duration = elapsedTime.toInt()
+        val trainingType = "corsa" // Sostituisci con il tipo di allenamento
         val burntCalories = calorieCount.toInt()
 
         // Inserisci la sessione nel database
         val db = DB(this)
-        db.insertTrainingSession(userName, sessionDate, duration, trainingType, burntCalories)
+        if (userName != null) {
+            db.insertTrainingSession(userName, sessionDate, duration, trainingType, burntCalories)
+        }
         Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $duration, $trainingType, $burntCalories")
     }
 
     private fun getCurrentDate(): String {
-        val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         return formatter.format(Date())
     }
 

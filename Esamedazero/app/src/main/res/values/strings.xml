@@ -12,6 +12,9 @@
     <string name="password">password</string>
     <string name="login">login</string>
 
+    <string name="start">start</string>
+    <string name="stop">stop</string>
+
 
     <string-array name="objectives_array" >
         <item>Dimagrire</item>

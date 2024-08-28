@@ -31,9 +31,10 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val sessionManager = SessionManager(requireContext())
+        val userName = sessionManager.userName ?: ""
         // Inizializza il ViewModel
-        viewModel.initialize(requireContext(), "nome_utente")
+        viewModel.initialize(requireContext(), userName)
 
         // Imposta il RecyclerView
         binding.trainingSessionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
