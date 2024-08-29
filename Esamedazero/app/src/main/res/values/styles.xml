@@ -13,5 +13,14 @@
         <item name="postSplashScreenTheme">@style/AppTheme</item>
         <!-- If you have a specific icon animation, set it here -->
         <item name="windowSplashScreenAnimationDuration">2000</item> <!-- Example duration -->
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+
     </style>
+
+    <!-- <font-family xmlns:android="http://schemas.android.com/apk/res/android">
+        <font android:fontStyle="normal" android:fontWeight="400" android:font="@font/my_custom_font"/>
+        <font android:fontStyle="italic" android:fontWeight="400" android:font="@font/my_custom_font_italic"/>
+    </font-family> -->
+
 </resources>
