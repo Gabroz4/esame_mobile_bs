@@ -22,6 +22,12 @@ class SessionManager(context: Context) {
             editor.commit() // Salva le modifiche
         }
 
+    var profileImagePath: String?
+        get() = pref.getString("profile_image_path", null)
+        set(value) {
+            pref.edit().putString("profile_image_path", value).apply()
+        }
+
     // Crea una sessione di login per l'utente
     fun createLoginSession(username: String) {
         this.userName = username // Imposta il nome utente
