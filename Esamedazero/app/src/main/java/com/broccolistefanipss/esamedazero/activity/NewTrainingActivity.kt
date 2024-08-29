@@ -84,14 +84,17 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
             elapsedTime += currentTime - startTime // Aggiorna elapsedTime
+            Log.d("NewTrainingActivity", "Elapsed time (ms): $elapsedTime")
         }
         timerHandler.removeCallbacks(timerRunnable)
     }
+
 
     private fun updateTimer() {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
             val newElapsedTime = currentTime - startTime + elapsedTime
+            Log.d("NewTrainingActivity", "Timer update: newElapsedTime (ms): $newElapsedTime")
             binding.timeTextView.text = formatDuration(newElapsedTime)
             binding.calorieTextView.text = String.format("Calories: %.2f", calorieCount)
         }
@@ -128,22 +131,41 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         // Non serve gestire i cambiamenti di accuratezza per questo caso
     }
 
+    //private fun saveTrainingSession() {
+    //    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+//
+    //    val userName = sharedPreferences.getString("userName", null)
+    //    val sessionDate = getCurrentDate()
+    //    val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
+    //    val trainingType = "corsa"
+    //    val burntCalories = calorieCount.toInt()
+//
+    //    // Inserisci la sessione nel database
+    //    val db = DB(this)
+    //    if (userName != null) {
+    //        db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
+    //    }
+    //    Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
+    //}
+
     private fun saveTrainingSession() {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
-        val userName = sharedPreferences.getString("userName", null) // Sostituisci con il nome dell'utente corrente
-        val sessionDate = getCurrentDate() // Ottieni la data corrente in formato stringa
-        //val duration = (elapsedTime / 1000).toInt() // Converti la durata in secondi
-        val duration = elapsedTime.toInt()
-        val trainingType = "corsa" // Sostituisci con il tipo di allenamento
+        val userName = sharedPreferences.getString("userName", null)
+        val sessionDate = getCurrentDate()
+        val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
+
+        Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Aggiungi un log per il debug
+
+        val trainingType = "corsa"
         val burntCalories = calorieCount.toInt()
 
         // Inserisci la sessione nel database
         val db = DB(this)
         if (userName != null) {
-            db.insertTrainingSession(userName, sessionDate, duration, trainingType, burntCalories)
+            db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
         }
-        Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $duration, $trainingType, $burntCalories")
+        Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
     }
 
     private fun getCurrentDate(): String {

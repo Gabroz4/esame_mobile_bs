@@ -7,6 +7,7 @@
     <string name="title_user">User</string>
     <string name="title_calendar">Calendar</string>
     <string name="title_welcome_activity">Welcome</string>
+    <string name="title_activity_edit_user">Edit User</string>
     <string name="title_map">Map</string>
     <string name="username">username</string>
     <string name="password">password</string>

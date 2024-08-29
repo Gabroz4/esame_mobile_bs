@@ -1,11 +1,13 @@
 package com.broccolistefanipss.esamedazero.fragment.user
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.broccolistefanipss.esamedazero.activity.EditUserActivity
 import com.broccolistefanipss.esamedazero.databinding.FragmentUserBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
@@ -25,6 +27,11 @@ class UserFragment : Fragment() {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        _binding!!.btnEditProfile.setOnClickListener {
+            val intent = Intent(context, EditUserActivity::class.java)
+            startActivity(intent)
+        }
+
         // Ottieni i dati dell'utente dalle SharedPreferences
         //val userName = SharedPrefs.getString(requireContext(), SharedPrefs.userName) ?: ""
         val sessionManager = SessionManager(requireContext())
@@ -32,16 +39,11 @@ class UserFragment : Fragment() {
         val database = DB(requireContext())
         val utente: User? = database.getUserData(userName)
 
-        //val sex = utente?.let { SharedPrefs.getString(requireContext(), it.sesso) } ?: ""
-        //val age = utente?.let { SharedPrefs.getInt(requireContext(), it.eta) } ?: 0
-        //val height = utente?.let { SharedPrefs.getInt(requireContext(), it.altezza) } ?: 0
-        //val weight = utente?.let { SharedPrefs.getDouble(requireContext(), it.peso) } ?: 0
         val sex = utente?.sesso ?: ""
         val age = utente?.eta ?: 0
         val height = utente?.altezza ?: 0
         val weight = utente?.peso ?: 0
         val objective = utente?.obiettivo ?: 0
-
 
         // Log dei dati recuperati
         Log.d("UserFragment", "userName: $userName")
@@ -68,6 +70,10 @@ class UserFragment : Fragment() {
         //}
 
         return root
+    }
+
+    fun editProfile() {
+
     }
 
     override fun onDestroyView() {

@@ -1,5 +1,6 @@
 package com.broccolistefanipss.esamedazero.global
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
@@ -114,8 +115,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         return trainingSessionsList
     }
 
-
-
     // Recupera i dati degli utenti.
     fun getData(): List<User> {
         val userList = mutableListOf<User>()
@@ -168,6 +167,63 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         cursor.close()
         return userExists
     }
+
+    // Funzione per aggiornare i dati di un utente
+    fun updateUser(
+        currentUserName: String,
+        //newUserName: String? = null,
+        //newPassword: String? = null,
+        //newSesso: String? = null,
+        newEta: Int? = null,
+        newAltezza: Int? = null,
+        newPeso: Double? = null,
+        newObiettivo: String? = null
+    ): Boolean {
+        // Ottieni un'istanza del database in modalità scrittura
+        val db = this.writableDatabase
+
+        // Prepara i valori da aggiornare
+        val contentValues = ContentValues().apply {
+            //newUserName?.let { put("userName", it) }
+            //newPassword?.let { put("password", it) }
+            //newSesso?.let { put("sesso", it) }
+            newEta?.let { put("eta", it) }
+            newAltezza?.let { put("altezza", it) }
+            newPeso?.let { put("peso", it) }
+            newObiettivo?.let { put("obiettivo", it) }
+        }
+
+        val affectedRows = db.update(
+            "User",
+            contentValues,
+            "userName = ?",
+            arrayOf(currentUserName)
+        )
+
+
+        // Esegui l'aggiornamento solo se ci sono valori da modificare
+        return if (contentValues.size() > 0) {
+            val affectedRows = db.update(
+                "User",
+                contentValues,
+                "userName = ?",
+                arrayOf(currentUserName)
+            )
+
+            Log.d("EditUserActivity", "Valori aggiornati: $contentValues")
+            Log.d("EditUserActivity", "Righe modificate: $affectedRows")
+
+            db.close() // Chiudi il database
+            affectedRows > 0 // True se almeno una riga è stata aggiornata
+        } else {
+            db.close() // Chiudi il database anche se non ci sono modifiche
+            false // Nessun valore da aggiornare
+        }
+
+
+    }
+
+
 
     companion object {
         private const val DB_VERSION = 8 // Versione del database.
