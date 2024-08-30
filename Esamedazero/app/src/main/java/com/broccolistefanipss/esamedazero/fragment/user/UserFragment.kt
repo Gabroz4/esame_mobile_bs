@@ -28,9 +28,10 @@ class UserFragment : Fragment() {
     private var _binding: FragmentUserBinding? = null
     private val binding get() = _binding!!
     private lateinit var pickImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var editProfileLauncher: ActivityResultLauncher<Intent>
     private var imageUri: Uri? = null
-
-
+    private lateinit var sessionManager: SessionManager
+    private lateinit var database: DB
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,68 +40,86 @@ class UserFragment : Fragment() {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        sessionManager = SessionManager(requireContext())
+        database = DB(requireContext())
 
-        _binding!!.btnEditProfile.setOnClickListener {
-            val intent = Intent(context, EditUserActivity::class.java)
-            startActivity(intent)
+        setupEditProfileLauncher()
+        setupImagePicker()
+        setupEditProfileButton()
+        setupChangeProfilePictureButton()
+
+        loadProfileImage()
+        loadUserData()
+
+        return root
+    }
+
+    private fun setupEditProfileLauncher() {
+        editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                Log.d("UserFragment", "EditUserActivity result received, refreshing user data")
+                loadUserData()
+            } else {
+                Log.d("UserFragment", "EditUserActivity did not return RESULT_OK")
+            }
         }
+    }
 
+    private fun setupImagePicker() {
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
                 imageUri = result.data?.data
                 try {
-                    // Gestisci l'URI e imposta l'immagine nel ImageView
                     val inputStream = requireContext().contentResolver.openInputStream(imageUri!!)
                     val bitmap = BitmapFactory.decodeStream(inputStream)
                     binding.profilePicture.setImageBitmap(bitmap)
-                    // Salva l'immagine nel database o nel file system
                     saveProfileImage(bitmap)
                 } catch (e: Exception) {
-                    e.printStackTrace()
+                    Log.e("UserFragment", "Error processing picked image", e)
+                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
 
-        // Bottone per cambiare l'immagine del profilo
+    private fun setupEditProfileButton() {
+        binding.btnEditProfile.setOnClickListener {
+            val intent = Intent(context, EditUserActivity::class.java)
+            editProfileLauncher.launch(intent)
+        }
+    }
+
+    private fun setupChangeProfilePictureButton() {
         binding.changeProfilePictureButton.setOnClickListener {
             openGallery()
         }
+    }
 
-        // Carica l'immagine del profilo salvata
-        loadProfileImage()
+    override fun onResume() {
+        super.onResume()
+        Log.d("UserFragment", "Fragment resumed, reloading user data")
+        loadUserData()
+    }
 
-
-        // Ottieni i dati dell'utente dalle SharedPreferences
-        //val userName = SharedPrefs.getString(requireContext(), SharedPrefs.userName) ?: ""
-        val sessionManager = SessionManager(requireContext())
+    private fun loadUserData() {
         val userName = sessionManager.userName ?: ""
-        val database = DB(requireContext())
+        Log.d("UserFragment", "Loading user data for user: $userName")
         val utente: User? = database.getUserData(userName)
 
-        val sex = utente?.sesso ?: ""
-        val age = utente?.eta ?: 0
-        val height = utente?.altezza ?: 0
-        val weight = utente?.peso ?: 0
-        val objective = utente?.obiettivo ?: 0
-
-        // Log dei dati recuperati
-        Log.d("UserFragment", "userName: $userName")
-        Log.d("UserFragment", "sesso: $sex")
-        Log.d("UserFragment", "eta: $age")
-        Log.d("UserFragment", "altezza: $height")
-        Log.d("UserFragment", "peso: $weight")
-        Log.d("UserFragment", "peso: $objective")
-
-        // Imposta i valori recuperati nei TextView del layout
-        binding.UserProfile.text = userName
-        binding.SexProfile.text = sex
-        binding.AgeProfile.text = age.toString()
-        binding.HeightProfile.text = height.toString()
-        binding.WeightProfile.text = weight.toString()
-        binding.objectiveProfile.text = objective.toString()
-
-        return root
+        if (utente != null) {
+            Log.d("UserFragment", "User data loaded: $utente")
+            binding.UserProfile.text = utente.userName
+            binding.SexProfile.text = utente.sesso
+            binding.AgeProfile.text = utente.eta.toString()
+            binding.HeightProfile.text = utente.altezza.toString()
+            binding.WeightProfile.text = utente.peso.toString()
+            binding.objectiveProfile.text = utente.obiettivo
+        } else {
+            Log.e("UserFragment", "No user data found for user: $userName")
+            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()
+        }
     }
+
     private fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickImageLauncher.launch(intent)
@@ -108,7 +127,6 @@ class UserFragment : Fragment() {
 
     private fun saveProfileImage(bitmap: Bitmap) {
         try {
-            // Salva l'immagine usando MediaStore senza richiedere WRITE_EXTERNAL_STORAGE
             val filename = "profile_picture_${System.currentTimeMillis()}.jpg"
             val contentValues = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, filename)
@@ -119,28 +137,21 @@ class UserFragment : Fragment() {
             val imageUri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
             imageUri?.let { uri ->
-                val outputStream: OutputStream? = requireContext().contentResolver.openOutputStream(uri)
-                outputStream.use { stream ->
-                    if (stream != null) {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
-                    }
+                requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 }
                 saveProfileImageUri(uri)
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            Log.e("UserFragment", "Error saving profile image", e)
             Toast.makeText(requireContext(), "Error saving image", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun saveProfileImageUri(uri: Uri) {
-        // Salva l'URI dell'immagine in SharedPreferences
-        Log.d("UserFragment", "Profile image URI: $uri")
+        Log.d("UserFragment", "Saving profile image URI: $uri")
         val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        with(sharedPreferences.edit()) {
-            putString("profile_image_uri", uri.toString())
-            apply()
-        }
+        sharedPreferences.edit().putString("profile_image_uri", uri.toString()).apply()
     }
 
     private fun loadProfileImage() {
@@ -156,5 +167,4 @@ class UserFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
 }

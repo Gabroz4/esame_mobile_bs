@@ -26,7 +26,7 @@
     <string-array name="sesso_array">
         <item>Maschio</item>
         <item>Femmina</item>
-        <item>Mostro</item>
+        <item>Altro</item>
     </string-array>
 
 </resources>

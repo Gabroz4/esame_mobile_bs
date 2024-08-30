@@ -1,6 +1,9 @@
 package com.broccolistefanipss.esamedazero.activity
 
 import android.os.Bundle
+import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.R
@@ -20,61 +23,112 @@ class EditUserActivity : AppCompatActivity() {
         binding = ActivityEditUserBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inizializzazione del database e session manager
         db = DB(this)
         sessionManager = SessionManager(this)
 
-        // Ottieni i dati dell'utente corrente
+        setupObjectiveSpinner()
+        setupSexSpinner()
+        loadUserData()
+        setupSaveButton()
+    }
+
+    private fun setupObjectiveSpinner() {
+        val objectivesArray = resources.getStringArray(R.array.objectives_array)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, objectivesArray)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.editObjective.adapter = adapter
+    }
+
+    private fun setupSexSpinner() {
+        val sexArray = resources.getStringArray(R.array.sesso_array)
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, sexArray)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.editSex.adapter = adapter
+    }
+
+    private fun loadUserData() {
         val currentUserName = sessionManager.userName ?: ""
         val user = db.getUserData(currentUserName)
 
         if (user != null) {
+            Log.d("EditUserActivity", "Loading user data: $user")
             binding.userName.text = currentUserName
-            binding.editAge.setText(user.eta.toString() ?: "")
-            binding.editHeight.setText(user.altezza.toString() ?: "")
-            binding.editWeight.setText(user.peso.toString() ?: "")
+            binding.editAge.setText(user.eta?.toString() ?: "")
+            binding.editHeight.setText(user.altezza?.toString() ?: "")
+            binding.editWeight.setText(user.peso?.toString() ?: "")
             binding.editObjective.setSelection(getObjectiveIndex(user.obiettivo ?: ""))
+            binding.editSex.setSelection(getSexIndex(user.sesso ?: ""))
         } else {
+            Log.e("EditUserActivity", "User not found: $currentUserName")
             Toast.makeText(this, "Errore: utente non trovato", Toast.LENGTH_SHORT).show()
-            finish() // Chiude l'activity se l'utente non è trovato
+            finish()
         }
+    }
 
-
-        // Gestisce il click sul pulsante "Salva Modifiche"
+    private fun setupSaveButton() {
         binding.saveButton.setOnClickListener {
-            // Recupera i dati modificati dai campi di input
-            val newUserName = binding.userName.text.toString()
-            val newAge = binding.editAge.text.toString().toIntOrNull()
-            val newHeight = binding.editHeight.text.toString().toIntOrNull()
-            val newWeight = binding.editWeight.text.toString().toDoubleOrNull()
-            val newObjective = binding.editObjective.selectedItem.toString()
-
-
-            // Aggiorna i dati nel database
-            val isUpdated = db.updateUser(
-                currentUserName = currentUserName,
-                //newUserName = newUserName,
-                newEta = newAge,
-                newAltezza = newHeight,
-                newPeso = newWeight,
-                newObiettivo = newObjective
-            )
-
-            // Mostra un messaggio di conferma
-            if (isUpdated) {
-                Toast.makeText(this, "Dati aggiornati con successo", Toast.LENGTH_SHORT).show()
-                // Aggiorna il nome utente nella sessione, se modificato
-                sessionManager.userName = userName
-                finish() // Chiudi l'activity e torna alla precedente
-            } else {
-                Toast.makeText(this, "Nessuna modifica rilevata", Toast.LENGTH_SHORT).show()
+            if (validateInputs()) {
+                saveUserData()
             }
         }
     }
 
-    // Funzione per ottenere l'indice dell'obiettivo selezionato (da adattare alla tua implementazione del Spinner)
+    private fun validateInputs(): Boolean {
+        if (binding.editAge.text.isNullOrEmpty() ||
+            binding.editHeight.text.isNullOrEmpty() ||
+            binding.editWeight.text.isNullOrEmpty()
+        ) {
+            Toast.makeText(this, "Tutti i campi devono essere compilati", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        return true
+    }
+
+    private fun saveUserData() {
+        val currentUserName = sessionManager.userName ?: ""
+        val newAge = binding.editAge.text.toString().toIntOrNull()
+        val newHeight = binding.editHeight.text.toString().toIntOrNull()
+        val newWeight = binding.editWeight.text.toString().toDoubleOrNull()
+        val newObjective = binding.editObjective.selectedItem.toString()
+        val newSex = binding.editSex.selectedItem.toString()
+
+        Log.d("EditUserActivity", "Attempting to update user: $currentUserName")
+        Log.d("EditUserActivity", "New data: Age=$newAge, Height=$newHeight, Weight=$newWeight, Objective=$newObjective, Sex=$newSex")
+
+        val isUpdated = try {
+            db.updateUser(
+                currentUserName = currentUserName,
+                newEta = newAge,
+                newAltezza = newHeight,
+                newPeso = newWeight,
+                newObiettivo = newObjective,
+                newSesso = newSex
+            )
+        } catch (e: Exception) {
+            Log.e("EditUserActivity", "Error updating user data", e)
+            Toast.makeText(this, "Errore nell'aggiornamento dei dati: ${e.message}", Toast.LENGTH_LONG).show()
+            false
+        }
+
+        Log.d("EditUserActivity", "Update result: $isUpdated")
+
+        if (isUpdated) {
+            Toast.makeText(this, "Dati aggiornati con successo", Toast.LENGTH_SHORT).show()
+            sessionManager.userName = currentUserName
+            setResult(RESULT_OK)
+            finish()
+        } else {
+            Toast.makeText(this, "Nessuna modifica rilevata", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun getObjectiveIndex(objective: String): Int {
         val objectivesArray = resources.getStringArray(R.array.objectives_array)
         return objectivesArray.indexOf(objective)
+    }
+
+    private fun getSexIndex(sex: String): Int {
+        val sexArray = resources.getStringArray(R.array.sesso_array)
+        return sexArray.indexOf(sex)
     }
 }
