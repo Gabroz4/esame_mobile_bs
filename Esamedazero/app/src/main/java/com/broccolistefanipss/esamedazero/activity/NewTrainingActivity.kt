@@ -89,7 +89,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private fun updateTimer(): Long {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
-            val newElapsedTime = currentTime - startTime + elapsedTime
+            val newElapsedTime = currentTime - startTime + 1
             Log.d("NewTrainingActivity", "Timer update: newElapsedTime (ms): $newElapsedTime")
 
             binding.timeTextView.text = formatDuration(newElapsedTime)
