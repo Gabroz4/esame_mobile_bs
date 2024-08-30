@@ -24,7 +24,7 @@ class TrainingSessionAdapter(var sessions: List<TrainingSession>) : RecyclerView
             // Imposta il testo per la data della sessione usando i dati dell'oggetto TrainingSession
             sessionDateTextView.text = session.sessionDate
             // Imposta il testo per la durata della sessione, aggiungendo "min" per chiarire che si tratta di minuti
-            durationTextView.text = "${session.duration} min"
+            durationTextView.text = "${session.duration} sec - ${session.burntCalories} kcal"
             // Imposta il testo per il tipo di allenamento usando i dati dell'oggetto TrainingSession
             trainingTypeTextView.text = session.trainingType
         }

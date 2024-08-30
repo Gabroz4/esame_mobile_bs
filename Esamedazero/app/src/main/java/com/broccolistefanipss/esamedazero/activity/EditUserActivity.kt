@@ -10,7 +10,6 @@ import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityEditUserBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
-import com.broccolistefanipss.esamedazero.manager.SharedPrefs.Companion.userName
 
 class EditUserActivity : AppCompatActivity() {
 

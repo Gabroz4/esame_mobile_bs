@@ -19,8 +19,8 @@
 
     <string-array name="objectives_array" >
         <item>Dimagrire</item>
-        <item>Migliorare</item>
-        <item>Sborrare</item>
+        <item>Migliorare resistenza</item>
+        <item>Migliorare forma fisica</item>
     </string-array>
 
     <string-array name="sesso_array">

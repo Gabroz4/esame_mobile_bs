@@ -31,13 +31,10 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private var totalAcceleration: Double = 0.0
     private var calorieCount: Double = 0.0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewTrainingBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
 
         // Setup sensore accelerometro
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
@@ -46,16 +43,16 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.startStopButton.setOnClickListener {
             if (!isRunning) {
                 isRunning = true
-                binding.startStopButton.text = R.string.stop.toString()
+                binding.startStopButton.text = getString(R.string.stop)
                 startTime = System.currentTimeMillis()
                 startTimer()
                 startAccelerometer()
             } else {
                 isRunning = false
-                binding.startStopButton.text = R.string.start.toString()
+                binding.startStopButton.text = getString(R.string.start)
                 stopTimer()
                 stopAccelerometer()
-                saveTrainingSession() // Salva la sessione d'allenamento nel database
+                saveTrainingSession() // Salva la sessione d'allenamento nelle SharedPreferences
                 resetTrainingData() // Resetta i dati per una nuova sessione
             }
         }
@@ -64,7 +61,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private val timerHandler = Handler(Looper.getMainLooper())
     private val timerRunnable = object : Runnable {
         override fun run() {
-            updateTimer()
+            elapsedTime = updateTimer(); //per trasfoprmare in minuti --> updateTimer() / 60
             timerHandler.postDelayed(this, 1000)
         }
     }
@@ -89,15 +86,17 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         timerHandler.removeCallbacks(timerRunnable)
     }
 
-
-    private fun updateTimer() {
+    private fun updateTimer(): Long {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
             val newElapsedTime = currentTime - startTime + elapsedTime
             Log.d("NewTrainingActivity", "Timer update: newElapsedTime (ms): $newElapsedTime")
+
             binding.timeTextView.text = formatDuration(newElapsedTime)
-            binding.calorieTextView.text = String.format("Calories: %.2f", calorieCount)
+            binding.calorieTextView.text = String.format(Locale.getDefault(), "Calories: %.2f", calorieCount)
+            return newElapsedTime
         }
+        return 0;
     }
 
     private fun startAccelerometer() {
@@ -123,30 +122,13 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             totalAcceleration += accelerationMagnitude
 
             // Calcola le calorie bruciate basandosi sull'accelerazione totale (stima basilare)
-            calorieCount = totalAcceleration * 0.01 // Un fattore arbitrario per convertire l'accelerazione in calorie
+            calorieCount = totalAcceleration * 0.01 // Fattore arbitrario per convertire l'accelerazione in calorie
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Non serve gestire i cambiamenti di accuratezza per questo caso
     }
-
-    //private fun saveTrainingSession() {
-    //    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-//
-    //    val userName = sharedPreferences.getString("userName", null)
-    //    val sessionDate = getCurrentDate()
-    //    val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
-    //    val trainingType = "corsa"
-    //    val burntCalories = calorieCount.toInt()
-//
-    //    // Inserisci la sessione nel database
-    //    val db = DB(this)
-    //    if (userName != null) {
-    //        db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
-    //    }
-    //    Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
-    //}
 
     private fun saveTrainingSession() {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
