@@ -42,19 +42,14 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
         binding.startStopButton.setOnClickListener {
             if (!isRunning) {
-                isRunning = true
-                binding.startStopButton.text = getString(R.string.stop)
-                startTime = System.currentTimeMillis()
-                startTimer()
-                startAccelerometer()
+                startTraining()
             } else {
-                isRunning = false
-                binding.startStopButton.text = getString(R.string.start)
-                stopTimer()
-                stopAccelerometer()
-                saveTrainingSession() // Salva la sessione d'allenamento nelle SharedPreferences
-                resetTrainingData() // Resetta i dati per una nuova sessione
+                stopTraining()
             }
+        }
+
+        binding.closeButton.setOnClickListener {
+            closeTraining()
         }
     }
 
@@ -155,9 +150,37 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         return formatter.format(Date())
     }
 
+    private fun startTraining() {
+        isRunning = true
+        binding.startStopButton.text = getString(R.string.stop)
+        startTime = System.currentTimeMillis()
+        startTimer()
+        startAccelerometer()
+        binding.closeButton.isEnabled = false // Disabilita il bottone Close durante l'allenamento
+    }
+
+    private fun stopTraining() {
+        isRunning = false
+        binding.startStopButton.text = getString(R.string.start)
+        stopTimer()
+        stopAccelerometer()
+        saveTrainingSession()
+        binding.closeButton.isEnabled = true // Riabilita il bottone Close
+    }
+
+    private fun closeTraining() {
+        if (isRunning) {
+            stopTraining()
+        }
+        resetTrainingData()
+        finish() // Chiude l'activity e torna alla precedente
+    }
+
     private fun resetTrainingData() {
         totalAcceleration = 0.0
         calorieCount = 0.0
         elapsedTime = 0L
+        binding.timeTextView.text = "00:00:00"
+        binding.calorieTextView.text = "Calories: 0.00"
     }
 }
