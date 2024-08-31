@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sessionManager = SessionManager(requireContext())
         val userName = sessionManager.userName ?: ""
+
         // Inizializza il ViewModel
         viewModel.initialize(requireContext(), userName)
 
@@ -41,13 +42,20 @@ class HomeFragment : Fragment() {
 
         // Osserva le sessioni di allenamento
         viewModel.trainingSessions.observe(viewLifecycleOwner, Observer { sessions ->
-            if (sessions.isNotEmpty()) {
-                binding.trainingSessionsRecyclerView.adapter = TrainingSessionAdapter(sessions)
-                binding.emptyTextView.visibility = View.GONE
-            } else {
-                binding.emptyTextView.visibility = View.VISIBLE
-            }
+            updateUI(sessions)
         })
+    }
+
+    private fun updateUI(sessions: List<TrainingSession>) {
+        if (sessions.isNotEmpty()) {
+            binding.trainingSessionsRecyclerView.visibility = View.VISIBLE
+            binding.emptyTextView.visibility = View.GONE
+            binding.trainingSessionsRecyclerView.adapter = TrainingSessionAdapter(sessions)
+        } else {
+            binding.trainingSessionsRecyclerView.visibility = View.GONE
+            binding.emptyTextView.visibility = View.VISIBLE
+            binding.emptyTextView.text = "Nessun allenamento registrato"
+        }
     }
 
     override fun onDestroyView() {
