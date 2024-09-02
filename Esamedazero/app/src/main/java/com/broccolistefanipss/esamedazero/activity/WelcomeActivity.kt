@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityWelcomeBinding
@@ -19,7 +20,7 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWelcomeBinding
 
     private lateinit var userNameEditText: EditText
-    private lateinit var passwordEditText: EditText  // Aggiunta password EditText
+    private lateinit var passwordEditText: EditText
     private lateinit var sessoSpinner: Spinner
     private lateinit var etaEditText: EditText
     private lateinit var altezzaEditText: EditText
@@ -64,19 +65,40 @@ class WelcomeActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             saveUserData()
         }
-        loginButton.setOnClickListener { btnLogin_onclick() }
+        loginButton.setOnClickListener { btnLoginOnclick() }
     }
 
-    private fun btnLogin_onclick(){
+    private fun btnLoginOnclick(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }
 
 
+    //private fun saveUserData() {
+    //    // Prendi le info dell'utente da EditText e Spinner
+    //    val userNameString = userNameEditText.text.toString()
+    //    val passwordString = passwordEditText.text.toString()
+    //    val sessoString = sessoSpinner.selectedItem.toString()
+    //    val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
+    //    val altezzaValue = altezzaEditText.text.toString().toIntOrNull() ?: 0
+    //    val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
+    //    val selectedObjective = objectiveSpinner.selectedItem.toString()
+//
+    //    // Inserisci dati nel database
+    //    DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
+//
+    //    // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
+    //    saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue) //+ obiettivo al limite
+//
+    //    // Vai a LoginActivity
+    //    startActivity(Intent(this, LoginActivity::class.java))
+    //    finish()
+    //}
+
     private fun saveUserData() {
-        // Prendi info utenti da EditText e Spinner
+        // Prendi le info dell'utente da EditText e Spinner
         val userNameString = userNameEditText.text.toString()
-        val passwordString = passwordEditText.text.toString()  // Ottieni la password dall'EditText
+        val passwordString = passwordEditText.text.toString()
         val sessoString = sessoSpinner.selectedItem.toString()
         val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
         val altezzaValue = altezzaEditText.text.toString().toIntOrNull() ?: 0
@@ -84,14 +106,19 @@ class WelcomeActivity : AppCompatActivity() {
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
         // Inserisci dati nel database
-        DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
+        val result = DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
         // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
-        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue) //+ obiettivo al limite
+        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue)
 
-        // Vai a LoginActivity
-        startActivity(Intent(this, LoginActivity::class.java))
-        finish() // Termina WelcomeActivity
+        // Se lo user non esiste già, vai a LoginActivity
+        if (result) {
+            startActivity(Intent(this, LoginActivity::class.java))
+            finish()
+        } else {
+            // Se il metodo ha fallito, mostra un messaggio di errore
+            Toast.makeText(this, "Questo UserName esiste già", Toast.LENGTH_SHORT).show()
+        }
     }
 
     // Metodo per salvare i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences

@@ -17,14 +17,16 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
-import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.activity.EditUserActivity
 import com.broccolistefanipss.esamedazero.databinding.FragmentUserBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.LoginManager
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.model.User
-import java.io.OutputStream
+
+
+// TODO: associare immagine profilo all'utente e grafico con calorie per giorni
+
 
 class UserFragment : Fragment() {
 
@@ -63,10 +65,10 @@ class UserFragment : Fragment() {
     private fun setupEditProfileLauncher() {
         editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                Log.d("UserFragment", "EditUserActivity result received, refreshing user data")
+                Log.d("UserFragment", "Modifiche ricevute correttamente")
                 loadUserData()
             } else {
-                Log.d("UserFragment", "EditUserActivity did not return RESULT_OK")
+                Log.d("UserFragment", "Modifica fallita")
             }
         }
     }
@@ -81,8 +83,7 @@ class UserFragment : Fragment() {
                     binding.profilePicture.setImageBitmap(bitmap)
                     saveProfileImage(bitmap)
                 } catch (e: Exception) {
-                    Log.e("UserFragment", "Error processing picked image", e)
-                    Toast.makeText(requireContext(), "Error processing image", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Errore nel caricamento dell'immagine", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -103,17 +104,17 @@ class UserFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("UserFragment", "Fragment resumed, reloading user data")
+        Log.d("UserFragment", "Caricamento dei dati utente")
         loadUserData()
     }
 
     private fun loadUserData() {
         val userName = sessionManager.userName ?: ""
-        Log.d("UserFragment", "Loading user data for user: $userName")
+        Log.d("UserFragment", "Caricamento dei dati di: $userName")
         val utente: User? = database.getUserData(userName)
 
         if (utente != null) {
-            Log.d("UserFragment", "User data loaded: $utente")
+            Log.d("UserFragment", "Dati di: $utente")
             binding.UserProfile.text = utente.userName
             binding.SexProfile.text = utente.sesso
             binding.AgeProfile.text = utente.eta.toString()
@@ -121,8 +122,8 @@ class UserFragment : Fragment() {
             binding.WeightProfile.text = utente.peso.toString()
             binding.objectiveProfile.text = utente.obiettivo
         } else {
-            Log.e("UserFragment", "No user data found for user: $userName")
-            Toast.makeText(requireContext(), "User not found", Toast.LENGTH_SHORT).show()
+            Log.e("UserFragment", "Nessun dato trovato di: $userName")
+            Toast.makeText(requireContext(), "Username non trovato", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -149,13 +150,12 @@ class UserFragment : Fragment() {
                 saveProfileImageUri(uri)
             }
         } catch (e: Exception) {
-            Log.e("UserFragment", "Error saving profile image", e)
-            Toast.makeText(requireContext(), "Error saving image", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Errore nel salvataggio dell'immagine", Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun saveProfileImageUri(uri: Uri) {
-        Log.d("UserFragment", "Saving profile image URI: $uri")
+        //salvataggio uri dell'immagine nelle shared preferences
         val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
         sharedPreferences.edit().putString("profile_image_uri", uri.toString()).apply()
     }

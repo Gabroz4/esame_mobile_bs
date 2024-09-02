@@ -50,7 +50,7 @@ class EditUserActivity : AppCompatActivity() {
         val user = db.getUserData(currentUserName)
 
         if (user != null) {
-            Log.d("EditUserActivity", "Loading user data: $user")
+            Log.d("EditUserActivity", "Caricamento dell'utente: $user")
             binding.userName.text = currentUserName
             binding.editAge.setText(user.eta?.toString() ?: "")
             binding.editHeight.setText(user.altezza?.toString() ?: "")

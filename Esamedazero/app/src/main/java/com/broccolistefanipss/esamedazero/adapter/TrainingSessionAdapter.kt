@@ -8,7 +8,7 @@ import com.broccolistefanipss.esamedazero.model.TrainingSession
 
 class TrainingSessionAdapter(
     var sessions: List<TrainingSession>,
-    private val onDeleteClick: (Int) -> Unit // Funzione lambda per gestire il click di eliminazione
+    private val onDeleteClick: (Int) -> Unit // gestione del click di eliminazione
 ) : RecyclerView.Adapter<TrainingSessionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

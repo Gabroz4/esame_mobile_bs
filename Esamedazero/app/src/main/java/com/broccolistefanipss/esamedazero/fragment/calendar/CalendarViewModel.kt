@@ -9,7 +9,7 @@ import com.broccolistefanipss.esamedazero.model.TrainingSession
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 
-class CalendarViewModel() : ViewModel() { // Default constructor added
+class CalendarViewModel() : ViewModel() {
 
     private lateinit var db: DB
     private var contextRef: WeakReference<Context>? = null
@@ -17,7 +17,8 @@ class CalendarViewModel() : ViewModel() { // Default constructor added
     private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
     val trainingSessions: LiveData<List<TrainingSession>> = _trainingSessions
 
-    fun init(db: DB) { // Take DB for initialization
+    // db per l'inizializzazione
+    fun init(db: DB) {
         this.db = db
         loadTrainingSessions()
     }

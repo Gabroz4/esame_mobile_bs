@@ -1,3 +1,5 @@
+package com.broccolistefanipss.esamedazero.fragment.home
+
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -15,7 +17,7 @@ class HomeViewModel : ViewModel() {
     private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
     val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
 
-    // Inizializza il DB e il nome utente
+    // Inizializzazione del DB e del nome utente
     fun initialize(context: Context, userName: String) {
         this.db = DB(context)
         this.userName = userName

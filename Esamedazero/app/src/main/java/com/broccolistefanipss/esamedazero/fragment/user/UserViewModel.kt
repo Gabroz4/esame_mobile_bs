@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.broccolistefanipss.esamedazero.model.User
 
+//anche questo per il meme
 class UserViewModel : ViewModel() {
 
     private val _user = MutableLiveData<User>()

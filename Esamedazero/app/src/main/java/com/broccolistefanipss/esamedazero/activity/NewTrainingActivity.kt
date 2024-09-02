@@ -10,16 +10,15 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.esamedazero.global.DB
-import com.broccolistefanipss.esamedazero.manager.SessionManager
-import com.broccolistefanipss.esamedazero.manager.SharedPrefs
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import kotlin.math.sqrt
+
+// TODO: eventuale aggiunta di una mappa durante l'allenamento
 
 class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
@@ -41,7 +40,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding = ActivityNewTrainingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup sensore accelerometro
+        // Setup dell'accelerometro
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
@@ -61,7 +60,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private val timerHandler = Handler(Looper.getMainLooper())
     private val timerRunnable = object : Runnable {
         override fun run() {
-            elapsedTime = updateTimer(); //per trasfoprmare in minuti --> updateTimer() / 60
+            elapsedTime = updateTimer(); //per trasformare in minuti --> updateTimer() / 60
             timerHandler.postDelayed(this, 1000)
         }
     }
@@ -81,7 +80,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
             elapsedTime += currentTime - startTime // Aggiorna elapsedTime
-            Log.d("NewTrainingActivity", "Elapsed time (ms): $elapsedTime")
         }
         timerHandler.removeCallbacks(timerRunnable)
     }
@@ -90,7 +88,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
             val newElapsedTime = currentTime - startTime + 1
-            Log.d("NewTrainingActivity", "Timer update: newElapsedTime (ms): $newElapsedTime")
 
             binding.timeTextView.text = formatDuration(newElapsedTime)
             binding.calorieTextView.text = String.format(Locale.getDefault(), "Calories: %.2f", calorieCount)
@@ -115,13 +112,11 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val y = event.values[1]
             val z = event.values[2]
 
-            // Calcolo la magnitudo dell'accelerazione
+            // caloli per accelerometro
             val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
-
-            // Aggiungi la magnitudo totale per l'uso nel calcolo delle calorie
             totalAcceleration += accelerationMagnitude
 
-            // Calcola le calorie bruciate basandosi sull'accelerazione totale (stima basilare)
+            // Calcolo basilare per le calorie bruciate
             calorieCount = totalAcceleration * 0.01 // Fattore arbitrario per convertire l'accelerazione in calorie
         }
     }
@@ -130,34 +125,11 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         // Non serve gestire i cambiamenti di accuratezza in questo caso
     }
 
-    //private fun saveTrainingSession() {
-    //    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-//
-    //    val userName = sharedPreferences.getString("userName", null)
-    //    val sessionDate = getCurrentDate()
-    //    val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
-//
-    //    Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Aggiungi un log per il debug
-//
-    //    val trainingType = "corsa"
-    //    val burntCalories = calorieCount.toInt()
-    //    val trainingId = SharedPrefs.getInt()
-//
-    //    // Inserisci la sessione nel database
-    //    val db = DB(this)
-    //    if (userName != null) {
-    //        db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
-    //    }
-    //    Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
-    //}
 
     private fun saveTrainingSession() {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
         val userName = sharedPreferences.getString("userName", null)
-        //val userName = SessionManager.KeyUserName
-
-        //val userName = SharedPrefs.userName
 
         val sessionDate = getCurrentDate()
         val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi

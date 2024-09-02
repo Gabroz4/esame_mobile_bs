@@ -49,7 +49,7 @@ class LoginActivity : AppCompatActivity() {
                 startActivity(intent)
                 finish()
             } else {
-                Toast.makeText(this, "Login fallito, riprova", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "UserName o password errati, riprova", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -59,7 +59,6 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun saveUsernameToSharedPreferences(username: String) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        Log.d("LoginActivity", "Username saved in SharedPreferences: $username")
         val editor = sharedPreferences.edit()
         editor.putString("userName", username)
         editor.apply()

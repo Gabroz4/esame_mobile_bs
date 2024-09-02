@@ -1,12 +1,10 @@
 package com.broccolistefanipss.esamedazero.fragment.home
 
-import HomeViewModel
 import com.broccolistefanipss.esamedazero.adapter.TrainingSessionAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,9 +14,6 @@ import com.broccolistefanipss.esamedazero.databinding.FragmentHomeBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.model.TrainingSession
-
-//TODO: FAR APPARIRE GLI ID ALLENAMENTO NELLA HOME
-
 
 class HomeFragment : Fragment() {
 
@@ -47,7 +42,7 @@ class HomeFragment : Fragment() {
         // Imposta il RecyclerView
         binding.trainingSessionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // Osserva le sessioni di allenamento
+        // stampa delle sessioni di allenamento
         viewModel.trainingSessions.observe(viewLifecycleOwner, Observer { sessions ->
             updateUI(sessions)
         })
@@ -77,22 +72,8 @@ class HomeFragment : Fragment() {
             binding.trainingSessionsRecyclerView.visibility = View.GONE
             binding.emptyTextView.visibility = View.VISIBLE
             binding.emptyTextView.text = "Nessun allenamento registrato"
-
         }
     }
-
-
-    //private fun updateUI(sessions: List<TrainingSession>) {
-    //    if (sessions.isNotEmpty()) {
-    //        binding.trainingSessionsRecyclerView.visibility = View.VISIBLE
-    //        binding.emptyTextView.visibility = View.GONE
-    //        binding.trainingSessionsRecyclerView.adapter = TrainingSessionAdapter(sessions)
-    //    } else {
-    //        binding.trainingSessionsRecyclerView.visibility = View.GONE
-    //        binding.emptyTextView.visibility = View.VISIBLE
-    //        binding.emptyTextView.text = "Nessun allenamento registrato"
-    //    }
-    //}
 
     override fun onDestroyView() {
         super.onDestroyView()

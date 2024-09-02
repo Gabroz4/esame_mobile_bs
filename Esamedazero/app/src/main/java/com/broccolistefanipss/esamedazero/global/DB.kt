@@ -2,15 +2,15 @@ package com.broccolistefanipss.esamedazero.global
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
+import android.widget.Toast
 import com.broccolistefanipss.esamedazero.model.TrainingSession
 import com.broccolistefanipss.esamedazero.model.User
 
 // Classe DB che estende SQLiteOpenHelper per gestire la creazione, l'apertura e l'aggiornamento del database.
-class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
+class DB(private val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     // Viene chiamata quando il database viene creato per la prima volta. Qui vengono create le tabelle.
     override fun onCreate(db: SQLiteDatabase?) {
@@ -27,32 +27,26 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         onCreate(db) // Richiama onCreate per ricreare le tabelle
     }
 
-    // Funzione di utilità per loggare gli utenti nel database (per debugging).
-    fun logUserTable() {
-        val db = this.readableDatabase
-        val cursor = db.rawQuery("SELECT * FROM User", null)
-        with(cursor) {
-            while (moveToNext()) {
-                // Estrae i dati dell'utente e li logga.
-                val userName = getString(getColumnIndexOrThrow("userName"))
-                // Ometto i dettagli per brevità
-                Log.d("UserTable", "Dettagli dell'utente")
-            }
-            close() // Importante chiudere il cursor per liberare risorse.
-        }
-    }
+
 
     // Inserisce un nuovo utente nel database.
-    fun insertUser(userName: String, password: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String) {
+    fun insertUser(userName: String, password: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String): Boolean {
         // Verifica se l'utente esiste già.
         if (!isNameExists(userName)) {
             // Prepara la query SQL e inserisce i dati.
             val sqlQuery = "INSERT INTO User(userName, password, sesso, eta, altezza, peso, obiettivo) VALUES(?, ?, ?, ?, ?, ?, ?)"
             val database = this.writableDatabase
             database.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
-            logUserTable() // Logga gli utenti per debug.
+            Log.d("Username: ", userName)
+            Log.d("sesso: ", sesso)
+            Log.d("eta: ", eta.toString())
+            Log.d("altezza: ", altezza.toString())
+            Log.d("peso: ", peso.toString())
+            Log.d("obiettivo: ", obiettivo)
+            return true
         } else {
-            Log.d("Utente", "userName '$userName' esiste già nel database")
+            Log.d("DB", "Username '$userName' esiste già nel database")
+            return false
         }
     }
 
@@ -63,7 +57,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             return cursor.count > 0 // True se esiste già, False altrimenti.
         }
     }
-
 
     fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, trainingType: String, burntCalories: Int): Long {
         val database = this.writableDatabase
@@ -86,10 +79,9 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         val trainingSessionsList = mutableListOf<TrainingSession>()
         val db = this.readableDatabase
 
-        // Utilizza il cursore all'interno di un blocco "use" per garantire la chiusura.
         db.rawQuery("SELECT * FROM TrainingSessions WHERE userName = ?", arrayOf(userName)).use { cursor ->
             while (cursor.moveToNext()) {
-                // Estrai i dati da ogni colonna del cursore
+                // Estrai i dati da ogni colonna
                 val id = cursor.getInt(cursor.getColumnIndexOrThrow("sessionId"))
                 val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
                 val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
@@ -103,7 +95,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                 trainingSessionsList.add(trainingSession)
             }
         }
-        Log.d("NewTrainingActivity", "Sessioni salvate: $trainingSessionsList")
         return trainingSessionsList
     }
 
@@ -114,29 +105,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         database.close() // Chiude il database per liberare risorse
         return affectedRows > 0
     }
-
-    // Recupera i dati degli utenti.
-    //fun getData(): List<User> {
-    //    val userList = mutableListOf<User>()
-    //    val query = "SELECT * FROM User"
-    //    val database = this.readableDatabase
-    //    database.rawQuery(query, null).use { cursor ->
-    //        if (cursor.moveToFirst()) {
-    //            do {
-    //                val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
-    //                val password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
-    //                val sesso = cursor.getString(cursor.getColumnIndexOrThrow("sesso"))
-    //                val eta = cursor.getInt(cursor.getColumnIndexOrThrow("eta"))
-    //                val altezza = cursor.getInt(cursor.getColumnIndexOrThrow("altezza"))
-    //                val peso = cursor.getDouble(cursor.getColumnIndexOrThrow("peso"))
-    //                val obiettivo = cursor.getString(cursor.getColumnIndexOrThrow("obiettivo"))
-//
-    //                userList.add(User(userName, password, sesso, eta, altezza, peso, obiettivo))
-    //            } while (cursor.moveToNext())
-    //        }
-    //    }
-    //    return userList
-    //}
 
     fun getUserData(username: String): User? {
         val db = this.readableDatabase
@@ -168,11 +136,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         return userExists
     }
 
-    fun userDisconnect(userName: String) {
-        val db = this.readableDatabase
-
-    }
-
     // Funzione per aggiornare i dati di un utente
     fun updateUser(
         currentUserName: String,
@@ -185,7 +148,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         // Ottieni un'istanza del database in modalità scrittura
         val db = this.writableDatabase
 
-        // Prepara i valori da aggiornare
+        // valori da aggiornare
         val contentValues = ContentValues().apply {
             newEta?.let { put("eta", it) }
             newAltezza?.let { put("altezza", it) }
@@ -210,13 +173,12 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             return affectedRows > 0 // True se almeno una riga è stata aggiornata
         } else {
             db.close() // Chiudi il database anche se non ci sono modifiche
-            Log.d("EditUserActivity", "Nessun valore da aggiornare")
             return false // Nessun valore da aggiornare
         }
     }
 
     companion object {
-        private const val DB_VERSION = 8 // Versione del database.
+        private const val DB_VERSION = 9 // Versione del database.
         private const val DB_NAME = "SportsTracker.db" // Nome del database.
     }
 }

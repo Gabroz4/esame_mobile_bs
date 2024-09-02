@@ -11,7 +11,6 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.FragmentCalendarBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import java.time.LocalDate

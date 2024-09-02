@@ -7,6 +7,10 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import java.time.LocalDate
 
+
+// TODO: aggiungere decorazioni tipo un pallino ove ci sono giorni con allenamenti salvati e impostare giorno odierno all'apertura
+
+
 class EventDecorator(private val dates: Set<LocalDate>) : DayViewDecorator {
 
     override fun shouldDecorate(day: CalendarDay): Boolean {

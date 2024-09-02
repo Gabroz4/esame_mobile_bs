@@ -15,13 +15,7 @@ class SessionManager(context: Context) {
         get() = pref.getString(KeyUserName, null)
         set(value) {
             editor.putString(KeyUserName, value)
-            editor.apply()  // Modificato da commit() a apply()
-        }
-
-    var profileImagePath: String?
-        get() = pref.getString("profile_image_path", null)
-        set(value) {
-            editor.putString("profile_image_path", value).apply()
+            editor.apply()
         }
 
     fun createLoginSession(username: String) {
@@ -35,16 +29,10 @@ class SessionManager(context: Context) {
         Log.d(Tag, "Sessione modificata")
     }
 
-    fun clearSession() {
-        editor.clear()
-        editor.apply()  // Cancella tutti i dati della sessione
-        Log.d(Tag, "Sessione cancellata")
-    }
-
     companion object {
         private val Tag = SessionManager::class.java.simpleName
-        private val PrefName = "AndroidLoginPref"
+        private const val PrefName = "AndroidLoginPref"
         const val KeyUserName = "user_name"
-        private val KeyIsLoggedIn = "IsLoggedIn"
+        private const val KeyIsLoggedIn = "IsLoggedIn"
     }
 }

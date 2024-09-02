@@ -13,13 +13,11 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import android.Manifest
 import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
-import android.widget.Button
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -41,7 +39,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 enableMyLocation()
                 getLastKnownLocation()
             } else {
-                // Permission was denied. Handle the case where the user denies the permission.
+                Toast.makeText(requireContext(), "Il servizio di localizzazione richiede il permesso di accedere alla posizione", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -51,7 +49,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        // Setup the button click listener to start NewTrainingActivity
+        // pulsante per lanciare NewTrainingActivity
         _binding!!.addTrainingButton.setOnClickListener {
             val intent = Intent(context, NewTrainingActivity::class.java)
             startActivity(intent)
@@ -61,13 +59,13 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun checkLocationPermission() {
-        when {
-            ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED -> {
+        when (PackageManager.PERMISSION_GRANTED) {
+            ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) -> {
                 enableMyLocation()
                 getLastKnownLocation()
             }
             else -> {
-                // Directly ask for the permission.
+                // richiedi il permesso
                 requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
         }

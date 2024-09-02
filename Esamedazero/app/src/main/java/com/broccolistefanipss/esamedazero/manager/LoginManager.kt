@@ -24,8 +24,6 @@ class LoginManager(private val context: Context) {
         val editor = sharedPreferences.edit()
         editor.putString("userName", username)
         editor.apply()
-
-        Log.d("LoginActivity", "Username saved in SharedPreferences: $username")
     }
 
     fun logout() {
