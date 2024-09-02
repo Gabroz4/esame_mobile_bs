@@ -2,6 +2,7 @@ package com.broccolistefanipss.esamedazero.manager
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import com.broccolistefanipss.esamedazero.activity.LoginActivity
 import com.broccolistefanipss.esamedazero.global.DB
 
@@ -12,10 +13,19 @@ class LoginManager(private val context: Context) {
         if (db.userLogin(username, password)) {
             val sessionManager = SessionManager(context)
             sessionManager.setLogin(true)
+            saveToSharedPreferences(context, username)
             sessionManager.userName = username
             return true
         }
         return false
+    }
+    private fun saveToSharedPreferences(context: Context, username: String) {
+        val sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("userName", username)
+        editor.apply()
+
+        Log.d("LoginActivity", "Username saved in SharedPreferences: $username")
     }
 
     fun logout() {

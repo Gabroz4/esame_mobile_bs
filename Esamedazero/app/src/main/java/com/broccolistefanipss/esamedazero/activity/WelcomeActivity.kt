@@ -10,10 +10,13 @@ import android.widget.EditText
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.R
+import com.broccolistefanipss.esamedazero.databinding.ActivityWelcomeBinding
 import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 
 class WelcomeActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityWelcomeBinding
 
     private lateinit var userNameEditText: EditText
     private lateinit var passwordEditText: EditText  // Aggiunta password EditText
@@ -22,10 +25,14 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var altezzaEditText: EditText
     private lateinit var pesoEditText: EditText
     private lateinit var objectiveSpinner: Spinner
+    private lateinit var loginButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_welcome)
+
+        binding = ActivityWelcomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         //Controlla se l'utente è già loggato
         val sessionManager = SessionManager(this)
@@ -37,13 +44,14 @@ class WelcomeActivity : AppCompatActivity() {
         }
 
         // Inizializza EditText e Spinner
-        userNameEditText = findViewById(R.id.userName)
-        passwordEditText = findViewById(R.id.password)
-        sessoSpinner = findViewById(R.id.spinnerSesso)
-        etaEditText = findViewById(R.id.eta)
-        altezzaEditText = findViewById(R.id.altezza)
-        pesoEditText = findViewById(R.id.peso)
-        objectiveSpinner = findViewById(R.id.spinnerObiettivo)
+        userNameEditText = binding.userName
+        passwordEditText = binding.password
+        sessoSpinner = binding.spinnerSesso
+        etaEditText = binding.eta
+        altezzaEditText = binding.altezza
+        pesoEditText = binding.peso
+        objectiveSpinner = binding.spinnerObiettivo
+        loginButton = binding.loginButton
 
         // Spinner con due opzioni
         val objectiveOptions : Array<String> = resources.getStringArray(R.array.objectives_array)
@@ -56,6 +64,12 @@ class WelcomeActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             saveUserData()
         }
+        loginButton.setOnClickListener { btnLogin_onclick() }
+    }
+
+    private fun btnLogin_onclick(){
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
 
