@@ -12,13 +12,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.activity.EditUserActivity
 import com.broccolistefanipss.esamedazero.databinding.FragmentUserBinding
 import com.broccolistefanipss.esamedazero.global.DB
+import com.broccolistefanipss.esamedazero.manager.LoginManager
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.model.User
 import java.io.OutputStream
@@ -32,6 +35,7 @@ class UserFragment : Fragment() {
     private var imageUri: Uri? = null
     private lateinit var sessionManager: SessionManager
     private lateinit var database: DB
+    private lateinit var loginManager: LoginManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +46,7 @@ class UserFragment : Fragment() {
 
         sessionManager = SessionManager(requireContext())
         database = DB(requireContext())
+        loginManager = LoginManager(requireContext())
 
         setupEditProfileLauncher()
         setupImagePicker()
@@ -50,6 +55,7 @@ class UserFragment : Fragment() {
 
         loadProfileImage()
         loadUserData()
+        disconnect()
 
         return root
     }
@@ -160,6 +166,12 @@ class UserFragment : Fragment() {
         uriString?.let {
             imageUri = Uri.parse(it)
             binding.profilePicture.setImageURI(imageUri)
+        }
+    }
+    private fun disconnect() {
+        val btnDisconnect: Button = binding.btnDisconnect
+        btnDisconnect.setOnClickListener {
+            loginManager.logout()  // Effettua il logout dell'utente
         }
     }
 

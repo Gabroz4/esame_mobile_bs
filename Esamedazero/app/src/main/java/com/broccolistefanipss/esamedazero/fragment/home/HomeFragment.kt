@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,9 +17,13 @@ import com.broccolistefanipss.esamedazero.global.DB
 import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.model.TrainingSession
 
+//TODO: FAR APPARIRE GLI ID ALLENAMENTO NELLA HOME
+
+
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
+    private lateinit var db: DB
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
 
@@ -33,6 +39,7 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sessionManager = SessionManager(requireContext())
         val userName = sessionManager.userName ?: ""
+        db = DB(requireContext())
 
         // Inizializza il ViewModel
         viewModel.initialize(requireContext(), userName)
@@ -46,17 +53,46 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun deleteSession(sessionId: Int) {
+        val success = db.deleteTrainingSession(sessionId) // Chiama il metodo per eliminare dal DB
+        if (success) {
+            Toast.makeText(requireContext(), "Sessione eliminata con successo", Toast.LENGTH_SHORT).show()
+            viewModel.loadTrainingSessions() // Ricarica le sessioni aggiornate
+        } else {
+            Toast.makeText(requireContext(), "Errore nell'eliminazione della sessione", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun updateUI(sessions: List<TrainingSession>) {
         if (sessions.isNotEmpty()) {
             binding.trainingSessionsRecyclerView.visibility = View.VISIBLE
             binding.emptyTextView.visibility = View.GONE
-            binding.trainingSessionsRecyclerView.adapter = TrainingSessionAdapter(sessions)
+
+            // Crea l'adapter e passa la funzione di eliminazione
+            val adapter = TrainingSessionAdapter(sessions) { sessionId ->
+                deleteSession(sessionId) // Chiama la funzione di eliminazione
+            }
+            binding.trainingSessionsRecyclerView.adapter = adapter
         } else {
             binding.trainingSessionsRecyclerView.visibility = View.GONE
             binding.emptyTextView.visibility = View.VISIBLE
             binding.emptyTextView.text = "Nessun allenamento registrato"
+
         }
     }
+
+
+    //private fun updateUI(sessions: List<TrainingSession>) {
+    //    if (sessions.isNotEmpty()) {
+    //        binding.trainingSessionsRecyclerView.visibility = View.VISIBLE
+    //        binding.emptyTextView.visibility = View.GONE
+    //        binding.trainingSessionsRecyclerView.adapter = TrainingSessionAdapter(sessions)
+    //    } else {
+    //        binding.trainingSessionsRecyclerView.visibility = View.GONE
+    //        binding.emptyTextView.visibility = View.VISIBLE
+    //        binding.emptyTextView.text = "Nessun allenamento registrato"
+    //    }
+    //}
 
     override fun onDestroyView() {
         super.onDestroyView()

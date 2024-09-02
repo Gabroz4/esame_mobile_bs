@@ -23,7 +23,7 @@ class HomeViewModel : ViewModel() {
     }
 
     // Carica le sessioni di allenamento in un thread separato
-    private fun loadTrainingSessions() {
+    fun loadTrainingSessions() {
         viewModelScope.launch {
             val sessions = db.getUserTrainingSessions(userName)
             _trainingSessions.postValue(sessions)

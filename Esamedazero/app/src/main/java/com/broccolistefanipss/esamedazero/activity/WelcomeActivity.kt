@@ -73,7 +73,7 @@ class WelcomeActivity : AppCompatActivity() {
         DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
         // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
-        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue, "")
+        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue) //+ obiettivo al limite
 
         // Vai a LoginActivity
         startActivity(Intent(this, LoginActivity::class.java))
@@ -87,7 +87,7 @@ class WelcomeActivity : AppCompatActivity() {
         eta: Int,
         altezza: Int,
         peso: Int,
-        obiettivo: String
+        //obiettivo: String
     ) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -96,7 +96,7 @@ class WelcomeActivity : AppCompatActivity() {
         editor.putInt("eta", eta)
         editor.putInt("altezza", altezza)
         editor.putInt("peso", peso)
-        editor.putString("obiettivo", obiettivo)
+        //editor.putString("obiettivo", obiettivo)
         editor.apply()
 
         // Aggiungi log per visualizzare ciò che viene salvato nelle SharedPreferences
@@ -105,6 +105,6 @@ class WelcomeActivity : AppCompatActivity() {
         Log.d("WelcomeActivity", "Età: $eta")
         Log.d("WelcomeActivity", "Altezza: $altezza")
         Log.d("WelcomeActivity", "Peso: $peso")
-        Log.d("WelcomeActivity", "Obiettivo: $obiettivo")
+        //Log.d("WelcomeActivity", "Obiettivo: $obiettivo")
     }
 }

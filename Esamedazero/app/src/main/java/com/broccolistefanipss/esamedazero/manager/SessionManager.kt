@@ -5,49 +5,91 @@ import android.content.SharedPreferences
 import android.util.Log
 
 class SessionManager(context: Context) {
-    // Inizializza le SharedPreferences
     private var pref: SharedPreferences = context.getSharedPreferences(PrefName, Context.MODE_PRIVATE)
-    // Crea un editor per modificare le SharedPreferences
     private var editor: SharedPreferences.Editor = pref.edit()
 
-    // Controlla se l'utente è già loggato
     val isLoggedIn: Boolean
         get() = pref.getBoolean(KeyIsLoggedIn, false)
 
-    // Ottiene o imposta il nome utente dell'utente loggato
     var userName: String?
         get() = pref.getString(KeyUserName, null)
         set(value) {
             editor.putString(KeyUserName, value)
-            editor.commit() // Salva le modifiche
+            editor.apply()  // Modificato da commit() a apply()
         }
 
     var profileImagePath: String?
         get() = pref.getString("profile_image_path", null)
         set(value) {
-            pref.edit().putString("profile_image_path", value).apply()
+            editor.putString("profile_image_path", value).apply()
         }
 
-    // Crea una sessione di login per l'utente
     fun createLoginSession(username: String) {
-        this.userName = username // Imposta il nome utente
-        setLogin(true) // Imposta lo stato di login a true
+        this.userName = username
+        setLogin(true)
     }
 
-    // Imposta lo stato di login
     fun setLogin(isLoggedIn: Boolean) {
-        editor.putBoolean(KeyIsLoggedIn, isLoggedIn) // Imposta lo stato di login
-        editor.commit() // Salva le modifiche
-        Log.d(Tag, "Sessione modificata") // Log per il debug
+        editor.putBoolean(KeyIsLoggedIn, isLoggedIn)
+        editor.apply()  // Modificato da commit() a apply()
+        Log.d(Tag, "Sessione modificata")
+    }
+
+    fun clearSession() {
+        editor.clear()
+        editor.apply()  // Cancella tutti i dati della sessione
+        Log.d(Tag, "Sessione cancellata")
     }
 
     companion object {
-        // Tag per il debug
         private val Tag = SessionManager::class.java.simpleName
-        // Nome delle SharedPreferences
         private val PrefName = "AndroidLoginPref"
-        // Chiavi per le SharedPreferences
         const val KeyUserName = "user_name"
         private val KeyIsLoggedIn = "IsLoggedIn"
     }
 }
+
+//class SessionManager(context: Context) {
+//    private var pref: SharedPreferences = context.getSharedPreferences(PrefName, Context.MODE_PRIVATE)
+//    private var editor: SharedPreferences.Editor = pref.edit()
+//
+//    val isLoggedIn: Boolean
+//        get() = pref.getBoolean(KeyIsLoggedIn, false)
+//
+//    var userName: String?
+//        get() = pref.getString(KeyUserName, null)
+//        set(value) {
+//            editor.putString(KeyUserName, value)
+//            editor.apply()  // Modificato da commit() a apply()
+//        }
+//
+//    var profileImagePath: String?
+//        get() = pref.getString("profile_image_path", null)
+//        set(value) {
+//            editor.putString("profile_image_path", value).apply()
+//        }
+//
+//    fun createLoginSession(username: String) {
+//        this.userName = username
+//        setLogin(true)
+//    }
+//
+//    fun setLogin(isLoggedIn: Boolean) {
+//        editor.putBoolean(KeyIsLoggedIn, isLoggedIn)
+//        editor.apply()  // Modificato da commit() a apply()
+//        Log.d(Tag, "Sessione modificata")
+//    }
+//
+//    fun clearSession() {
+//        editor.clear()
+//        editor.apply()  // Cancella tutti i dati della sessione
+//        Log.d(Tag, "Sessione cancellata")
+//    }
+//
+//    companion object {
+//        private val Tag = SessionManager::class.java.simpleName
+//        private val PrefName = "AndroidLoginPref"
+//        const val KeyUserName = "user_name"
+//        private val KeyIsLoggedIn = "IsLoggedIn"
+//    }
+//}

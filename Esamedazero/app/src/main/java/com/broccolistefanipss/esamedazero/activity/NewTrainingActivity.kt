@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.esamedazero.global.DB
+import com.broccolistefanipss.esamedazero.manager.SharedPrefs
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -122,8 +123,29 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Non serve gestire i cambiamenti di accuratezza per questo caso
+        // Non serve gestire i cambiamenti di accuratezza in questo caso
     }
+
+    //private fun saveTrainingSession() {
+    //    val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+//
+    //    val userName = sharedPreferences.getString("userName", null)
+    //    val sessionDate = getCurrentDate()
+    //    val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
+//
+    //    Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Aggiungi un log per il debug
+//
+    //    val trainingType = "corsa"
+    //    val burntCalories = calorieCount.toInt()
+    //    val trainingId = SharedPrefs.getInt()
+//
+    //    // Inserisci la sessione nel database
+    //    val db = DB(this)
+    //    if (userName != null) {
+    //        db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
+    //    }
+    //    Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
+    //}
 
     private fun saveTrainingSession() {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
@@ -132,18 +154,21 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         val sessionDate = getCurrentDate()
         val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
 
-        Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Aggiungi un log per il debug
+        Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Log per il debug
 
         val trainingType = "corsa"
         val burntCalories = calorieCount.toInt()
 
-        // Inserisci la sessione nel database
+        // Inserisci la sessione nel database e ottieni l'ID della sessione appena inserita
         val db = DB(this)
         if (userName != null) {
-            db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
+            val sessionId = db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
+            Log.d("NewTrainingActivity", "Session ID: $sessionId, Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
+        } else {
+            Log.e("NewTrainingActivity", "Errore: userName non trovato")
         }
-        Log.d("NewTrainingActivity", "Salvataggio sessione in corso: $userName, $sessionDate, $durationInSeconds, $trainingType, $burntCalories")
     }
+
 
     private fun getCurrentDate(): String {
         val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -181,6 +206,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         calorieCount = 0.0
         elapsedTime = 0L
         binding.timeTextView.text = "00:00:00"
-        binding.calorieTextView.text = "Calories: 0.00"
+        binding.calorieTextView.text = "Calorie: 0.00"
     }
 }
