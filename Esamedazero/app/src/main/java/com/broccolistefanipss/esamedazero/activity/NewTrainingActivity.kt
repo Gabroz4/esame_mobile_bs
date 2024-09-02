@@ -10,9 +10,11 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
 import com.broccolistefanipss.esamedazero.R
 import com.broccolistefanipss.esamedazero.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.esamedazero.global.DB
+import com.broccolistefanipss.esamedazero.manager.SessionManager
 import com.broccolistefanipss.esamedazero.manager.SharedPrefs
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -23,6 +25,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityNewTrainingBinding
     private lateinit var sensorManager: SensorManager
+
     private var accelerometer: Sensor? = null
 
     private var isRunning = false
@@ -31,6 +34,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
     private var totalAcceleration: Double = 0.0
     private var calorieCount: Double = 0.0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -151,6 +155,10 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
         val userName = sharedPreferences.getString("userName", null)
+        //val userName = SessionManager.KeyUserName
+
+        //val userName = SharedPrefs.userName
+
         val sessionDate = getCurrentDate()
         val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
 

@@ -56,12 +56,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         }
     }
 
-    // Helper per inserire una sessione di allenamento per l'utente direttamente nel DB durante l'upgrade.
-    //private fun insertTrainingSessionForUser(db: SQLiteDatabase, userName: String, sessionDate: String, duration: Int, trainingType: String, burntCalories: Int) {
-    //    val sqlQuery = "INSERT INTO TrainingSessions(userName, sessionDate, duration, trainingType, burntCalories) VALUES(?, ?, ?, ?, ?)"
-    //    db.execSQL(sqlQuery, arrayOf(userName, sessionDate, duration, trainingType, burntCalories))
-    //}
-
     // Controlla se un nome utente esiste già nel database.
     private fun isNameExists(userName: String): Boolean {
         val database = readableDatabase
@@ -70,12 +64,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         }
     }
 
-    // Inserisce una sessione di allenamento nel database.
-    //fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, trainingType: String, burntCalories: Int) {
-    //    val sqlQuery = "INSERT INTO TrainingSessions(userName, sessionDate, duration, trainingType, burntCalories) VALUES(?, ?, ?, ?, ?)"
-    //    val database = this.writableDatabase
-    //    database.execSQL(sqlQuery, arrayOf(userName, sessionDate, duration, trainingType, burntCalories))
-    //}
 
     fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, trainingType: String, burntCalories: Int): Long {
         val database = this.writableDatabase
@@ -92,12 +80,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         return sessionId
     }
 
-
-    // Funzione per ottenere la data corrente nel formato desiderato (es: "2024-08-20")
-    //private fun getCurrentDate(): String {
-    //    val formatter = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.getDefault())
-    //    return formatter.format(java.util.Date())
-    //}
 
     // Recupera le sessioni di allenamento per un utente specifico.
     fun getUserTrainingSessions(userName: String): List<TrainingSession> {
@@ -131,24 +113,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         val affectedRows = database.delete("TrainingSessions", "sessionId = ?", arrayOf(sessionId.toString()))
         database.close() // Chiude il database per liberare risorse
         return affectedRows > 0
-    }
-
-    fun getTrainingSessionId(userName: String, date: String): Int? {
-        val db = this.readableDatabase
-        var sessionId: Int? = null
-
-        val query = "SELECT sessionId FROM TrainingSessions WHERE userName = ? AND sessionDate = ?"
-        val cursor: Cursor? = db.rawQuery(query, arrayOf(userName, date))
-
-        if (cursor != null && cursor.moveToFirst()) {
-            val columnIndex = cursor.getColumnIndex("sessionId")
-            if (columnIndex >= 0) {
-                sessionId = cursor.getInt(columnIndex)
-            }
-        }
-
-        cursor?.close()
-        return sessionId
     }
 
     // Recupera i dati degli utenti.

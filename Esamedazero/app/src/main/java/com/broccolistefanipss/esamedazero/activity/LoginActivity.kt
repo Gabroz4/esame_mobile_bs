@@ -43,9 +43,7 @@ class LoginActivity : AppCompatActivity() {
 
             val loginManager = LoginManager(this)
             if (loginManager.attemptLogin(username, password)) {
-                saveUsernameToSharedPreferences(binding.usernameLogin.toString())
-                Log.d("Username vecchio:", username.toString())
-                Log.d("Username nuovo:", binding.usernameLogin.toString())
+                saveUsernameToSharedPreferences(username)
                 sessionManager.createLoginSession(username)
                 val intent = Intent(this, BotMenuActivity::class.java)
                 startActivity(intent)
@@ -56,18 +54,18 @@ class LoginActivity : AppCompatActivity() {
         }
 
         welcomeButton.setOnClickListener {
-            btnWelcome_onclick()
+            btnWelcomeOnclick()
         }
     }
     private fun saveUsernameToSharedPreferences(username: String) {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        Log.d("LoginActivity", "Username saved in SharedPreferences: $username")
         val editor = sharedPreferences.edit()
         editor.putString("userName", username)
         editor.apply()
-
-        Log.d("LoginActivity", "Username saved in SharedPreferences: $username")
     }
-    private fun btnWelcome_onclick() {
+
+    private fun btnWelcomeOnclick() {
         val intent = Intent(this, WelcomeActivity::class.java)
         startActivity(intent)
     }
