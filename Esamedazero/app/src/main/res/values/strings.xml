@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Esamedazero</string>
+    <string name="app_name">SportsTracker</string>
     <string name="title_activity_bot_menu">BotMenuActivity</string>
     <string name="title_activity_newtraining">NewTrainingActivity</string>
     <string name="title_home">Home</string>

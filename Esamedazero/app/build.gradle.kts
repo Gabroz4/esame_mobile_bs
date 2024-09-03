@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.broccolistefanipss.esamedazero"
+    namespace = "com.broccolistefanipss.sportstracker"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.broccolistefanipss.esamedazero"
+        applicationId = "com.broccolistefanipss.sportstracker"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
