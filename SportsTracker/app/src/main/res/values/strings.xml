@@ -12,9 +12,16 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">login</string>
-
     <string name="start">start</string>
     <string name="stop">stop</string>
+    <string name="title">Benvenuto in Sports Tracker!</string>
+    <string name="UserName">UserName</string>
+    <string name="eta">Età</string>
+    <string name="altezza">Altezza(cm)</string>
+    <string name="peso">Peso(kg)</string>
+    <string name="Password">Password</string>
+    <string name="Avanti">Avanti</string>
+    <string name="Login">Login</string>
 
 
     <string-array name="objectives_array" >

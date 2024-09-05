@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.sportstracker.R
@@ -26,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var altezzaEditText: EditText
     private lateinit var pesoEditText: EditText
     private lateinit var objectiveSpinner: Spinner
-    private lateinit var loginButton: Button
+    private lateinit var loginButton: TextView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

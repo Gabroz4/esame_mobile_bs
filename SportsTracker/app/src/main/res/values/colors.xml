@@ -3,4 +3,14 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="splashbkg">#3ca3d0</color>
+    <color name="primaryColor">#3F51B5</color>
+    <color name="primaryDarkColor">#303F9F</color>
+    <color name="accentColor">#FF4081</color>
+    <color name="backgroundColor">#FFFFFF</color>
+    <color name="textColor">#212121</color>
+    <color name="buttonBackgroundColor">#821131</color>
+    <color name="textBackground">#0D7C66</color>
+
+
+
 </resources>
