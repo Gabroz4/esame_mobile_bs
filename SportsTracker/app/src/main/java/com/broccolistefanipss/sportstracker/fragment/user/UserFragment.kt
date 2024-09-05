@@ -49,6 +49,7 @@ class UserFragment : Fragment() {
         val root: View = binding.root
 
         loginManager = LoginManager(requireContext())
+        sessionManager = SessionManager(requireContext())
 
         setupEditProfileLauncher()
         setupImagePicker()
@@ -74,8 +75,10 @@ class UserFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         Log.d("UserFragment", "Caricamento dei dati utente")
-        userViewModel.loadUserData(DB(requireContext()), SessionManager(requireContext())) // Pass parameters here
+        userViewModel.loadUserData(DB(requireContext()), SessionManager(requireContext()))
+        loadProfileImage() // Carica l'immagine del profilo per l'utente corrente
     }
+
 
     private fun setupEditProfileLauncher() {
         editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -166,19 +169,30 @@ class UserFragment : Fragment() {
     }
 
     private fun saveProfileImageUri(uri: Uri) {
-        //salvataggio uri dell'immagine nelle shared preferences
+        // Recupera il nome dell'utente attualmente connesso
+        val userName = sessionManager.userName ?: return
+
+        // Salva l'URI dell'immagine nelle SharedPreferences per l'utente specifico
         val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        sharedPreferences.edit().putString("profile_image_uri", uri.toString()).apply()
+        sharedPreferences.edit().putString("profile_image_uri_$userName", uri.toString()).apply()
     }
 
+
     private fun loadProfileImage() {
+        // Recupera il nome dell'utente attualmente connesso
+        val userName = sessionManager.userName ?: return
+
+        // Recupera l'URI dell'immagine del profilo dalle SharedPreferences per l'utente specifico
         val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        val uriString = sharedPreferences.getString("profile_image_uri", null)
+        val uriString = sharedPreferences.getString("profile_image_uri_$userName", null)
+
+        // Se esiste, carica l'immagine
         uriString?.let {
             imageUri = Uri.parse(it)
             binding.profilePicture.setImageURI(imageUri)
         }
     }
+
     private fun disconnect() {
         val btnDisconnect: Button = binding.btnDisconnect
         btnDisconnect.setOnClickListener {
