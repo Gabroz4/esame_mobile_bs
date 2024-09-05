@@ -49,7 +49,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        // pulsante per lanciare NewTrainingActivity
+        // Inizializza il fusedLocationClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        // Pulsante per lanciare NewTrainingActivity
         _binding!!.addTrainingButton.setOnClickListener {
             val intent = Intent(context, NewTrainingActivity::class.java)
             startActivity(intent)
@@ -58,6 +61,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         return binding.root
     }
 
+    // Controlla il permesso e abilita la posizione
     private fun checkLocationPermission() {
         when (PackageManager.PERMISSION_GRANTED) {
             ContextCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) -> {
@@ -65,28 +69,26 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 getLastKnownLocation()
             }
             else -> {
-                // richiedi il permesso
                 requestPermissionLauncher.launch(ACCESS_FINE_LOCATION)
             }
         }
     }
 
     private fun enableMyLocation() {
-        if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return
+        if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            map.isMyLocationEnabled = true
         }
-        map.isMyLocationEnabled = true
     }
 
     private fun getLastKnownLocation() {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-
         if (ActivityCompat.checkSelfPermission(requireContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-                location?.let {
-                    val userLocation = LatLng(it.latitude, it.longitude)
-                    map.addMarker(MarkerOptions().position(userLocation).title("Your Location"))
+                if (location != null) {
+                    val userLocation = LatLng(location.latitude, location.longitude)
+                    map.addMarker(MarkerOptions().position(userLocation).title("La tua posizione"))
                     map.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, 12.0f))
+                } else {
+                    Toast.makeText(requireContext(), "Posizione non disponibile", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -102,3 +104,4 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         _binding = null
     }
 }
+

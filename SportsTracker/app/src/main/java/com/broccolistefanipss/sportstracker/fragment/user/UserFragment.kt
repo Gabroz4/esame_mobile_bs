@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.broccolistefanipss.sportstracker.activity.EditUserActivity
 import com.broccolistefanipss.sportstracker.databinding.FragmentUserBinding
 import com.broccolistefanipss.sportstracker.global.DB
@@ -38,6 +39,7 @@ class UserFragment : Fragment() {
     private lateinit var sessionManager: SessionManager
     private lateinit var database: DB
     private lateinit var loginManager: LoginManager
+    private val userViewModel: UserViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,8 +48,6 @@ class UserFragment : Fragment() {
         _binding = FragmentUserBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        sessionManager = SessionManager(requireContext())
-        database = DB(requireContext())
         loginManager = LoginManager(requireContext())
 
         setupEditProfileLauncher()
@@ -55,11 +55,26 @@ class UserFragment : Fragment() {
         setupEditProfileButton()
         setupChangeProfilePictureButton()
 
-        loadProfileImage()
-        loadUserData()
+        userViewModel.user.observe(viewLifecycleOwner) { user ->
+            user?.let {
+                binding.UserProfile.text = it.userName
+                binding.SexProfile.text = it.sesso
+                binding.AgeProfile.text = it.eta.toString()
+                binding.HeightProfile.text = it.altezza.toString()
+                binding.WeightProfile.text = it.peso.toString()
+                binding.objectiveProfile.text = it.obiettivo
+            }
+        }
+
         disconnect()
 
         return root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d("UserFragment", "Caricamento dei dati utente")
+        userViewModel.loadUserData(DB(requireContext()), SessionManager(requireContext())) // Pass parameters here
     }
 
     private fun setupEditProfileLauncher() {
@@ -102,11 +117,7 @@ class UserFragment : Fragment() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        Log.d("UserFragment", "Caricamento dei dati utente")
-        loadUserData()
-    }
+
 
     private fun loadUserData() {
         val userName = sessionManager.userName ?: ""

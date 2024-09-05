@@ -10,25 +10,31 @@ import com.broccolistefanipss.sportstracker.model.TrainingSession
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
-
     private lateinit var db: DB
     private lateinit var userName: String
 
     private val _trainingSessions = MutableLiveData<List<TrainingSession>>()
     val trainingSessions: LiveData<List<TrainingSession>> get() = _trainingSessions
 
-    // Inizializzazione del DB e del nome utente
     fun initialize(context: Context, userName: String) {
         this.db = DB(context)
         this.userName = userName
         loadTrainingSessions()
     }
 
-    // Carica le sessioni di allenamento in un thread separato
     fun loadTrainingSessions() {
         viewModelScope.launch {
             val sessions = db.getUserTrainingSessions(userName)
             _trainingSessions.postValue(sessions)
+        }
+    }
+
+    fun deleteSession(sessionId: Int) {
+        viewModelScope.launch {
+            val success = db.deleteTrainingSession(sessionId)
+            if (success) {
+                loadTrainingSessions()
+            }
         }
     }
 }

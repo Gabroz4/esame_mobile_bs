@@ -24,4 +24,13 @@ object SqlTable {
         FOREIGN KEY(userName) REFERENCES User(userName) ON DELETE CASCADE
     )
 """.trimIndent()
+
+    val CalendarTraining = """
+    CREATE TABLE CalendarTraining (
+        userName TEXT,
+        date TEXT,
+        description TEXT,
+        FOREIGN KEY(userName) REFERENCES User(userName) ON DELETE CASCADE
+    )
+""".trimIndent()
 }

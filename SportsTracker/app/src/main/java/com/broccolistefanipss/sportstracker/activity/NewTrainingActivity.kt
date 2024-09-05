@@ -73,6 +73,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun startTimer() {
+        resetTrainingData()
         timerHandler.postDelayed(timerRunnable, 0)
     }
 

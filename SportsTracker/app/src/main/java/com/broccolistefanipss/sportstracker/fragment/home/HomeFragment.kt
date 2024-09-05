@@ -18,14 +18,10 @@ import com.broccolistefanipss.sportstracker.model.TrainingSession
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
-    private lateinit var db: DB
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,28 +30,15 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val sessionManager = SessionManager(requireContext())
         val userName = sessionManager.userName ?: ""
-        db = DB(requireContext())
-
-        // Inizializza il ViewModel
         viewModel.initialize(requireContext(), userName)
 
-        // Imposta il RecyclerView
         binding.trainingSessionsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-        // stampa delle sessioni di allenamento
-        viewModel.trainingSessions.observe(viewLifecycleOwner, Observer { sessions ->
+        viewModel.trainingSessions.observe(viewLifecycleOwner) { sessions ->
             updateUI(sessions)
-        })
-    }
-
-    private fun deleteSession(sessionId: Int) {
-        val success = db.deleteTrainingSession(sessionId) // Chiama il metodo per eliminare dal DB
-        if (success) {
-            Toast.makeText(requireContext(), "Sessione eliminata con successo", Toast.LENGTH_SHORT).show()
-            viewModel.loadTrainingSessions() // Ricarica le sessioni aggiornate
-        } else {
-            Toast.makeText(requireContext(), "Errore nell'eliminazione della sessione", Toast.LENGTH_SHORT).show()
         }
+    }
+    private fun deleteSession(sessionId: Int) {
+        viewModel.deleteSession(sessionId)
     }
 
     private fun updateUI(sessions: List<TrainingSession>) {
