@@ -4,22 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".activity.LoginActivity">
+
+    <TextView
+        android:id="@+id/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:fontFamily="@font/ubuntu_medium"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:text="@string/Login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/usernameLogin"
         android:layout_width="364dp"
         android:layout_height="57dp"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="116dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="32dp"
+        android:autofillHints=""
+        android:background="@drawable/edittext_background"
+        android:fontFamily="@font/ubuntu_light"
         android:ems="10"
         android:hint="@string/username"
         android:inputType="textPersonName"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/Title" />
 
     <EditText
         android:id="@+id/passwordLogin"
@@ -27,29 +47,46 @@
         android:layout_height="60dp"
         android:layout_marginTop="28dp"
         android:ems="10"
+        android:background="@drawable/edittext_background"
+        android:fontFamily="@font/ubuntu_light"
         android:hint="@string/password"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/usernameLogin"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/usernameLogin"
-        app:layout_constraintTop_toBottomOf="@+id/usernameLogin" />
+        app:layout_constraintTop_toBottomOf="@+id/usernameLogin"
+        android:autofillHints="" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/loginButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="143dp"
+        android:layout_height="50dp"
         android:layout_marginTop="200dp"
         android:text="@string/login"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/ubuntu_light"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/passwordLogin"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="@+id/passwordLogin"
         app:layout_constraintTop_toBottomOf="@+id/passwordLogin" />
 
-    <Button
+
+    <TextView
         android:id="@+id/welcomeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nuovo Utente"
+        android:layout_width="253dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:fontFamily="@font/ubuntu_regular"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:text="@string/utente"
+        android:textColor="@color/black"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

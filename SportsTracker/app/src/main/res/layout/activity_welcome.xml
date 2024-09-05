@@ -138,10 +138,10 @@
         android:layout_width="143dp"
         android:layout_height="50dp"
         android:background="@drawable/button_style"
-        android:text="@string/Avanti"
         android:fontFamily="@font/ubuntu_light"
-        android:textSize="20sp"
         android:textColor="@color/white"
+        android:text="@string/Avanti"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -166,6 +166,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nextButton" />
+
 
     <Spinner
         android:id="@+id/spinnerSesso"
