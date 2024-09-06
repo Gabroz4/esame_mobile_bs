@@ -8,9 +8,9 @@
     </item>
     <item>
         <shape>
-            <solid android:color="@color/buttonBackgroundColor" />
+            <solid android:color="@color/button" />
             <corners android:radius="20dp" />
-            <stroke android:width="2dp" android:color="@color/buttonBackgroundColor" />
+            <stroke android:width="2dp" android:color="@color/button" />
         </shape>
     </item>
 </selector>

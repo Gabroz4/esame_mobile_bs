@@ -139,7 +139,7 @@
         android:layout_height="50dp"
         android:background="@drawable/button_style"
         android:fontFamily="@font/ubuntu_light"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:text="@string/Avanti"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"

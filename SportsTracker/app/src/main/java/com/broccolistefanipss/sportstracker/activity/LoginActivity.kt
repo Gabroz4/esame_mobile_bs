@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.broccolistefanipss.sportstracker.databinding.ActivityLoginBinding
@@ -29,7 +30,7 @@ class LoginActivity : AppCompatActivity() {
         val usernameEditText: EditText = binding.usernameLogin
         val passwordEditText: EditText = binding.passwordLogin
         val loginButton: Button = binding.loginButton
-        val welcomeButton: Button = binding.welcomeButton
+        val welcomeButton: TextView = binding.welcomeButton
 
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()

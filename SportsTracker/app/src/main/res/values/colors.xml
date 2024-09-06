@@ -10,6 +10,8 @@
     <color name="textColor">#212121</color>
     <color name="buttonBackgroundColor">#821131</color>
     <color name="textBackground">#0D7C66</color>
+    <color name="toolbar">#FFEEF5</color>
+    <color name="button">#FFCCCB</color>
 
 
 

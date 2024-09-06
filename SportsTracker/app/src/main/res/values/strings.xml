@@ -23,6 +23,13 @@
     <string name="Avanti">Avanti</string>
     <string name="Login">Login</string>
     <string name="utente">Nuovo Utente</string>
+    <string name="allenamenti">I tuoi Allenamenti</string>
+    <string name="allenamenti_registrati">Nessun allenamento registrato</string>
+    <string name="durata">Durata</string>
+    <string name="data">Data Allenamento</string>
+    <string name="tipo_allenamento">Tipo di allenamento</string>
+    <string name="elimina">Elimina</string>
+    <string name="id_allenamento">ID allenamento</string>
 
 
     <string-array name="objectives_array" >
