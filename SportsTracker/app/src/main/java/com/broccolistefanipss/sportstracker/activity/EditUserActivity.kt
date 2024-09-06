@@ -10,6 +10,7 @@ import com.broccolistefanipss.sportstracker.databinding.ActivityEditUserBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 
+// TODO aggiungere pulsante indietro / annulla modifiche
 class EditUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserBinding
@@ -51,11 +52,11 @@ class EditUserActivity : AppCompatActivity() {
         if (user != null) {
             Log.d("EditUserActivity", "Caricamento dell'utente: $user")
             binding.userName.text = currentUserName
-            binding.editAge.setText(user.eta?.toString() ?: "")
-            binding.editHeight.setText(user.altezza?.toString() ?: "")
-            binding.editWeight.setText(user.peso?.toString() ?: "")
-            binding.editObjective.setSelection(getObjectiveIndex(user.obiettivo ?: ""))
-            binding.editSex.setSelection(getSexIndex(user.sesso ?: ""))
+            binding.editAge.setText(user.eta.toString())
+            binding.editHeight.setText(user.altezza.toString())
+            binding.editWeight.setText(user.peso.toString())
+            binding.editObjective.setSelection(getObjectiveIndex(user.obiettivo))
+            binding.editSex.setSelection(getSexIndex(user.sesso))
         } else {
             Log.e("EditUserActivity", "User not found: $currentUserName")
             Toast.makeText(this, "Errore: utente non trovato", Toast.LENGTH_SHORT).show()

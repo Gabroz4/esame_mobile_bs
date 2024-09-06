@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
     <string name="app_name">SportsTracker</string>
     <string name="title_activity_bot_menu">BotMenuActivity</string>
     <string name="title_activity_newtraining">NewTrainingActivity</string>
@@ -30,7 +30,26 @@
     <string name="tipo_allenamento">Tipo di allenamento</string>
     <string name="elimina">Elimina</string>
     <string name="id_allenamento">ID allenamento</string>
+    <string name="cambia">Cambia</string>
+    <string name="sesso">Sesso</string>
+    <string name="obiettivo">Obiettivo</string>
+    <string name="Peso">Peso</string>
+    <string name="Altezza">Altezza</string>
+    <string name="modifica_profilo">Modifica Profilo</string>
+    <string name="disconnetti">Disconnetti</string>
+    <string name="profile_picture_description">Immagine del profilo dell utente</string>
+    <string name="eta_view">Età: %1$d</string>
+    <string name="sesso_view">Sesso: %1$s</string>
+    <string name="altezza_view">Altezza(cm): %1$d</string>
+    <string name="peso_view">Peso(kg): %1.1f</string>
+    <string name="obiettivo_view">Obiettivo: %1$s</string>
+    <string name="salva_modifiche">Salva Modifiche</string>
+    <string name="modifica_dati_utente">Modifica dati Utente</string>
+    <string name="reset_time">00:00:00</string>
+    <string name="reset_calories">Calorie: 0.00</string>
 
+
+    <!-- <string name="countdown"><xliff:g>until holiday</xliff:g></string>  esempio con tag ch eimpedisce la traduzione-->
 
     <string-array name="objectives_array" >
         <item>Dimagrire</item>

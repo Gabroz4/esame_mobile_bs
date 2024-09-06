@@ -12,7 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,9 +24,11 @@ import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.LoginManager
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.User
+import android.content.Context
+import com.broccolistefanipss.sportstracker.R
 
 
-// TODO: associare immagine profilo all'utente e grafico con calorie per giorni
+// TODO: grafico con calorie per giorni
 
 
 class UserFragment : Fragment() {
@@ -50,6 +52,7 @@ class UserFragment : Fragment() {
 
         loginManager = LoginManager(requireContext())
         sessionManager = SessionManager(requireContext())
+        database = DB(requireContext())
 
         setupEditProfileLauncher()
         setupImagePicker()
@@ -59,11 +62,11 @@ class UserFragment : Fragment() {
         userViewModel.user.observe(viewLifecycleOwner) { user ->
             user?.let {
                 binding.UserProfile.text = it.userName
-                binding.SexProfile.text = it.sesso
-                binding.AgeProfile.text = it.eta.toString()
-                binding.HeightProfile.text = it.altezza.toString()
-                binding.WeightProfile.text = it.peso.toString()
-                binding.objectiveProfile.text = it.obiettivo
+                binding.SexProfile.text = getString(R.string.sesso_view, it.sesso)
+                binding.AgeProfile.text = getString(R.string.eta_view, it.eta)
+                binding.HeightProfile.text = getString(R.string.altezza_view, it.altezza)
+                binding.WeightProfile.text = getString(R.string.peso_view, it.peso)
+                binding.objectiveProfile.text = getString(R.string.obiettivo_view, it.obiettivo)
             }
         }
 
@@ -194,7 +197,7 @@ class UserFragment : Fragment() {
     }
 
     private fun disconnect() {
-        val btnDisconnect: Button = binding.btnDisconnect
+        val btnDisconnect: TextView = binding.btnDisconnect
         btnDisconnect.setOnClickListener {
             loginManager.logout()  // Effettua il logout dell'utente
         }

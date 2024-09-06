@@ -60,7 +60,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private val timerHandler = Handler(Looper.getMainLooper())
     private val timerRunnable = object : Runnable {
         override fun run() {
-            elapsedTime = updateTimer(); //per trasformare in minuti --> updateTimer() / 60
+            elapsedTime = updateTimer() //per trasformare in minuti --> updateTimer() / 60
             timerHandler.postDelayed(this, 1000)
         }
     }
@@ -94,7 +94,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             binding.calorieTextView.text = String.format(Locale.getDefault(), "Calories: %.2f", calorieCount)
             return newElapsedTime
         }
-        return 0;
+        return 0
     }
 
     private fun startAccelerometer() {
@@ -186,7 +186,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         totalAcceleration = 0.0
         calorieCount = 0.0
         elapsedTime = 0L
-        binding.timeTextView.text = "00:00:00"
-        binding.calorieTextView.text = "Calorie: 0.00"
+        binding.timeTextView.text = getString(R.string.reset_time)
+        binding.timeTextView.text = getString(R.string.reset_calories)
     }
 }
