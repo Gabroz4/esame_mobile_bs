@@ -1,6 +1,7 @@
 package com.broccolistefanipss.sportstracker.activity
 
 import android.content.Context
+import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -18,8 +19,6 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.sqrt
 
-// TODO: eventuale aggiunta di una mappa durante l'allenamento
-
 class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityNewTrainingBinding
@@ -34,13 +33,11 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private var totalAcceleration: Double = 0.0
     private var calorieCount: Double = 0.0
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNewTrainingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup dell'accelerometro
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
 
@@ -55,12 +52,15 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.closeButton.setOnClickListener {
             closeTraining()
         }
+
+        // Inizialmente disabilita il pulsante di chiusura
+        binding.closeButton.isEnabled = false
     }
 
     private val timerHandler = Handler(Looper.getMainLooper())
     private val timerRunnable = object : Runnable {
         override fun run() {
-            elapsedTime = updateTimer() //per trasformare in minuti --> updateTimer() / 60
+            elapsedTime = updateTimer()
             timerHandler.postDelayed(this, 1000)
         }
     }
@@ -80,7 +80,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private fun stopTimer() {
         if (isRunning) {
             val currentTime = System.currentTimeMillis()
-            elapsedTime += currentTime - startTime // Aggiorna elapsedTime
+            elapsedTime += currentTime - startTime
         }
         timerHandler.removeCallbacks(timerRunnable)
     }
@@ -113,19 +113,16 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val y = event.values[1]
             val z = event.values[2]
 
-            // caloli per accelerometro
             val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
             totalAcceleration += accelerationMagnitude
 
-            // Calcolo basilare per le calorie bruciate
-            calorieCount = totalAcceleration * 0.01 // Fattore arbitrario per convertire l'accelerazione in calorie
+            calorieCount = totalAcceleration * 0.01
         }
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Non serve gestire i cambiamenti di accuratezza in questo caso
+        // Non implementato
     }
-
 
     private fun saveTrainingSession() {
         val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
@@ -133,14 +130,13 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         val userName = sharedPreferences.getString("userName", null)
 
         val sessionDate = getCurrentDate()
-        val durationInSeconds = (elapsedTime / 1000).toInt() // Converti la durata in secondi
+        val durationInSeconds = (elapsedTime / 1000).toInt()
 
-        Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds") // Log per il debug
+        Log.d("NewTrainingActivity", "Elapsed time in seconds: $durationInSeconds")
 
         val trainingType = "corsa"
         val burntCalories = calorieCount.toInt()
 
-        // Inserisci la sessione nel database e ottieni l'ID della sessione appena inserita
         val db = DB(this)
         if (userName != null) {
             val sessionId = db.insertTrainingSession(userName, sessionDate, durationInSeconds, trainingType, burntCalories)
@@ -149,7 +145,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             Log.e("NewTrainingActivity", "Errore: userName non trovato")
         }
     }
-
 
     private fun getCurrentDate(): String {
         val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -162,16 +157,25 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         startTime = System.currentTimeMillis()
         startTimer()
         startAccelerometer()
-        binding.closeButton.isEnabled = false // Disabilita il bottone Close durante l'allenamento
+        binding.closeButton.isEnabled = false
+        updateButtonColor()
     }
 
+    private fun updateButtonColor() {
+        if (binding.closeButton.isEnabled) {
+            binding.closeButton.setBackgroundResource(R.drawable.button_style) // colore del bottone normale
+        } else {
+            binding.closeButton.setBackgroundResource(R.drawable.button_style_disabled) // colore del bottone disabilitato
+        }
+    }
     private fun stopTraining() {
         isRunning = false
         binding.startStopButton.text = getString(R.string.start)
         stopTimer()
         stopAccelerometer()
         saveTrainingSession()
-        binding.closeButton.isEnabled = true // Riabilita il bottone Close
+        binding.closeButton.isEnabled = true
+        updateButtonColor()
     }
 
     private fun closeTraining() {
@@ -179,7 +183,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             stopTraining()
         }
         resetTrainingData()
-        finish() // Chiude l'activity e torna alla precedente
+        finish()
     }
 
     private fun resetTrainingData() {
@@ -187,6 +191,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         calorieCount = 0.0
         elapsedTime = 0L
         binding.timeTextView.text = getString(R.string.reset_time)
-        binding.timeTextView.text = getString(R.string.reset_calories)
+        binding.calorieTextView.text = getString(R.string.reset_calories)
     }
 }

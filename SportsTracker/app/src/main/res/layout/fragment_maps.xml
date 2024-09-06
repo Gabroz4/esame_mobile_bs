@@ -11,13 +11,18 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/addTrainingButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="16dp"
-        android:text="Aggiungi nuovo allenamento"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/aggiungi_nuovo_allenamento"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/ubuntu_regular"
+        android:textColor="@color/black"
         android:elevation="4dp"/>
 
 </FrameLayout>

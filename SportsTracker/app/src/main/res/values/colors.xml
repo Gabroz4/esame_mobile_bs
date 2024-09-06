@@ -12,6 +12,8 @@
     <color name="textBackground">#0D7C66</color>
     <color name="toolbar">#FFEEF5</color>
     <color name="button">#FFCCCB</color>
+    <color name="button_disabled">#969992</color>
+
 
 
 

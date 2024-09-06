@@ -12,7 +12,7 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="login">login</string>
-    <string name="start">start</string>
+    <string name="start">Start</string>
     <string name="stop">stop</string>
     <string name="title">Benvenuto in Sports Tracker!</string>
     <string name="UserName">UserName</string>
@@ -45,8 +45,12 @@
     <string name="obiettivo_view">Obiettivo: %1$s</string>
     <string name="salva_modifiche">Salva Modifiche</string>
     <string name="modifica_dati_utente">Modifica dati Utente</string>
-    <string name="reset_time">00:00:00</string>
+    <string name="reset_time"> 00:00:00 </string>
     <string name="reset_calories">Calorie: 0.00</string>
+    <string name="nuovo_allenamento">Nuovo Allenamento</string>
+    <string name="no_calories">0 calories</string>
+    <string name="chiudi_allenamento">Chiudi Allenamento</string>
+    <string name="aggiungi_nuovo_allenamento">Aggiungi nuovo allenamento</string>
 
 
     <!-- <string name="countdown"><xliff:g>until holiday</xliff:g></string>  esempio con tag ch eimpedisce la traduzione-->
