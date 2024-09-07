@@ -1,10 +1,10 @@
 package com.broccolistefanipss.sportstracker.manager
 
-import android.content.Context
-import android.content.SharedPreferences
-
+//import android.content.Context
+//import android.content.SharedPreferences
+//
 // Classe per gestire le preferenze condivise, utilizzata per salvare e recuperare dati dell'applicazione.
-
+//
 //object SharedPrefs {
 //    // Chiavi usate per salvare i dati nelle preferenze condivise.
 //    const val userName = "userName"

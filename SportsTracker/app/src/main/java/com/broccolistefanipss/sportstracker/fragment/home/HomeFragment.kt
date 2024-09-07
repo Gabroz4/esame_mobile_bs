@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.databinding.FragmentHomeBinding
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.TrainingSession
@@ -18,7 +19,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: HomeViewModel by viewModels()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,14 +45,14 @@ class HomeFragment : Fragment() {
             binding.emptyTextView.visibility = View.GONE
 
             // Crea l'adapter e passa la funzione di eliminazione
-            val adapter = TrainingSessionAdapter(sessions) { sessionId ->
-                deleteSession(sessionId) // Chiama la funzione di eliminazione
+            val adapter = TrainingSessionAdapter(requireContext(), sessions) { sessionId ->
+                deleteSession(sessionId) // Chiama la funzione di eliminazione,
             }
             binding.trainingSessionsRecyclerView.adapter = adapter
         } else {
             binding.trainingSessionsRecyclerView.visibility = View.GONE
             binding.emptyTextView.visibility = View.VISIBLE
-            binding.emptyTextView.text = "Nessun allenamento registrato"
+            binding.emptyTextView.text = getString(R.string.no_allenamenti)
         }
     }
 

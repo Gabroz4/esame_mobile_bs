@@ -1,19 +1,22 @@
 package com.broccolistefanipss.sportstracker.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.broccolistefanipss.sportstracker.databinding.ItemTrainingSessionBinding
 import com.broccolistefanipss.sportstracker.model.TrainingSession
+import com.broccolistefanipss.sportstracker.R
 
 class TrainingSessionAdapter(
+    private val context: Context,
     private var sessions: List<TrainingSession>,
     private val onDeleteClick: (Int) -> Unit // gestione del click di eliminazione
 ) : RecyclerView.Adapter<TrainingSessionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // Crea un nuovo view binding per l'item
-        val binding = ItemTrainingSessionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemTrainingSessionBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
 
@@ -21,9 +24,8 @@ class TrainingSessionAdapter(
         val session = sessions[position]
         holder.bind(session)
 
-        // Aggiungi il listener per il bottone di eliminazione
         holder.binding.buttonDeleteTraining.setOnClickListener {
-            onDeleteClick(session.sessionId) // Passa l'ID della sessione da eliminare
+            onDeleteClick(session.sessionId) //Id dell'allenamento da eliminare
         }
     }
 
@@ -32,16 +34,11 @@ class TrainingSessionAdapter(
     inner class ViewHolder(val binding: ItemTrainingSessionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(session: TrainingSession) {
             // Imposta i dati della sessione nei componenti della view
-            binding.sessionIdTextView.text = "Id allenamento:  ${session.sessionId}"
+            binding.sessionIdTextView.text = context.getString(R.string.id_allenamento_view, session.sessionId)
             binding.sessionDateTextView.text = session.sessionDate
-            binding.durationTextView.text = "${session.duration} sec - ${session.burntCalories} kcal"
+            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.sessionId)
             binding.trainingTypeTextView.text = session.trainingType
         }
     }
 
-    // Funzione per aggiornare le sessioni
-    //fun updateSessions(newSessions: List<TrainingSession>) {
-    //    sessions = newSessions
-    //    notifyDataSetChanged() // Notifica l'adapter che i dati sono cambiati
-    //}
 }

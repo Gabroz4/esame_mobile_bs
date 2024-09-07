@@ -13,6 +13,13 @@
     <color name="toolbar">#FFEEF5</color>
     <color name="button">#FFCCCB</color>
     <color name="button_disabled">#969992</color>
+    <color name="red">#FF0000</color>
+    <color name="azzurro">#98DED9</color>
+    <color name="verde_menta">#98DED9</color>
+    <color name="verde_launcher_background">#3DDC84</color>
+    <color name="trasparente">#00000000</color>
+    <color name="grigio_chiaro">#33FFFFFF</color>
+    <color name="nero_parzialmente_trasparente">#44000000</color>
 
 
 

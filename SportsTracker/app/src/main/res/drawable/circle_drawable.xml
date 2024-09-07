@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#FF0000" /> <!-- Un cerchio rosso -->
+    <solid android:color="@color/red" /> <!-- Un cerchio rosso -->
     <size
         android:width="10dp"
         android:height="10dp" />

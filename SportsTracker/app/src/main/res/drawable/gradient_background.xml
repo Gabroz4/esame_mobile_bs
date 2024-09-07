@@ -2,8 +2,8 @@
     <item>
         <shape>
             <gradient
-                android:startColor="#98DED9"
-                android:endColor="#A1D6B2"
+                android:startColor="@color/azzurro"
+                android:endColor="@color/verde_menta"
                 android:angle="45"/>         <!-- Colore iniziale, seguito dal finale e poi Angolo della sfumatura -->
         </shape>
     </item>

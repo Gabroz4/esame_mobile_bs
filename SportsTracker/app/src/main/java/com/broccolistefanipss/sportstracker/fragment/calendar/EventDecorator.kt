@@ -1,3 +1,5 @@
+package com.broccolistefanipss.sportstracker.fragment.calendar
+
 import android.content.Context
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.DayViewDecorator
@@ -21,7 +23,7 @@ class EventDecorator(context: Context, private val dates: Set<CalendarDay>) : Da
 
 
     override fun decorate(view: DayViewFacade) {
-        Log.d("EventDecorator", "Decorating day: ${view}")
+        Log.d("EventDecorator", "Decorating day: $view")
         view.setBackgroundDrawable(drawable)
     }
 }

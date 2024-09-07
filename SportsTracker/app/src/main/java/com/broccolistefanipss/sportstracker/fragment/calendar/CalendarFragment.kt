@@ -1,7 +1,5 @@
 package com.broccolistefanipss.sportstracker.fragment.calendar
 
-import CalendarViewModel
-import EventDecorator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -12,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.databinding.FragmentCalendarBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import java.time.LocalDate
@@ -111,7 +110,7 @@ class CalendarFragment : Fragment() {
             val training = sessions.find { it.date == date }
             if (training != null) {
                 binding.textViewTrainingDetails.apply {
-                    text = "Allenamento per $date: ${training.description}"
+                    text = context.getString(R.string.allenamento_per_data, date, training.description)
                     visibility = View.VISIBLE
                 }
             } else {
