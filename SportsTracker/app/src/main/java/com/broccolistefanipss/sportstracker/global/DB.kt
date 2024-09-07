@@ -10,7 +10,7 @@ import com.broccolistefanipss.sportstracker.model.TrainingSession
 import com.broccolistefanipss.sportstracker.model.User
 
 // Classe DB che estende SQLiteOpenHelper per gestire la creazione, l'apertura e l'aggiornamento del database.
-class DB(private val context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
+class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
 
     // Viene chiamata quando il database viene creato per la prima volta. Qui vengono create le tabelle.
     override fun onCreate(db: SQLiteDatabase?) {
@@ -107,29 +107,6 @@ class DB(private val context: Context) : SQLiteOpenHelper(context, DB_NAME, null
         }
         return calendarTrainingsList
     }
-
-    fun getAllCalendarTrainings(): MutableList<CalendarTraining> {
-        val calendarTrainingsList = mutableListOf<CalendarTraining>()
-        val db = this.readableDatabase
-
-        // Esegui la query per ottenere tutte le righe dal tavolo CalendarTraining
-        db.rawQuery("SELECT * FROM CalendarTraining", null).use { cursor ->
-            while (cursor.moveToNext()) {
-                // Estrai i dati da ogni colonna
-                val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
-                val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
-                val description = cursor.getString(cursor.getColumnIndexOrThrow("description"))
-
-                // Crea un oggetto CalendarTraining con i dati estratti
-                val calendarTraining = CalendarTraining(userName, date, description)
-
-                // Aggiungi l'oggetto alla lista
-                calendarTrainingsList.add(calendarTraining)
-            }
-        }
-        return calendarTrainingsList
-    }
-
 
     // Recupera le sessioni di allenamento per un utente specifico.
     fun getUserTrainingSessions(userName: String): List<TrainingSession> {

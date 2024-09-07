@@ -7,7 +7,7 @@ import com.broccolistefanipss.sportstracker.databinding.ItemTrainingSessionBindi
 import com.broccolistefanipss.sportstracker.model.TrainingSession
 
 class TrainingSessionAdapter(
-    var sessions: List<TrainingSession>,
+    private var sessions: List<TrainingSession>,
     private val onDeleteClick: (Int) -> Unit // gestione del click di eliminazione
 ) : RecyclerView.Adapter<TrainingSessionAdapter.ViewHolder>() {
 
@@ -40,8 +40,8 @@ class TrainingSessionAdapter(
     }
 
     // Funzione per aggiornare le sessioni
-    fun updateSessions(newSessions: List<TrainingSession>) {
-        sessions = newSessions
-        notifyDataSetChanged() // Notifica l'adapter che i dati sono cambiati
-    }
+    //fun updateSessions(newSessions: List<TrainingSession>) {
+    //    sessions = newSessions
+    //    notifyDataSetChanged() // Notifica l'adapter che i dati sono cambiati
+    //}
 }

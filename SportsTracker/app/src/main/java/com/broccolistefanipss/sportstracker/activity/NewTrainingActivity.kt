@@ -1,7 +1,6 @@
 package com.broccolistefanipss.sportstracker.activity
 
 import android.content.Context
-import android.graphics.Color
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -91,7 +90,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val newElapsedTime = currentTime - startTime + 1
 
             binding.timeTextView.text = formatDuration(newElapsedTime)
-            binding.calorieTextView.text = String.format(Locale.getDefault(), "Calories: %.2f", calorieCount)
+            binding.calorieTextView.text = String.format(Locale.getDefault(), "Calorie: %.2f", calorieCount)
             return newElapsedTime
         }
         return 0

@@ -24,7 +24,6 @@ import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.LoginManager
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.User
-import android.content.Context
 import com.broccolistefanipss.sportstracker.R
 
 

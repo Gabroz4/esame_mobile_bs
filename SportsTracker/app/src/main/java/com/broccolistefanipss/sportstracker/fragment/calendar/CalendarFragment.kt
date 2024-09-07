@@ -28,7 +28,7 @@ class CalendarFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCalendarBinding.inflate(inflater, container, false)
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
@@ -71,7 +71,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    // Handles clicks on the calendar dates and displays the session details if available
+    // Gestisce click sul calendario e mostra allenamenti se ci sono
     private fun setupCalendarClickListener() {
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
             val formattedDate = String.format(
@@ -85,7 +85,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    // Handles save button click, saves training data via ViewModel
+    // Gestisce click sul bottone per salvataggio, salva training via ViewModel
     private fun setupSaveButtonListener() {
         binding.buttonSaveTraining.setOnClickListener {
             val date = binding.editTextDate.text.toString()
@@ -101,7 +101,7 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    // Check and display the existing training details in the TextView
+    // Mostra dettagli allenamento nel TextView
     private fun checkForExistingTraining(date: String) {
         calendarViewModel.calendarTrainingSessions.value?.let { sessions ->
             val training = sessions.find { it.date == date }
@@ -116,87 +116,3 @@ class CalendarFragment : Fragment() {
         }
     }
 }
-
-//class CalendarFragment : Fragment() {
-//
-//    private var _binding: FragmentCalendarBinding? = null
-//    private val binding get() = _binding!!
-//
-//    private lateinit var calendarViewModel: CalendarViewModel
-//    private lateinit var sharedPreferences: SharedPreferences
-//
-//    override fun onCreateView(
-//        inflater: LayoutInflater,
-//        container: ViewGroup?,
-//        savedInstanceState: Bundle?
-//    ): View? {
-//        _binding = FragmentCalendarBinding.inflate(inflater, container, false)
-//        calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
-//
-//        val db = DB(requireContext())
-//        calendarViewModel.init(db, requireContext())  // Pass the context to the ViewModel
-//
-//        sharedPreferences = requireContext().getSharedPreferences("TrainingPrefs", Context.MODE_PRIVATE)
-//
-//        setupCalendarClickListener()
-//        setupSaveButtonListener()
-//        observeCalendarTrainings()
-//
-//        return binding.root
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null
-//    }
-//
-//    private fun observeCalendarTrainings() {
-//        calendarViewModel.calendarTrainingSessions.observe(viewLifecycleOwner) { sessions ->
-//            val calendarDays = sessions.mapNotNull {
-//                try {
-//                    LocalDate.parse(it.date)
-//                } catch (e: DateTimeParseException) {
-//                    null
-//                }
-//            }.toSet()
-//            binding.calendarView.removeDecorators()  // Rimuovi decoratori precedenti
-//            binding.calendarView.addDecorator(EventDecorator(calendarDays))  // Applica nuovi decoratori
-//        }
-//    }
-//
-//    private fun setupCalendarClickListener() {
-//        binding.calendarView.setOnDateChangedListener { widget, date, selected ->
-//            val formattedDate = String.format("%02d-%02d-%04d", date.day, date.month + 1, date.year)
-//            binding.editTextDate.setText(formattedDate)
-//            checkForExistingTraining(formattedDate)
-//        }
-//    }
-//
-//    private fun setupSaveButtonListener() {
-//        binding.buttonSaveTraining.setOnClickListener {
-//            val date = binding.editTextDate.text.toString()
-//            val details = binding.editTextDetails.text.toString()
-//
-//            if (date.isNotEmpty() && details.isNotEmpty()) {
-//                calendarViewModel.saveCalendarTraining(date, details)  // Usa ViewModel per salvare i dati
-//                Toast.makeText(requireContext(), "Allenamento salvato", Toast.LENGTH_SHORT).show()
-//                checkForExistingTraining(date)
-//            } else {
-//                Toast.makeText(requireContext(), "Compila tutti i campi", Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-//
-//    private fun checkForExistingTraining(date: String) {
-//        val details = sharedPreferences.getString("training_$date", null)
-//
-//        if (details != null) {
-//            binding.textViewTrainingDetails.apply {
-//                text = "Allenamento per $date: $details"
-//                visibility = View.VISIBLE
-//            }
-//        } else {
-//            binding.textViewTrainingDetails.visibility = View.GONE
-//        }
-//    }
-//}

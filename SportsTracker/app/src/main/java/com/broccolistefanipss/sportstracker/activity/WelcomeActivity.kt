@@ -19,7 +19,6 @@ import com.broccolistefanipss.sportstracker.manager.SessionManager
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
-
     private lateinit var userNameEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var sessoSpinner: Spinner

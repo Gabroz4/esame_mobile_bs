@@ -22,7 +22,7 @@ class HomeViewModel : ViewModel() {
         loadTrainingSessions()
     }
 
-    fun loadTrainingSessions() {
+    private fun loadTrainingSessions() {
         viewModelScope.launch {
             val sessions = db.getUserTrainingSessions(userName)
             _trainingSessions.postValue(sessions)

@@ -15,8 +15,4 @@ class UserViewModel : ViewModel() {
         val userName = sessionManager.userName ?: return
         _user.value = database.getUserData(userName)
     }
-
-    fun updateUser(user: User) {
-        _user.value = user
-    }
 }
