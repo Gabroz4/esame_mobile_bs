@@ -1,9 +1,11 @@
 package com.broccolistefanipss.sportstracker.fragment.calendar
 
 import CalendarViewModel
+import EventDecorator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,21 +57,23 @@ class CalendarFragment : Fragment() {
         calendarViewModel.calendarTrainingSessions.observe(viewLifecycleOwner) { sessions ->
             val calendarDays = sessions.mapNotNull { session ->
                 try {
-                    // Converti la data in LocalDate
                     val localDate = LocalDate.parse(session.date)
-                    // Converte LocalDate in CalendarDay per il MaterialCalendarView
                     CalendarDay.from(localDate.year, localDate.monthValue, localDate.dayOfMonth)
                 } catch (e: DateTimeParseException) {
                     null  // Ignora le date non valide
                 }
             }.toSet()
 
+            Log.d("CalendarFragment", "Dates to decorate: $calendarDays")
+
             binding.calendarView.removeDecorators()  // Clear any previous decorators
             if (calendarDays.isNotEmpty()) {
                 binding.calendarView.addDecorator(EventDecorator(requireContext(), calendarDays))
+                binding.calendarView.invalidateDecorators()  // Aggiorna i decorators
             }
         }
     }
+
 
     // Gestisce click sul calendario e mostra allenamenti se ci sono
     private fun setupCalendarClickListener() {
