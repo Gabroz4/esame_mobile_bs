@@ -8,6 +8,7 @@ import android.util.Log
 import com.broccolistefanipss.sportstracker.model.CalendarTraining
 import com.broccolistefanipss.sportstracker.model.TrainingSession
 import com.broccolistefanipss.sportstracker.model.User
+import com.google.android.gms.maps.model.LatLng
 
 // Classe DB che estende SQLiteOpenHelper per gestire la creazione, l'apertura e l'aggiornamento del database.
 class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION) {
@@ -18,6 +19,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         db?.execSQL(SqlTable.User)
         db?.execSQL(SqlTable.TrainingSessions)
         db?.execSQL(SqlTable.CalendarTraining)
+        db?.execSQL(SqlTable.Location)
     }
 
     // Viene chiamata quando il database deve essere aggiornato, ad esempio quando incrementi la versione del database.
@@ -26,10 +28,9 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         db.execSQL("DROP TABLE IF EXISTS TrainingSessions")
         db.execSQL("DROP TABLE IF EXISTS CalendarTraining")
         db.execSQL("DROP TABLE IF EXISTS User")
+        db.execSQL("DROP TABLE IF EXISTS Location")
         onCreate(db) // Richiama onCreate per ricreare le tabelle
     }
-
-
 
     // Inserisce un nuovo utente nel database.
     fun insertUser(userName: String, password: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String): Boolean {
@@ -50,6 +51,79 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             Log.d("DB", "Username '$userName' esiste già nel database")
             return false
         }
+    }
+
+    fun getAllTrainingsByUserId(userId: String): List<TrainingSession> {
+        val trainings = mutableListOf<TrainingSession>()
+        val db = this.readableDatabase
+        val query = "SELECT * FROM TrainingSessions WHERE userName = ?"
+
+        db.rawQuery(query, arrayOf(userId)).use { cursor ->
+            while (cursor.moveToNext()) {
+                val id = cursor.getInt(cursor.getColumnIndexOrThrow("sessionId"))
+                val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
+                val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
+                val trainingType = cursor.getString(cursor.getColumnIndexOrThrow("trainingType"))
+                val burntCalories = cursor.getInt(cursor.getColumnIndexOrThrow("burntCalories"))
+
+                val training =
+                    TrainingSession(id, userId, sessionDate, duration, trainingType, burntCalories)
+                trainings.add(training)
+            }
+        }
+
+        return trainings
+    }
+
+    // Funzione per ottenere tutte le posizioni di un allenamento
+    fun getLocationsByTrainingId(trainingId: Long): List<LatLng> {
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT latitude, longitude FROM Location WHERE trainingId = ?", arrayOf(trainingId.toString()))
+
+        val locations = mutableListOf<LatLng>()
+        if (cursor.moveToFirst()) {
+            do {
+                val latitude = cursor.getDouble(cursor.getColumnIndexOrThrow("latitude"))
+                val longitude = cursor.getDouble(cursor.getColumnIndexOrThrow("longitude"))
+                locations.add(LatLng(latitude, longitude))
+            } while (cursor.moveToNext())
+        }
+        cursor.close()
+        return locations
+    }
+    //fun getAllLocations() {
+    //    val db = this.readableDatabase
+    //    val query = "SELECT * FROM training_locations"
+    //    val cursor = db.rawQuery(query, null)
+//
+    //    if (cursor.moveToFirst()) {
+    //        do {
+    //            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
+    //            val sessionId = cursor.getInt(cursor.getColumnIndexOrThrow("session_id"))
+    //            val latitude = cursor.getDouble(cursor.getColumnIndexOrThrow("latitude"))
+    //            val longitude = cursor.getDouble(cursor.getColumnIndexOrThrow("longitude"))
+    //            val timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))
+//
+    //            Log.d("DB", "Location ID: $id, Session ID: $sessionId, Latitude: $latitude, Longitude: $longitude, Timestamp: $timestamp")
+    //        } while (cursor.moveToNext())
+    //    } else {
+    //        Log.d("DB", "Nessuna location trovata.")
+    //    }
+//
+    //    cursor.close()
+    //    db.close()
+    //}
+
+    fun insertTrainingLocation(sessionId: Long, latitude: Double, longitude: Double, timestamp: Long) {
+        val db = writableDatabase
+        val values = ContentValues().apply {
+            put("trainingId", sessionId)
+            put("latitude", latitude)
+            put("longitude", longitude)
+            put("timestamp", timestamp)
+        }
+        db.insert("Location", null, values)
+        db.close()
     }
 
     // Controlla se un nome utente esiste già nel database.
@@ -96,7 +170,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
                 val date = cursor.getString(cursor.getColumnIndexOrThrow("date"))
                 val description = cursor.getString(cursor.getColumnIndexOrThrow("description"))
-
 
                 // Crea un oggetto TrainingSession con i dati estratti
                 val calendarTraining = CalendarTraining(userName, date, description)
@@ -212,7 +285,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     }
 
     companion object {
-        private const val DB_VERSION = 15 // Versione del database.
+        private const val DB_VERSION = 17 // Versione del database.
         private const val DB_NAME = "SportsTracker.db" // Nome del database.
     }
 }
