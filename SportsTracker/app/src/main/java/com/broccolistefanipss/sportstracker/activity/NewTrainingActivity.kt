@@ -128,6 +128,32 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         }
     }
 
+    override fun onSensorChanged(event: SensorEvent?) {
+        if (isRunning && event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
+            val x = event.values[0]
+            val y = event.values[1]
+            val z = event.values[2]
+
+            val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
+            totalAcceleration += accelerationMagnitude
+
+            // Calcola le calorie in base al tipo di sport selezionato e alla distanza percorsa
+            calorieCount = calculateCalories(sportSelectSpinner.selectedItem.toString(), totalAcceleration, totalDistance)
+        }
+    }
+
+    // Funzione per calcolare le calorie tenendo conto della distanza
+    private fun calculateCalories(sport: String, acceleration: Double, distance: Float): Double {
+        val calorieBurnRate = when (sport) {
+            "Corsa" -> 0.05 // Fattore di calcolo per la corsa
+            "Bicicletta" -> 0.03 // Bicicletta è piu efficiente
+            else -> 0.0
+        }
+
+        // Calcola le calorie usando sia l'accelerazione che la distanza
+        return (calorieBurnRate * acceleration) + (distance * 0.1) // Modifica il fattore per la distanza come necessario
+    }
+
     private val timerRunnable = object : Runnable {
         override fun run() {
             elapsedTime = updateTimer()
@@ -247,18 +273,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
-    override fun onSensorChanged(event: SensorEvent?) {
-        if (isRunning && event?.sensor?.type == Sensor.TYPE_ACCELEROMETER) {
-            val x = event.values[0]
-            val y = event.values[1]
-            val z = event.values[2]
 
-            val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
-            totalAcceleration += accelerationMagnitude
 
-            calorieCount = totalAcceleration * 0.01
-        }
-    }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Non implementato
