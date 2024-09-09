@@ -77,9 +77,9 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
             if (polylineOptionsList.isNotEmpty()) {
                 map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
-            } else {
-                Toast.makeText(context, "Nessun allenamento trovato", Toast.LENGTH_SHORT).show()
-            }
+            }// else {
+             //   Toast.makeText(context, "Nessun allenamento trovato", Toast.LENGTH_SHORT).show()
+            //}
         }
         viewModel.loadAllUserTrainings()
     }

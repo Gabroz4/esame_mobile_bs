@@ -200,7 +200,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
                 Log.d("NewTrainingActivity", "Latitude: ${location.latitude}, Longitude: ${location.longitude}, Timestamp: ${location.timestamp}")
             }
         } else {
-            Log.d("NewTrainingActivity", "No location data available.")
+            Log.d("NewTrainingActivity", "Nessun dato disponibile sulla posizione")
         }
     }
 

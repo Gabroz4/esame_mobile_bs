@@ -56,6 +56,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.8.0")
     implementation("com.prolificinteractive:material-calendarview:1.4.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 
     // Test dependencies
     testImplementation("junit:junit:4.13.2")
