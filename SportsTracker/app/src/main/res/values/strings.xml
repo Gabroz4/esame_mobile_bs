@@ -49,18 +49,17 @@
     <string name="reset_calories">Calorie: 0.00</string>
     <string name="nuovo_allenamento">Nuovo Allenamento</string>
     <string name="no_calories">0 calorie</string>
+    <string name="no_distance">0 km</string>
     <string name="chiudi_allenamento">Chiudi Allenamento</string>
     <string name="aggiungi_nuovo_allenamento">Aggiungi nuovo allenamento</string>
     <string name="id_allenamento_view">Id allenamento: %1d</string>
-    <string name="durata_e_calorie">%1d sec - %1d kcal</string>
+    <string name="durata_e_calorie">%1d sec - %1d kcal - %1.2f m</string>
     <string name="no_allenamenti">Nessun allenamento registrato</string>
     <string name="descrizione_caricamento_immagine">Immagine di caricamento in corso</string>
     <string name="salva_allenamento">Salva Allenamento</string>
     <string name="inserisci_data">Inserisci la data</string>
     <string name="inserisci_dettagli_allenamento">Inserisci i dettagli dell allenamento</string>
     <string name="allenamento_per_data">Allenamento del %1$s: %2$s</string>
-
-    <!-- <string name="countdown"><xliff:g>until holiday</xliff:g></string>  esempio con tag ch eimpedisce la traduzione-->
 
     <string-array name="objectives_array" >
         <item>Dimagrire</item>
@@ -72,6 +71,11 @@
         <item>Maschio</item>
         <item>Femmina</item>
         <item>Altro</item>
+    </string-array>
+
+    <string-array name="sports_array" >
+        <item>Corsa</item>
+        <item>Bicicletta</item>
     </string-array>
 
 </resources>

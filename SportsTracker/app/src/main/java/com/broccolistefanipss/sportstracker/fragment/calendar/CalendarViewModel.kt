@@ -20,7 +20,7 @@ class CalendarViewModel : ViewModel() {
     private val _calendarTrainingSessions = MutableLiveData<List<CalendarTraining>>()
     val calendarTrainingSessions: LiveData<List<CalendarTraining>> = _calendarTrainingSessions
 
-    // Inizializza viewmodel con db e context
+    // Inizializza viewModel con db e context
     fun init(db: DB, context: Context) {
         this.db = db
         this.contextRef = WeakReference(context)

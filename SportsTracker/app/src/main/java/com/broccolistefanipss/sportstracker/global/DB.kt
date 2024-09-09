@@ -64,10 +64,11 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                 val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
                 val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
                 val trainingType = cursor.getString(cursor.getColumnIndexOrThrow("trainingType"))
+                val distance = cursor.getFloat(cursor.getColumnIndexOrThrow("distance"))
                 val burntCalories = cursor.getInt(cursor.getColumnIndexOrThrow("burntCalories"))
 
                 val training =
-                    TrainingSession(id, userId, sessionDate, duration, trainingType, burntCalories)
+                    TrainingSession(id, userId, sessionDate, duration,distance, trainingType, burntCalories)
                 trainings.add(training)
             }
         }
@@ -91,28 +92,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         cursor.close()
         return locations
     }
-    //fun getAllLocations() {
-    //    val db = this.readableDatabase
-    //    val query = "SELECT * FROM training_locations"
-    //    val cursor = db.rawQuery(query, null)
-//
-    //    if (cursor.moveToFirst()) {
-    //        do {
-    //            val id = cursor.getInt(cursor.getColumnIndexOrThrow("id"))
-    //            val sessionId = cursor.getInt(cursor.getColumnIndexOrThrow("session_id"))
-    //            val latitude = cursor.getDouble(cursor.getColumnIndexOrThrow("latitude"))
-    //            val longitude = cursor.getDouble(cursor.getColumnIndexOrThrow("longitude"))
-    //            val timestamp = cursor.getLong(cursor.getColumnIndexOrThrow("timestamp"))
-//
-    //            Log.d("DB", "Location ID: $id, Session ID: $sessionId, Latitude: $latitude, Longitude: $longitude, Timestamp: $timestamp")
-    //        } while (cursor.moveToNext())
-    //    } else {
-    //        Log.d("DB", "Nessuna location trovata.")
-    //    }
-//
-    //    cursor.close()
-    //    db.close()
-    //}
 
     fun insertTrainingLocation(sessionId: Long, latitude: Double, longitude: Double, timestamp: Long) {
         val db = writableDatabase
@@ -134,12 +113,13 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         }
     }
 
-    fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, trainingType: String, burntCalories: Int): Long {
+    fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, distance: Float, trainingType: String, burntCalories: Int): Long {
         val database = this.writableDatabase
         val contentValues = ContentValues().apply {
             put("userName", userName)
             put("sessionDate", sessionDate)
             put("duration", duration)
+            put("distance", distance)
             put("trainingType", trainingType)
             put("burntCalories", burntCalories)
         }
@@ -193,10 +173,11 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
                 val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
                 val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
                 val trainingType = cursor.getString(cursor.getColumnIndexOrThrow("trainingType"))
+                val distance = cursor.getFloat(cursor.getColumnIndexOrThrow("distance"))
                 val burntCalories = cursor.getInt(cursor.getColumnIndexOrThrow("burntCalories"))
 
                 // Crea un oggetto TrainingSession con i dati estratti
-                val trainingSession = TrainingSession(id, userName, sessionDate, duration, trainingType, burntCalories)
+                val trainingSession = TrainingSession(id, userName, sessionDate, duration,distance, trainingType,  burntCalories)
 
                 // Aggiungi l'oggetto alla lista
                 trainingSessionsList.add(trainingSession)
@@ -285,7 +266,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     }
 
     companion object {
-        private const val DB_VERSION = 17 // Versione del database.
+        private const val DB_VERSION = 18 // Versione del database.
         private const val DB_NAME = "SportsTracker.db" // Nome del database.
     }
 }

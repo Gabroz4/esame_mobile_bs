@@ -8,6 +8,8 @@ import com.broccolistefanipss.sportstracker.databinding.ItemTrainingSessionBindi
 import com.broccolistefanipss.sportstracker.model.TrainingSession
 import com.broccolistefanipss.sportstracker.R
 
+//TODO: occhio a come vengono salvate le kcal e distanza, fa cose strane nel salvataggio
+
 class TrainingSessionAdapter(
     private val context: Context,
     private var sessions: List<TrainingSession>,
@@ -15,7 +17,7 @@ class TrainingSessionAdapter(
 ) : RecyclerView.Adapter<TrainingSessionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Crea un nuovo view binding per l'item
+        // Crea un nuovo view binding
         val binding = ItemTrainingSessionBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
@@ -36,7 +38,7 @@ class TrainingSessionAdapter(
             // Imposta i dati della sessione nei componenti della view
             binding.sessionIdTextView.text = context.getString(R.string.id_allenamento_view, session.sessionId)
             binding.sessionDateTextView.text = session.sessionDate
-            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.sessionId)
+            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.sessionId, session.distance)
             binding.trainingTypeTextView.text = session.trainingType
         }
     }

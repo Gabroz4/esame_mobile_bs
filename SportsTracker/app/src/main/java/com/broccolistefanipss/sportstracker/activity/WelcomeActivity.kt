@@ -73,28 +73,6 @@ class WelcomeActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
-
-    //private fun saveUserData() {
-    //    // Prendi le info dell'utente da EditText e Spinner
-    //    val userNameString = userNameEditText.text.toString()
-    //    val passwordString = passwordEditText.text.toString()
-    //    val sessoString = sessoSpinner.selectedItem.toString()
-    //    val etaValue = etaEditText.text.toString().toIntOrNull() ?: 0
-    //    val altezzaValue = altezzaEditText.text.toString().toIntOrNull() ?: 0
-    //    val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
-    //    val selectedObjective = objectiveSpinner.selectedItem.toString()
-//
-    //    // Inserisci dati nel database
-    //    DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
-//
-    //    // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
-    //    saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue) //+ obiettivo al limite
-//
-    //    // Vai a LoginActivity
-    //    startActivity(Intent(this, LoginActivity::class.java))
-    //    finish()
-    //}
-
     private fun saveUserData() {
         // Prendi le info dell'utente da EditText e Spinner
         val userNameString = userNameEditText.text.toString()

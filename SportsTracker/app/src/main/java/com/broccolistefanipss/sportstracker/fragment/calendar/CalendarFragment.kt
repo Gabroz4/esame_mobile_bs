@@ -16,6 +16,7 @@ import com.broccolistefanipss.sportstracker.global.DB
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
 import com.prolificinteractive.materialcalendarview.CalendarDay
+import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -34,7 +35,7 @@ class CalendarFragment : Fragment() {
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         val db = DB(requireContext())
-        calendarViewModel.init(db, requireContext())  // Pass the context to the ViewModel
+        calendarViewModel.init(db, requireContext())  // Passa il context al viewModel
 
         sharedPreferences =
             requireContext().getSharedPreferences("TrainingPrefs", Context.MODE_PRIVATE)
@@ -51,26 +52,35 @@ class CalendarFragment : Fragment() {
         _binding = null
     }
 
-    // Observe the LiveData from ViewModel to decorate dates with training sessions
+    // Osserva il LiveData dal ViewModel per decorare le date con allenamenti programmati
     private fun observeCalendarTrainings() {
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")  // Definisci il formatter
+
         calendarViewModel.calendarTrainingSessions.observe(viewLifecycleOwner) { sessions ->
             val calendarDays = sessions.mapNotNull { session ->
                 try {
-                    val localDate = LocalDate.parse(session.date)
+                    val localDate = LocalDate.parse(session.date, formatter)
+                    Log.d("CalendarFragment", "Parsed date: $localDate")
                     CalendarDay.from(localDate.year, localDate.monthValue, localDate.dayOfMonth)
                 } catch (e: DateTimeParseException) {
-                    null  // Ignora le date non valide
+                    Log.e("CalendarFragment", "Error parsing date: ${session.date}")
+                    null
                 }
             }.toSet()
 
             Log.d("CalendarFragment", "Dates to decorate: $calendarDays")
 
-            binding.calendarView.removeDecorators()  // Clear any previous decorators
+            // Assicurati di rimuovere i decoratori prima di aggiungerne di nuovi
+            binding.calendarView.removeDecorators()
+
             if (calendarDays.isNotEmpty()) {
                 binding.calendarView.addDecorator(EventDecorator(requireContext(), calendarDays))
-                binding.calendarView.invalidateDecorators()  // Aggiorna i decorators
+
+                // Forza l'aggiornamento dei decoratori
+                binding.calendarView.invalidateDecorators()
             }
         }
+
     }
 
 
@@ -78,11 +88,11 @@ class CalendarFragment : Fragment() {
     private fun setupCalendarClickListener() {
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
             val formattedDate = String.format(
-                "%04d-%02d-%02d",
-                date.year,
+                "%02d-%02d-%04d",
+                date.day,
                 date.month + 1,
-                date.day
-            )  // Format date as "YYYY-MM-DD"
+                date.year
+            )  // Format data come "YYYY-MM-DD" per semplicità
             binding.editTextDate.setText(formattedDate)
             checkForExistingTraining(formattedDate)
         }
@@ -109,8 +119,16 @@ class CalendarFragment : Fragment() {
         calendarViewModel.calendarTrainingSessions.value?.let { sessions ->
             val training = sessions.find { it.date == date }
             if (training != null) {
+                // Format data italiana
+                val formattedDate = try {
+                    val localDate = LocalDate.parse(date)
+                    String.format("%02d-%02d-%04d", localDate.dayOfMonth, localDate.monthValue, localDate.year)
+                } catch (e: DateTimeParseException) {
+                    date // In caso di errore, mostra la data nel formato originale
+                }
+
                 binding.textViewTrainingDetails.apply {
-                    text = context.getString(R.string.allenamento_per_data, date, training.description)
+                    text = context.getString(R.string.allenamento_per_data, formattedDate, training.description)
                     visibility = View.VISIBLE
                 }
             } else {
