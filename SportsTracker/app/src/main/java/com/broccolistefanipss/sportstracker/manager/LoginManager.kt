@@ -9,7 +9,7 @@ class LoginManager(private val context: Context) {
 
     fun attemptLogin(username: String, password: String): Boolean {
         val db = DB(context)
-        if (db.userLogin(username, password)) {
+        if (db.userLogin(username, password) == true) {
             val sessionManager = SessionManager(context)
             sessionManager.setLogin(true)
             saveToSharedPreferences(context, username)

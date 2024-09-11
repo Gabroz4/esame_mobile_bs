@@ -38,60 +38,64 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         if (!isNameExists(userName)) {
             // Prepara la query SQL e inserisce i dati.
             val sqlQuery = "INSERT INTO User(userName, password, sesso, eta, altezza, peso, obiettivo) VALUES(?, ?, ?, ?, ?, ?, ?)"
-            val database = this.writableDatabase
-            database.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
+            val db = this.writableDatabase
+            db.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
             Log.d("Username: ", userName)
             Log.d("sesso: ", sesso)
             Log.d("eta: ", eta.toString())
             Log.d("altezza: ", altezza.toString())
             Log.d("peso: ", peso.toString())
             Log.d("obiettivo: ", obiettivo)
+
+            db.close()
             return true
         } else {
             Log.d("DB", "Username '$userName' esiste già nel database")
             return false
         }
+
     }
 
     fun getAllTrainingsByUserId(userId: String): List<TrainingSession> {
         val trainings = mutableListOf<TrainingSession>()
         val db = this.readableDatabase
-        val query = "SELECT * FROM TrainingSessions WHERE userName = ?"
 
-        db.rawQuery(query, arrayOf(userId)).use { cursor ->
-            while (cursor.moveToNext()) {
-                val id = cursor.getInt(cursor.getColumnIndexOrThrow("sessionId"))
-                val sessionDate = cursor.getString(cursor.getColumnIndexOrThrow("sessionDate"))
-                val duration = cursor.getInt(cursor.getColumnIndexOrThrow("duration"))
-                val trainingType = cursor.getString(cursor.getColumnIndexOrThrow("trainingType"))
-                val distance = cursor.getFloat(cursor.getColumnIndexOrThrow("distance"))
-                val burntCalories = cursor.getInt(cursor.getColumnIndexOrThrow("burntCalories"))
+        val cursor = db.rawQuery("SELECT * FROM TrainingSessions WHERE userName = ?", arrayOf(userId))
+        cursor?.use {
+            while (it.moveToNext()) {
+                val id = it.getInt(it.getColumnIndexOrThrow("sessionId"))
+                val sessionDate = it.getString(it.getColumnIndexOrThrow("sessionDate"))
+                val duration = it.getInt(it.getColumnIndexOrThrow("duration"))
+                val trainingType = it.getString(it.getColumnIndexOrThrow("trainingType"))
+                val distance = it.getFloat(it.getColumnIndexOrThrow("distance"))
+                val burntCalories = it.getInt(it.getColumnIndexOrThrow("burntCalories"))
 
-                val training =
-                    TrainingSession(id, userId, sessionDate, duration,distance, trainingType, burntCalories)
+                val training = TrainingSession(id, userId, sessionDate, duration, distance, trainingType, burntCalories)
                 trainings.add(training)
             }
         }
-
+        db.close()
         return trainings
     }
+
 
     // Funzione per ottenere tutte le posizioni di un allenamento
     fun getLocationsByTrainingId(trainingId: Long): List<LatLng> {
         val db = readableDatabase
-        val cursor = db.rawQuery("SELECT latitude, longitude FROM Location WHERE trainingId = ?", arrayOf(trainingId.toString()))
-
         val locations = mutableListOf<LatLng>()
-        if (cursor.moveToFirst()) {
-            do {
-                val latitude = cursor.getDouble(cursor.getColumnIndexOrThrow("latitude"))
-                val longitude = cursor.getDouble(cursor.getColumnIndexOrThrow("longitude"))
+
+        val cursor = db.rawQuery("SELECT latitude, longitude FROM Location WHERE trainingId = ?", arrayOf(trainingId.toString()))
+        cursor?.use {
+            while (it.moveToNext()) {
+                val latitude = it.getDouble(it.getColumnIndexOrThrow("latitude"))
+                val longitude = it.getDouble(it.getColumnIndexOrThrow("longitude"))
                 locations.add(LatLng(latitude, longitude))
-            } while (cursor.moveToNext())
+            }
         }
-        cursor.close()
+        db.close()
         return locations
     }
+
 
     fun insertTrainingLocation(sessionId: Long, latitude: Double, longitude: Double, timestamp: Long) {
         val db = writableDatabase
@@ -114,7 +118,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     }
 
     fun insertTrainingSession(userName: String, sessionDate: String, duration: Int, distance: Float, trainingType: String, burntCalories: Int): Long {
-        val database = this.writableDatabase
+        val db = this.writableDatabase
         val contentValues = ContentValues().apply {
             put("userName", userName)
             put("sessionDate", sessionDate)
@@ -123,9 +127,8 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             put("trainingType", trainingType)
             put("burntCalories", burntCalories)
         }
-        // Inserisci i dati e restituisci l'ID della riga appena inserita
-        val sessionId = database.insert("TrainingSessions", null, contentValues)
-        database.close() // Chiude il database
+        val sessionId = db.insert("TrainingSessions", null, contentValues)
+        db.close()
         return sessionId
     }
 
@@ -196,33 +199,40 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
     fun getUserData(username: String): User? {
         val db = this.readableDatabase
-        val query = "SELECT * FROM User WHERE userName = ?"
-        val cursor = db.rawQuery(query, arrayOf(username))
-
         var user: User? = null
-        if (cursor != null && cursor.moveToFirst()) {
-            val userName = cursor.getString(cursor.getColumnIndexOrThrow("userName"))
-            val password = cursor.getString(cursor.getColumnIndexOrThrow("password"))
-            val sesso = cursor.getString(cursor.getColumnIndexOrThrow("sesso"))
-            val eta = cursor.getInt(cursor.getColumnIndexOrThrow("eta"))
-            val altezza = cursor.getInt(cursor.getColumnIndexOrThrow("altezza"))
-            val peso = cursor.getDouble(cursor.getColumnIndexOrThrow("peso"))
-            val obiettivo = cursor.getString(cursor.getColumnIndexOrThrow("obiettivo"))
 
-            user = User(userName, password, sesso, eta, altezza, peso, obiettivo)
+        val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ?", arrayOf(username))
+        cursor?.use {
+            if (it.moveToFirst()) {
+                val userName = it.getString(it.getColumnIndexOrThrow("userName"))
+                val password = it.getString(it.getColumnIndexOrThrow("password"))
+                val sesso = it.getString(it.getColumnIndexOrThrow("sesso"))
+                val eta = it.getInt(it.getColumnIndexOrThrow("eta"))
+                val altezza = it.getInt(it.getColumnIndexOrThrow("altezza"))
+                val peso = it.getDouble(it.getColumnIndexOrThrow("peso"))
+                val obiettivo = it.getString(it.getColumnIndexOrThrow("obiettivo"))
+                user = User(userName, password, sesso, eta, altezza, peso, obiettivo)
+            }
         }
-
         cursor?.close()
+        db.close()
+
         return user
     }
 
-    fun userLogin(userName: String, password: String): Boolean {
+
+    fun userLogin(userName: String, password: String): Boolean? {
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ? AND password = ?", arrayOf(userName, password))
-        val userExists = cursor.count > 0
-        cursor.close()
+
+        val userExists = cursor?.use { //cursor viene chiuso automaticamente
+            it.count > 0
+        }
+
+        db.close()
         return userExists
     }
+
 
     // Funzione per aggiornare i dati di un utente
     fun updateUser(
