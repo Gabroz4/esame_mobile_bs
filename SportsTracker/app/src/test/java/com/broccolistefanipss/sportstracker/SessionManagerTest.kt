@@ -32,20 +32,20 @@ class SessionManagerTest {
     }
 
     @Test
-    fun `test isLoggedIn when not logged in`() {
+    fun testIsLoggedInWhenNotLoggedIn() {
         `when`(sharedPreferences.getBoolean(SessionManager.KeyIsLoggedIn, false)).thenReturn(false)
         assert(!sessionManager.isLoggedIn)
     }
 
     @Test
-    fun `test setLogin updates login status`() {
+    fun testSetLoginUpdatesLoginStatus() {
         sessionManager.setLogin(true)
         verify(editor).putBoolean(SessionManager.KeyIsLoggedIn, true)
         verify(editor).apply()
     }
 
     @Test
-    fun `test userName getter and setter`() {
+    fun testUserNameGetterAndSetter() {
         val testUsername = "testUser"
         sessionManager.userName = testUsername
         verify(editor).putString(SessionManager.KeyUserName, testUsername)
@@ -56,7 +56,7 @@ class SessionManagerTest {
     }
 
     @Test
-    fun `test userName returns null when not set`() {
+    fun testUserNameReturnsNullWhenNotSet() {
         `when`(sharedPreferences.getString(SessionManager.KeyUserName, null)).thenReturn(null)
         assert(sessionManager.userName == null)
     }
