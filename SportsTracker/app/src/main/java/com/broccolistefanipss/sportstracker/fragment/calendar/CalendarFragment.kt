@@ -35,7 +35,7 @@ class CalendarFragment : Fragment() {
         calendarViewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         val db = DB(requireContext())
-        calendarViewModel.init(db, requireContext())  // Passa il context al viewModel
+        calendarViewModel.init(db, requireContext())
 
         sharedPreferences =
             requireContext().getSharedPreferences("TrainingPrefs", Context.MODE_PRIVATE)
@@ -52,9 +52,9 @@ class CalendarFragment : Fragment() {
         _binding = null
     }
 
-    // Osserva il LiveData dal ViewModel per decorare le date con allenamenti programmati
+    // aggiunta degli allenamenti programmati nella data corretta
     private fun observeCalendarTrainings() {
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")  // Definisci il formatter
+        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
 
         calendarViewModel.calendarTrainingSessions.observe(viewLifecycleOwner) { sessions ->
             val calendarDays = sessions.mapNotNull { session ->
@@ -70,15 +70,6 @@ class CalendarFragment : Fragment() {
 
             Log.d("CalendarFragment", "Dates to decorate: $calendarDays")
 
-            // Assicurati di rimuovere i decoratori prima di aggiungerne di nuovi
-            //binding.calendarView.removeDecorators()
-
-            //if (calendarDays.isNotEmpty()) {
-            //    binding.calendarView.addDecorator(EventDecorator(requireContext(), calendarDays))
-//
-            //    // Forza l'aggiornamento dei decoratori
-            //    binding.calendarView.invalidateDecorators()
-            //}
         }
 
     }

@@ -59,12 +59,16 @@
         app:layout_constraintStart_toStartOf="parent"
         android:autofillHints="" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/buttonSaveTraining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="36dp"
         android:text="@string/salva_allenamento"
+        android:background="@drawable/button_style"
+        android:fontFamily="@font/ubuntu_light"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

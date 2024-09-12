@@ -11,7 +11,7 @@ object SqlTable {
             peso INTEGER,
             obiettivo TEXT
         )
-    """.trimIndent() //pulizia dati in input
+    """.trimIndent() // pulizia dati in input
 
     val TrainingSessions = """
         CREATE TABLE IF NOT EXISTS TrainingSessions (

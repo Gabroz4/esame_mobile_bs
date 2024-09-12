@@ -20,14 +20,14 @@ class CalendarViewModel : ViewModel() {
     private val _calendarTrainingSessions = MutableLiveData<List<CalendarTraining>>()
     val calendarTrainingSessions: LiveData<List<CalendarTraining>> = _calendarTrainingSessions
 
-    // Inizializza viewModel con db e context
+    // inizializza viewModel con db e context
     fun init(db: DB, context: Context) {
         this.db = db
         this.contextRef = WeakReference(context)
         loadCalendarTrainingsUser()
     }
 
-    // Carica allenamenti per utente corrente
+    // carica allenamenti per utente corrente
     private fun loadCalendarTrainingsUser() {
         viewModelScope.launch {
             val sessionManager = contextRef?.get()?.let { SessionManager(it) }
@@ -43,13 +43,13 @@ class CalendarViewModel : ViewModel() {
         }
     }
 
-    // Salva trainingSession nel database e ricarica
+    // salva trainingSession nel database e ricarica
     fun saveCalendarTraining(date: String, description: String) {
         viewModelScope.launch {
             val sessionManager = contextRef?.get()?.let { SessionManager(it) }
             val userName = sessionManager?.userName ?: ""
             db.insertCalendarTraining(userName, date, description)
-            loadCalendarTrainingsUser()  // Ricarica
+            loadCalendarTrainingsUser()  // ricarica
         }
     }
 }

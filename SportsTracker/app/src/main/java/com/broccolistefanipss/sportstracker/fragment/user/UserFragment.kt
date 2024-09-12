@@ -29,7 +29,6 @@ import com.broccolistefanipss.sportstracker.R
 
 // TODO: grafico con calorie per giorni
 
-
 class UserFragment : Fragment() {
 
     private var _binding: FragmentUserBinding? = null
@@ -78,7 +77,7 @@ class UserFragment : Fragment() {
         super.onResume()
         Log.d("UserFragment", "Caricamento dei dati utente")
         userViewModel.loadUserData(DB(requireContext()), SessionManager(requireContext()))
-        loadProfileImage() // Carica l'immagine del profilo per l'utente corrente
+        loadProfileImage() // carica l'immagine del profilo per l'utente corrente
     }
 
 
@@ -170,23 +169,9 @@ class UserFragment : Fragment() {
         }
     }
 
-    //private fun saveProfileImageUri(uri: Uri) {
-    //    // Recupera il nome dell'utente attualmente connesso
-    //    val userName = sessionManager.userName ?: return
-//
-    //    // Salva l'URI dell'immagine nelle SharedPreferences per l'utente specifico
-    //    val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-    //    sharedPreferences.edit().putString("profile_image_uri_$userName", uri.toString()).apply()
-    //}
-
-
     private fun loadProfileImage() {
-        // Recupera il nome dell'utente attualmente connesso
+        // recupera il nome dell'utente attualmente connesso
         val userName = sessionManager.userName ?: return
-
-        // Recupera l'URI dell'immagine del profilo dalle SharedPreferences per l'utente specifico
-        //val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        //val uriString = sharedPreferences.getString("profile_image_uri_$userName", null)
 
         imageUri = sessionManager.getProfileImageUri()
 
@@ -199,7 +184,7 @@ class UserFragment : Fragment() {
     private fun disconnect() {
         val btnDisconnect: TextView = binding.btnDisconnect
         btnDisconnect.setOnClickListener {
-            loginManager.logout()  // Effettua il logout dell'utente
+            loginManager.logout()  // logout dell'utente
         }
     }
 

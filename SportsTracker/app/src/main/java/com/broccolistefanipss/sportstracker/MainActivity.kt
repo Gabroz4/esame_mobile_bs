@@ -19,17 +19,17 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_main)
 
-        // Controlla se l'utente è già loggato
+        // controlla se l'utente è già loggato
         val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
-            // Reindirizza l'utente alla BotMenuActivity
+            // reindirizza l'utente alla BotMenuActivity
             val intent = Intent(this, BotMenuActivity::class.java)
             startActivity(intent)
             finish()
         } else {
-            // Avvia la WelcomeActivity
+            // avvia la WelcomeActivity
             startActivity(Intent(this, WelcomeActivity::class.java))
-            finish() // termina asttività, impedisce di tornare allo splash
+            finish() // termina attività, impedisce di tornare allo splash
         }
     }
 }

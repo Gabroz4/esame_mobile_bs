@@ -224,7 +224,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         val db = this.readableDatabase
         val cursor = db.rawQuery("SELECT * FROM User WHERE userName = ? AND password = ?", arrayOf(userName, password))
 
-        val userExists = cursor?.use { //cursor viene chiuso automaticamente
+        val userExists = cursor?.use { // cursor viene chiuso automaticamente
             it.count > 0
         }
 

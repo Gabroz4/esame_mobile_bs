@@ -15,7 +15,7 @@ class TrainingSessionAdapter(
 ) : RecyclerView.Adapter<TrainingSessionAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        // Crea un nuovo view binding
+        // crea un nuovo view binding
         val binding = ItemTrainingSessionBinding.inflate(LayoutInflater.from(context), parent, false)
         return ViewHolder(binding)
     }
@@ -25,7 +25,7 @@ class TrainingSessionAdapter(
         holder.bind(session)
 
         holder.binding.buttonDeleteTraining.setOnClickListener {
-            onDeleteClick(session.sessionId) //Id dell'allenamento da eliminare
+            onDeleteClick(session.sessionId) // id dell'allenamento da eliminare
         }
     }
 
@@ -33,7 +33,7 @@ class TrainingSessionAdapter(
 
     inner class ViewHolder(val binding: ItemTrainingSessionBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(session: TrainingSession) {
-            // Imposta i dati della sessione nei componenti della view
+            // imposta i dati della sessione nei componenti della view
             binding.sessionIdTextView.text = context.getString(R.string.id_allenamento_view, session.sessionId)
             binding.sessionDateTextView.text = session.sessionDate
             binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.burntCalories, session.distance)

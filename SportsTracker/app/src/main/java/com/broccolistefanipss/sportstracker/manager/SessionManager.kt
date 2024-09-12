@@ -28,14 +28,14 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
-    // Metodo per recuperare l'URI dell'immagine del profilo
+    // metodo per recuperare l'URI dell'immagine del profilo
     fun getProfileImageUri(): Uri? {
         val uriString = pref.getString(KeyProfileImageUri, null)
         return uriString?.let { Uri.parse(it) }
     }
 
     companion object {
-        const val PrefName = "AndroidLoginPref" //TODO: rimetti provate dopo test
+        const val PrefName = "AndroidLoginPref" //TODO: rimetti private dopo test
         const val KeyUserName = "user_name"
         const val KeyProfileImageUri = "profile_image_uri"
         const val KeyIsLoggedIn = "IsLoggedIn"

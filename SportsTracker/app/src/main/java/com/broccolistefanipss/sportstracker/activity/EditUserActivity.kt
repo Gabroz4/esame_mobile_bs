@@ -10,7 +10,6 @@ import com.broccolistefanipss.sportstracker.databinding.ActivityEditUserBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 
-// TODO aggiungere pulsante indietro / annulla modifiche
 class EditUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserBinding
@@ -91,9 +90,6 @@ class EditUserActivity : AppCompatActivity() {
         val newObjective = binding.editObjective.selectedItem.toString()
         val newSex = binding.editSex.selectedItem.toString()
 
-        Log.d("EditUserActivity", "Attempting to update user: $currentUserName")
-        Log.d("EditUserActivity", "New data: Age=$newAge, Height=$newHeight, Weight=$newWeight, Objective=$newObjective, Sex=$newSex")
-
         val isUpdated = try {
             db.updateUser(
                 currentUserName = currentUserName,
@@ -109,7 +105,6 @@ class EditUserActivity : AppCompatActivity() {
             false
         }
 
-        Log.d("EditUserActivity", "Update result: $isUpdated")
 
         if (isUpdated) {
             Toast.makeText(this, "Dati aggiornati con successo", Toast.LENGTH_SHORT).show()

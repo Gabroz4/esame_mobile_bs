@@ -1,7 +1,6 @@
 package com.broccolistefanipss.sportstracker.activity
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.hardware.Sensor
 import android.hardware.SensorEvent
@@ -149,8 +148,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     // funzione per calcolare le calorie tenendo conto della distanza
     private fun calculateCalories(sport: String, acceleration: Double, distance: Float): Double {
         val calorieBurnRate = when (sport) {
-            "Corsa" -> 0.05 // Fattore di calcolo per la corsa
-            "Bicicletta" -> 0.03 // Bicicletta è piu efficiente
+            "Corsa" -> 0.05 // fattore di calcolo per la corsa
+            "Bicicletta" -> 0.03 // la bicicletta è più efficiente
             else -> 0.0
         }
 
@@ -314,7 +313,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         startTime = System.currentTimeMillis()
         startTimer()
         startAccelerometer()
-        startLocationUpdates()  // Inizia il tracciamento della posizione
+        startLocationUpdates()
         binding.closeButton.isEnabled = false
         updateButtonColor()
     }
@@ -332,7 +331,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.startStopButton.text = getString(R.string.start)
         stopTimer()
         stopAccelerometer()
-        stopLocationUpdates()  // Ferma il tracciamento della posizione
+        stopLocationUpdates()
         saveTrainingSession()
 
         printLocationData()
