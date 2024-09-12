@@ -71,20 +71,18 @@ class CalendarFragment : Fragment() {
             Log.d("CalendarFragment", "Dates to decorate: $calendarDays")
 
             // Assicurati di rimuovere i decoratori prima di aggiungerne di nuovi
-            binding.calendarView.removeDecorators()
+            //binding.calendarView.removeDecorators()
 
-            if (calendarDays.isNotEmpty()) {
-                binding.calendarView.addDecorator(EventDecorator(requireContext(), calendarDays))
-
-                // Forza l'aggiornamento dei decoratori
-                binding.calendarView.invalidateDecorators()
-            }
+            //if (calendarDays.isNotEmpty()) {
+            //    binding.calendarView.addDecorator(EventDecorator(requireContext(), calendarDays))
+//
+            //    // Forza l'aggiornamento dei decoratori
+            //    binding.calendarView.invalidateDecorators()
+            //}
         }
 
     }
 
-
-    // Gestisce click sul calendario e mostra allenamenti se ci sono
     private fun setupCalendarClickListener() {
         binding.calendarView.setOnDateChangedListener { _, date, _ ->
             val formattedDate = String.format(
@@ -92,13 +90,12 @@ class CalendarFragment : Fragment() {
                 date.day,
                 date.month + 1,
                 date.year
-            )  // Format data come "YYYY-MM-DD" per semplicità
+            )
             binding.editTextDate.setText(formattedDate)
             checkForExistingTraining(formattedDate)
         }
     }
 
-    // Gestisce click sul bottone per salvataggio, salva training via ViewModel
     private fun setupSaveButtonListener() {
         binding.buttonSaveTraining.setOnClickListener {
             val date = binding.editTextDate.text.toString()
@@ -114,17 +111,17 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    // Mostra dettagli allenamento nel TextView
+    // mostra dettagli allenamento nel TextView
     private fun checkForExistingTraining(date: String) {
         calendarViewModel.calendarTrainingSessions.value?.let { sessions ->
             val training = sessions.find { it.date == date }
             if (training != null) {
-                // Format data italiana
+                // format data italiana
                 val formattedDate = try {
                     val localDate = LocalDate.parse(date)
                     String.format("%02d-%02d-%04d", localDate.dayOfMonth, localDate.monthValue, localDate.year)
                 } catch (e: DateTimeParseException) {
-                    date // In caso di errore, mostra la data nel formato originale
+                    date // in caso di errore, mostra la data nel formato originale
                 }
 
                 binding.textViewTrainingDetails.apply {

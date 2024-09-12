@@ -163,21 +163,21 @@ class UserFragment : Fragment() {
                 requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 }
-                saveProfileImageUri(uri)
+                sessionManager.saveProfileImageUri(uri)
             }
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Errore nel salvataggio dell'immagine", Toast.LENGTH_SHORT).show()
         }
     }
 
-    private fun saveProfileImageUri(uri: Uri) {
-        // Recupera il nome dell'utente attualmente connesso
-        val userName = sessionManager.userName ?: return
-
-        // Salva l'URI dell'immagine nelle SharedPreferences per l'utente specifico
-        val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        sharedPreferences.edit().putString("profile_image_uri_$userName", uri.toString()).apply()
-    }
+    //private fun saveProfileImageUri(uri: Uri) {
+    //    // Recupera il nome dell'utente attualmente connesso
+    //    val userName = sessionManager.userName ?: return
+//
+    //    // Salva l'URI dell'immagine nelle SharedPreferences per l'utente specifico
+    //    val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
+    //    sharedPreferences.edit().putString("profile_image_uri_$userName", uri.toString()).apply()
+    //}
 
 
     private fun loadProfileImage() {
@@ -185,13 +185,14 @@ class UserFragment : Fragment() {
         val userName = sessionManager.userName ?: return
 
         // Recupera l'URI dell'immagine del profilo dalle SharedPreferences per l'utente specifico
-        val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
-        val uriString = sharedPreferences.getString("profile_image_uri_$userName", null)
+        //val sharedPreferences = requireContext().getSharedPreferences("UserData", Activity.MODE_PRIVATE)
+        //val uriString = sharedPreferences.getString("profile_image_uri_$userName", null)
 
-        // Se esiste, carica l'immagine
-        uriString?.let {
-            imageUri = Uri.parse(it)
-            binding.profilePicture.setImageURI(imageUri)
+        imageUri = sessionManager.getProfileImageUri()
+
+        // se esiste, carica l'immagine
+        imageUri?.let {
+            binding.profilePicture.setImageURI(it)
         }
     }
 

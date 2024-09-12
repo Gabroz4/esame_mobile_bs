@@ -2,12 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Features that your app may require -->
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
 
-    <!-- Permissions required by the app -->
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
@@ -32,17 +30,9 @@
         android:theme="@style/Base.Theme.SportsTracker"
         tools:targetApi="31">
 
-        <!-- Google Maps API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
-
-        <!-- Declare activities in your application -->
-        <activity
-            android:name=".manager.LoginManager"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity"/>
 
         <activity
             android:name=".activity.EditUserActivity"

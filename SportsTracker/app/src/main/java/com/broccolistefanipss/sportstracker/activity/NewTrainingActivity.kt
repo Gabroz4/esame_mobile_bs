@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.databinding.ActivityNewTrainingBinding
 import com.broccolistefanipss.sportstracker.global.DB
+import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.Location
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
@@ -35,6 +36,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
     private lateinit var binding: ActivityNewTrainingBinding
     private lateinit var sensorManager: SensorManager
+    private lateinit var sessionManager: SessionManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
     private lateinit var locationRequest: LocationRequest
@@ -69,6 +71,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
         db = DB(this)
 
+        sessionManager = SessionManager(this)
+
         sportSelectSpinner = binding.sportSelectSpinner
 
         val sportOptions : Array<String> = resources.getStringArray(R.array.sports_array)
@@ -77,9 +81,9 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         locationRequest = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 5000) // 5 secondi
-            .setMinUpdateIntervalMillis(5000) // Intervallo minimo di aggiornamento: 5 secondi
-            .setMinUpdateDistanceMeters(10f) // Aggiornamento ogni 10 metri
-            .setWaitForAccurateLocation(false) // Se impostato a true, aspetta che la posizione sia precisa
+            .setMinUpdateIntervalMillis(5000) // intervallo minimo di aggiornamento: 5 secondi
+            .setMinUpdateDistanceMeters(10f) // aggiornamento ogni 10 metri
+            .setWaitForAccurateLocation(false) // se impostato a true aspetta che la posizione sia precisa
             .build()
 
         binding.startStopButton.setOnClickListener {
@@ -94,7 +98,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             closeTraining()
         }
 
-        // Inizialmente disabilita il pulsante di chiusura
+        // inizialmente disabilita il pulsante di chiusura
         binding.closeButton.isEnabled = false
     }
 
@@ -108,7 +112,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         when (requestCode) {
             locationPermissionRequestCode -> {
                 if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // I permessi sono stati concessi
+                    // permessi concessi
                     if (ActivityCompat.checkSelfPermission(
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -117,11 +121,11 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
                             Manifest.permission.ACCESS_COARSE_LOCATION
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
-                        // Avvia gli aggiornamenti della posizione
+                        // avvia gli aggiornamenti della posizione
                         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
                     }
                 } else {
-                    // I permessi sono stati negati
+                    // permessi negati
                     Toast.makeText(this, "Permesso di accesso alla posizione negato", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -137,12 +141,12 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val accelerationMagnitude = sqrt((x * x + y * y + z * z).toDouble())
             totalAcceleration += accelerationMagnitude
 
-            // Calcola le calorie in base al tipo di sport selezionato e alla distanza percorsa
+            // calcola le calorie in base al tipo di sport selezionato e alla distanza percorsa
             calorieCount = calculateCalories(sportSelectSpinner.selectedItem.toString(), totalAcceleration, totalDistance)
         }
     }
 
-    // Funzione per calcolare le calorie tenendo conto della distanza
+    // funzione per calcolare le calorie tenendo conto della distanza
     private fun calculateCalories(sport: String, acceleration: Double, distance: Float): Double {
         val calorieBurnRate = when (sport) {
             "Corsa" -> 0.05 // Fattore di calcolo per la corsa
@@ -150,7 +154,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             else -> 0.0
         }
 
-        // Calcola le calorie usando sia l'accelerazione che la distanza
+        // calcola le calorie usando sia l'accelerazione che la distanza
         return (calorieBurnRate * acceleration) + (distance * 0.1) // Modifica il fattore per la distanza come necessario
     }
 
@@ -179,7 +183,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Richiedi i permessi all'utente
+            // richiedi i permessi all'utente
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
@@ -188,16 +192,16 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             return
         }
 
-        // Se i permessi sono già stati concessi, inizia gli aggiornamenti della posizione
+        // se i permessi sono già stati concessi, inizia gli aggiornamenti della posizione
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
 
     }
 
     private fun printLocationData() {
         if (locationList.isNotEmpty()) {
-            Log.d("NewTrainingActivity", "Location Data:")
+            Log.d("NewTrainingActivity", "Dati posizione:")
             locationList.forEach { location ->
-                Log.d("NewTrainingActivity", "Latitude: ${location.latitude}, Longitude: ${location.longitude}, Timestamp: ${location.timestamp}")
+                Log.d("NewTrainingActivity", "Latitudine: ${location.latitude}, Longitudine: ${location.longitude}, Timestamp: ${location.timestamp}")
             }
         } else {
             Log.d("NewTrainingActivity", "Nessun dato disponibile sulla posizione")
@@ -216,7 +220,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         )
 
         if (locationList.isNotEmpty()) {
-            // Calcola la distanza dall'ultima posizione
+            // calcola la distanza dall'ultima posizione
             val lastLocation = locationList.last()
             val previousLocation = android.location.Location("").apply {
                 latitude = lastLocation.latitude
@@ -273,16 +277,12 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         sensorManager.unregisterListener(this)
     }
 
-
-
-
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
         // Non implementato
     }
 
     private fun saveTrainingSession() {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val userName = sharedPreferences.getString("userName", null)
+        val userName = sessionManager.userName
         val sessionDate = getCurrentDate()
         val durationInSeconds = (elapsedTime / 1000).toInt()
 
@@ -293,7 +293,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         val db = DB(this)
         if (userName != null) {
             val sessionId = db.insertTrainingSession(userName, sessionDate, durationInSeconds, distance, trainingType, burntCalories)
-            // Salva anche il percorso nel database
+            // salva anche il percorso nel database
             for (location in locationList) {
                 db.insertTrainingLocation(sessionId, location.latitude, location.longitude, location.timestamp)
             }

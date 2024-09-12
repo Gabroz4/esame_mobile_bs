@@ -8,8 +8,6 @@ import com.broccolistefanipss.sportstracker.databinding.ItemTrainingSessionBindi
 import com.broccolistefanipss.sportstracker.model.TrainingSession
 import com.broccolistefanipss.sportstracker.R
 
-//TODO: occhio a come vengono salvate le kcal e distanza, fa cose strane nel salvataggio
-
 class TrainingSessionAdapter(
     private val context: Context,
     private var sessions: List<TrainingSession>,
@@ -38,7 +36,7 @@ class TrainingSessionAdapter(
             // Imposta i dati della sessione nei componenti della view
             binding.sessionIdTextView.text = context.getString(R.string.id_allenamento_view, session.sessionId)
             binding.sessionDateTextView.text = session.sessionDate
-            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.sessionId, session.distance)
+            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.burntCalories, session.distance)
             binding.trainingTypeTextView.text = session.trainingType
         }
     }

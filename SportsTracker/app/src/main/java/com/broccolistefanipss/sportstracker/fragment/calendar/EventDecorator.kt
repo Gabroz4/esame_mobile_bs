@@ -10,15 +10,15 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator
 import com.prolificinteractive.materialcalendarview.DayViewFacade
 import com.prolificinteractive.materialcalendarview.spans.DotSpan
 
-class EventDecorator(context: Context, private val dates: Set<CalendarDay>) : DayViewDecorator {
-    private val drawable: GradientDrawable = ContextCompat.getDrawable(context, R.drawable.circle_drawable) as GradientDrawable
-
-    override fun shouldDecorate(day: CalendarDay): Boolean {
-        return dates.contains(day)
-    }
-
-    override fun decorate(view: DayViewFacade) {
-        Log.d("EventDecorator", "Decorating day: $view")
-        view.addSpan(DotSpan(5f, R.color.red))
-    }
-}
+//class EventDecorator(context: Context, private val dates: Set<CalendarDay>) : DayViewDecorator {
+//    private val drawable: GradientDrawable = ContextCompat.getDrawable(context, R.drawable.circle_drawable) as GradientDrawable
+//
+//    override fun shouldDecorate(day: CalendarDay): Boolean {
+//        return dates.contains(day)
+//    }
+//
+//    override fun decorate(view: DayViewFacade) {
+//        Log.d("EventDecorator", "Decorating day: $view")
+//        view.addSpan(DotSpan(5f, R.color.red))
+//    }
+//}

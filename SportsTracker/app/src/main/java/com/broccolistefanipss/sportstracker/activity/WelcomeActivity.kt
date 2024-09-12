@@ -1,9 +1,7 @@
 package com.broccolistefanipss.sportstracker.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
@@ -16,6 +14,8 @@ import com.broccolistefanipss.sportstracker.databinding.ActivityWelcomeBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 
+//TODO: dopo welcome non va a login
+
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
@@ -27,7 +27,7 @@ class WelcomeActivity : AppCompatActivity() {
     private lateinit var pesoEditText: EditText
     private lateinit var objectiveSpinner: Spinner
     private lateinit var loginButton: TextView
-
+    private lateinit var sessionManager: SessionManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,8 +35,9 @@ class WelcomeActivity : AppCompatActivity() {
         binding = ActivityWelcomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        sessionManager = SessionManager(this)
+
         //Controlla se l'utente è già loggato
-        val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
             // Reindirizza l'utente alla BotMenuActivity
             val intent = Intent(this, BotMenuActivity::class.java)
@@ -74,7 +75,7 @@ class WelcomeActivity : AppCompatActivity() {
     }
 
     private fun saveUserData() {
-        // Prendi le info dell'utente da EditText e Spinner
+        // prendi le info dell'utente da editText e spinner
         val userNameString = userNameEditText.text.toString()
         val passwordString = passwordEditText.text.toString()
         val sessoString = sessoSpinner.selectedItem.toString()
@@ -83,47 +84,23 @@ class WelcomeActivity : AppCompatActivity() {
         val pesoValue = pesoEditText.text.toString().toIntOrNull() ?: 0
         val selectedObjective = objectiveSpinner.selectedItem.toString()
 
-        // Inserisci dati nel database
+        // inserisci dati nel database
         val result = DB(this).insertUser(userNameString, passwordString, sessoString, etaValue, altezzaValue, pesoValue, selectedObjective)
 
-        // Salva i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
-        saveToSharedPreferences(userNameString, sessoString, etaValue, altezzaValue, pesoValue)
-
-        // Se lo user non esiste già, vai a LoginActivity
+        // se lo user non esiste già, memorizza le informazioni nel SessionManager
         if (result) {
+            val sessionManager = SessionManager(this)
+
+            // imposta l'utente come loggato e salva lo username nel session manager
+            sessionManager.setLogin(true)
+            sessionManager.userName = userNameString
+
+            // vai alla LoginActivity
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            // Se il metodo ha fallito, mostra un messaggio di errore
+            // se il metodo ha fallito, mostra un messaggio di errore
             Toast.makeText(this, "Questo UserName esiste già", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    // Metodo per salvare i dati dell'utente (tranne password e obiettivo) nelle SharedPreferences
-    private fun saveToSharedPreferences(
-        userName: String?,
-        sesso: String,
-        eta: Int,
-        altezza: Int,
-        peso: Int,
-        //obiettivo: String
-    ) {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("userName", userName)
-        editor.putString("sesso", sesso)
-        editor.putInt("eta", eta)
-        editor.putInt("altezza", altezza)
-        editor.putInt("peso", peso)
-        //editor.putString("obiettivo", obiettivo)
-        editor.apply()
-
-        // Aggiungi log per visualizzare ciò che viene salvato nelle SharedPreferences
-        Log.d("WelcomeActivity", "Username: $userName")
-        Log.d("WelcomeActivity", "Sesso: $sesso")
-        Log.d("WelcomeActivity", "Età: $eta")
-        Log.d("WelcomeActivity", "Altezza: $altezza")
-        Log.d("WelcomeActivity", "Peso: $peso")
-        //Log.d("WelcomeActivity", "Obiettivo: $obiettivo")
     }
 }

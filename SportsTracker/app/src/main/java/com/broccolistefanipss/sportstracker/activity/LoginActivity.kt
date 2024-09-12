@@ -1,6 +1,5 @@
 package com.broccolistefanipss.sportstracker.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
@@ -21,6 +20,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val sessionManager = SessionManager(this)
+
+        // controlla se l'utente è già loggato
         if (sessionManager.isLoggedIn) {
             val intent = Intent(this, BotMenuActivity::class.java)
             startActivity(intent)
@@ -32,19 +33,24 @@ class LoginActivity : AppCompatActivity() {
         val loginButton: Button = binding.loginButton
         val welcomeButton: TextView = binding.welcomeButton
 
+        // gestisce click del pulsante di login
         loginButton.setOnClickListener {
             val username = usernameEditText.text.toString()
             val password = passwordEditText.text.toString()
 
             if (username.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Per favore inserisci sia nome utente che password", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Inserisci sia nome utente che password", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            // utilizza LoginManager per tentare il login
             val loginManager = LoginManager(this)
             if (loginManager.attemptLogin(username, password)) {
-                saveUsernameToSharedPreferences(username)
-                sessionManager.createLoginSession(username)
+                // se il login ha successo, imposta i valori nel SessionManager
+                sessionManager.setLogin(true)
+                sessionManager.userName = username
+
+                // vai alla BotMenuActivity
                 val intent = Intent(this, BotMenuActivity::class.java)
                 startActivity(intent)
                 finish()
@@ -53,15 +59,10 @@ class LoginActivity : AppCompatActivity() {
             }
         }
 
+        // pulsante per reindirizzare alla WelcomeActivity
         welcomeButton.setOnClickListener {
             btnWelcomeOnclick()
         }
-    }
-    private fun saveUsernameToSharedPreferences(username: String) {
-        val sharedPreferences = getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("userName", username)
-        editor.apply()
     }
 
     private fun btnWelcomeOnclick() {

@@ -2,7 +2,7 @@ package com.broccolistefanipss.sportstracker.manager
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
+import android.net.Uri
 
 class SessionManager(context: Context) {
     private var pref: SharedPreferences = context.getSharedPreferences(PrefName, Context.MODE_PRIVATE)
@@ -18,21 +18,27 @@ class SessionManager(context: Context) {
             editor.apply()
         }
 
-    fun createLoginSession(username: String) {
-        this.userName = username
-        setLogin(true)
-    }
-
     fun setLogin(isLoggedIn: Boolean) {
         editor.putBoolean(KeyIsLoggedIn, isLoggedIn)
-        editor.apply()  // Modificato da commit() a apply()
-        Log.d(Tag, "Sessione modificata")
+        editor.apply()
+    }
+
+    fun saveProfileImageUri(uri: Uri?) {
+        editor.putString(KeyProfileImageUri, uri?.toString())
+        editor.apply()
+    }
+
+    // Metodo per recuperare l'URI dell'immagine del profilo
+    fun getProfileImageUri(): Uri? {
+        val uriString = pref.getString(KeyProfileImageUri, null)
+        return uriString?.let { Uri.parse(it) }
     }
 
     companion object {
-        private val Tag = SessionManager::class.java.simpleName
-        private const val PrefName = "AndroidLoginPref"
+        const val PrefName = "AndroidLoginPref" //TODO: rimetti provate dopo test
         const val KeyUserName = "user_name"
-        private const val KeyIsLoggedIn = "IsLoggedIn"
+        const val KeyProfileImageUri = "profile_image_uri"
+        const val KeyIsLoggedIn = "IsLoggedIn"
     }
 }
+

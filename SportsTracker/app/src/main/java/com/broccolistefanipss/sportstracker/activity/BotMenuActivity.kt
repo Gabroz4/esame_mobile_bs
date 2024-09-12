@@ -24,13 +24,10 @@ class BotMenuActivity : AppCompatActivity() {
         val navView: BottomNavigationView = binding.navView
         val toolbar: Toolbar = binding.toolbar
 
-
-        // Set the Toolbar as the ActionBar
         setSupportActionBar(toolbar)
 
         val navController = findNavController(R.id.nav_host_fragment_activity_bot_menu)
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
+
         val appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_user
