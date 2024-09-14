@@ -50,10 +50,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     private var isRunning = false
     private var startTime: Long = 0L
     private var elapsedTime: Long = 0L
-
     private var totalAcceleration: Double = 0.0
     private var calorieCount: Double = 0.0
-
     private var totalDistance: Float = 0.0F
 
     private val locationPermissionRequestCode = 1001
@@ -67,11 +65,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
         sensorManager = getSystemService(SENSOR_SERVICE) as SensorManager
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
-
         db = DB(this)
-
         sessionManager = SessionManager(this)
-
         sportSelectSpinner = binding.sportSelectSpinner
 
         val sportOptions : Array<String> = resources.getStringArray(R.array.sports_array)
@@ -153,8 +148,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             else -> 0.0
         }
 
-        // calcola le calorie usando sia l'accelerazione che la distanza
-        return (calorieBurnRate * acceleration) + (distance * 0.1) // Modifica il fattore per la distanza come necessario
+        // calcola le calorie usando sia l'accelerazione che la distanza (calcolo finto)
+        return ((calorieBurnRate * acceleration) + (distance * 0.1))/4
     }
 
     private val timerRunnable = object : Runnable {
@@ -182,7 +177,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // richiedi i permessi all'utente
+            // richiedi i permessi
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
@@ -190,10 +185,8 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             )
             return
         }
-
         // se i permessi sono già stati concessi, inizia gli aggiornamenti della posizione
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
-
     }
 
     private fun printLocationData() {
@@ -227,11 +220,21 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             }
             val distanceToLast = previousLocation.distanceTo(location)
             totalDistance += distanceToLast
-        }
 
+            // calcola il tempo trascorso dall'ultima posizione
+            val timeDifference = (newLocation.timestamp - lastLocation.timestamp) / 1000.0 // in secondi
+
+            // evita divisioni per zero
+            if (timeDifference > 0) {
+                val currentSpeed = (distanceToLast / timeDifference) * 3.6 // km/h
+                binding.speedTextView.text = String.format(Locale.getDefault(), "Velocità: %.2f km/h", currentSpeed)
+            }
+        }
         locationList.add(newLocation)
         Log.d("NewTrainingActivity", "Posizione aggiunta: $newLocation, Distanza: $totalDistance m")
     }
+
+
 
     private fun formatDuration(durationInMillis: Long): String {
         val hours = durationInMillis / 3600000
@@ -259,7 +262,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
             val newElapsedTime = currentTime - startTime + 1
 
             binding.timeTextView.text = formatDuration(newElapsedTime)
-            binding.calorieTextView.text = String.format(Locale.getDefault(), "Calorie: %.2f", calorieCount)
+            binding.calorieTextView.text = String.format(Locale.getDefault(), "Calorie: %.2f kcal", calorieCount)
             binding.distanzaTextView.text = String.format(Locale.getDefault(), "Distanza: %.2f m", totalDistance)
             return newElapsedTime
         }
@@ -287,18 +290,18 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
 
         val trainingType = sportSelectSpinner.selectedItem.toString()
         val burntCalories = calorieCount.toInt()
-        val distance = calorieCount.toFloat()
+        val distance = totalDistance
 
         val db = DB(this)
         if (userName != null) {
             val sessionId = db.insertTrainingSession(userName, sessionDate, durationInSeconds, distance, trainingType, burntCalories)
-            // salva anche il percorso nel database
+            // salva percorso nel db
             for (location in locationList) {
                 db.insertTrainingLocation(sessionId, location.latitude, location.longitude, location.timestamp)
             }
-            Log.d("NewTrainingActivity", "Sessione salvata con percorso")
+            Log.d("NewTrainingActivity", "Sessione salvata con dati posizione")
         } else {
-            Log.e("NewTrainingActivity", "Errore: userName non trovato")
+            Log.e("NewTrainingActivity", "Errore: username non trovato")
         }
     }
 
@@ -317,7 +320,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.closeButton.isEnabled = false
         updateButtonColor()
     }
-
 
     private fun updateButtonColor() {
         if (binding.closeButton.isEnabled) {
@@ -351,6 +353,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         totalAcceleration = 0.0
         calorieCount = 0.0
         elapsedTime = 0L
+        totalDistance = 0F
         binding.timeTextView.text = getString(R.string.reset_time)
         binding.calorieTextView.text = getString(R.string.reset_calories)
     }

@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             // avvia la WelcomeActivity
             startActivity(Intent(this, WelcomeActivity::class.java))
-            finish() // termina attività, impedisce di tornare allo splash
+            finish() // termina attività
         }
     }
 }

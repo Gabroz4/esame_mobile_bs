@@ -48,8 +48,8 @@
     <string name="reset_time"> 00:00:00 </string>
     <string name="reset_calories">Calorie: 0.00</string>
     <string name="nuovo_allenamento">Nuovo Allenamento</string>
-    <string name="no_calories">0 calorie</string>
-    <string name="no_distance">0 km</string>
+    <string name="no_calories">0 kcal</string>
+    <string name="no_distance">0 m</string>
     <string name="chiudi_allenamento">Chiudi Allenamento</string>
     <string name="aggiungi_nuovo_allenamento">Aggiungi nuovo allenamento</string>
     <string name="id_allenamento_view">Id allenamento: %1d</string>
@@ -60,6 +60,7 @@
     <string name="inserisci_data">Inserisci la data</string>
     <string name="inserisci_dettagli_allenamento">Inserisci i dettagli dell allenamento</string>
     <string name="allenamento_per_data">Allenamento del %1$s: %2$s</string>
+    <string name="velocitaTextView">0 km/h</string>
 
     <string-array name="objectives_array" >
         <item>Dimagrire</item>

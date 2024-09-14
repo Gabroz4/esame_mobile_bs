@@ -41,7 +41,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 enableMyLocation()
                 getLastKnownLocation()
             } else {
-                Toast.makeText(requireContext(), "Il servizio di localizzazione richiede il permesso di accedere alla posizione", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    "Il servizio di localizzazione richiede il permesso di accedere alla posizione", Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -67,7 +68,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         map = googleMap
         checkLocationPermission()
 
-        // osserviamo i dati del ViewModel
+        // disegna linea in corrispondenza dei percorsi di quell'utente
         viewModel.userTrainings.observe(viewLifecycleOwner) { polylineOptionsList ->
             val bounds = LatLngBounds.Builder()
             polylineOptionsList.forEach { polylineOptions ->

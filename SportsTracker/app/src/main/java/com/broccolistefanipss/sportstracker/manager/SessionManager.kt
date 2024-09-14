@@ -23,22 +23,24 @@ class SessionManager(context: Context) {
         editor.apply()
     }
 
-    fun saveProfileImageUri(uri: Uri?) {
-        editor.putString(KeyProfileImageUri, uri?.toString())
-        editor.apply()
+    fun saveProfileImageUri(uri: Uri?, userName: String?) {
+        userName?.let {
+            editor.putString("profile_image_uri_$it", uri?.toString())
+            editor.apply()
+        }
     }
 
-    // metodo per recuperare l'URI dell'immagine del profilo
-    fun getProfileImageUri(): Uri? {
-        val uriString = pref.getString(KeyProfileImageUri, null)
-        return uriString?.let { Uri.parse(it) }
+    fun getProfileImageUri(userName: String?): Uri? {
+        return userName?.let { it ->
+            val uriString = pref.getString("profile_image_uri_$it", null)
+            uriString?.let { Uri.parse(it) }
+        }
     }
 
     companion object {
-        const val PrefName = "AndroidLoginPref" //TODO: rimetti private dopo test
-        const val KeyUserName = "user_name"
-        const val KeyProfileImageUri = "profile_image_uri"
-        const val KeyIsLoggedIn = "IsLoggedIn"
+        private const val PrefName = "AndroidLoginPref"
+        private const val KeyUserName = "user_name"
+        private const val KeyIsLoggedIn = "IsLoggedIn"
     }
 }
 

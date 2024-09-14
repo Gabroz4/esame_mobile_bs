@@ -63,6 +63,8 @@
         android:id="@+id/buttonSaveTraining"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingStart="15dp"
+        android:paddingEnd="15dp"
         android:layout_marginBottom="36dp"
         android:text="@string/salva_allenamento"
         android:background="@drawable/button_style"

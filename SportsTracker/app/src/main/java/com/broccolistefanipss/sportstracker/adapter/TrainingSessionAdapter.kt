@@ -36,7 +36,12 @@ class TrainingSessionAdapter(
             // imposta i dati della sessione nei componenti della view
             binding.sessionIdTextView.text = context.getString(R.string.id_allenamento_view, session.sessionId)
             binding.sessionDateTextView.text = session.sessionDate
-            binding.durationTextView.text = context.getString(R.string.durata_e_calorie, session.duration , session.burntCalories, session.distance)
+            binding.durationTextView.text = context.getString(
+                R.string.durata_e_calorie,
+                session.duration,
+                session.burntCalories,
+                session.distance
+            )
             binding.trainingTypeTextView.text = session.trainingType
         }
     }

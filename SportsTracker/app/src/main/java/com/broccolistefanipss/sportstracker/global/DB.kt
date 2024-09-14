@@ -252,22 +252,20 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
         }
 
         // verifica se ci sono valori da aggiornare
-        if (contentValues.size() > 0) {
-            val affectedRows = db.update(
+        return if (contentValues.size() > 0) {
+            val modifiedRows = db.update(
                 "User",
                 contentValues,
                 "userName = ?",
                 arrayOf(currentUserName)
             )
-
             Log.d("EditUserActivity", "Valori aggiornati: $contentValues")
-            Log.d("EditUserActivity", "Righe modificate: $affectedRows")
 
             db.close()
-            return affectedRows > 0 // true se almeno una riga è stata aggiornata
+            modifiedRows > 0 // true se almeno una riga è stata aggiornata
         } else {
             db.close() // chiudi il database anche se non ci sono modifiche
-            return false // nessun valore da aggiornare
+            false // nessun valore da aggiornare
         }
     }
 

@@ -44,7 +44,7 @@ class HomeFragment : Fragment() {
             binding.trainingSessionsRecyclerView.visibility = View.VISIBLE
             binding.emptyTextView.visibility = View.GONE
 
-            // crea l'adapter e passa la funzione di eliminazione
+            // crea adapter e passa la funzione di eliminazione
             val adapter = TrainingSessionAdapter(requireContext(), sessions) { sessionId ->
                 deleteSession(sessionId) // chiama la funzione di eliminazione,
             }

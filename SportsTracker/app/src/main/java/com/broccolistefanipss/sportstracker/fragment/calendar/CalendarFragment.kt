@@ -22,9 +22,7 @@ class CalendarFragment : Fragment() {
 
     private var _binding: FragmentCalendarBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var calendarViewModel: CalendarViewModel
-    private lateinit var sharedPreferences: SharedPreferences
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,12 +35,8 @@ class CalendarFragment : Fragment() {
         val db = DB(requireContext())
         calendarViewModel.init(db, requireContext())
 
-        sharedPreferences =
-            requireContext().getSharedPreferences("TrainingPrefs", Context.MODE_PRIVATE)
-
         setupCalendarClickListener()
         setupSaveButtonListener()
-        observeCalendarTrainings()
 
         return binding.root
     }
@@ -50,28 +44,6 @@ class CalendarFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    // aggiunta degli allenamenti programmati nella data corretta
-    private fun observeCalendarTrainings() {
-        val formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy")
-
-        calendarViewModel.calendarTrainingSessions.observe(viewLifecycleOwner) { sessions ->
-            val calendarDays = sessions.mapNotNull { session ->
-                try {
-                    val localDate = LocalDate.parse(session.date, formatter)
-                    Log.d("CalendarFragment", "Parsed date: $localDate")
-                    CalendarDay.from(localDate.year, localDate.monthValue, localDate.dayOfMonth)
-                } catch (e: DateTimeParseException) {
-                    Log.e("CalendarFragment", "Error parsing date: ${session.date}")
-                    null
-                }
-            }.toSet()
-
-            Log.d("CalendarFragment", "Dates to decorate: $calendarDays")
-
-        }
-
     }
 
     private fun setupCalendarClickListener() {

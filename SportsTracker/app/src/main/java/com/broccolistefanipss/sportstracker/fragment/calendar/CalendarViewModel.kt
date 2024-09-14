@@ -1,7 +1,6 @@
 package com.broccolistefanipss.sportstracker.fragment.calendar
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -34,12 +33,6 @@ class CalendarViewModel : ViewModel() {
             val userName = sessionManager?.userName ?: ""
             val sessions: List<CalendarTraining> = db.getCalendarTrainingsUser(userName)
             _calendarTrainingSessions.postValue(sessions)
-
-            sessions.forEach { session ->
-                Log.d("CalendarTraining", "UserName: ${session.userName}")
-                Log.d("CalendarTraining", "Date: ${session.date}")
-                Log.d("CalendarTraining", "Description: ${session.description}")
-            }
         }
     }
 

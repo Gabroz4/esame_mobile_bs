@@ -26,9 +26,6 @@ import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.User
 import com.broccolistefanipss.sportstracker.R
 
-
-// TODO: grafico con calorie per giorni
-
 class UserFragment : Fragment() {
 
     private var _binding: FragmentUserBinding? = null
@@ -67,9 +64,7 @@ class UserFragment : Fragment() {
                 binding.objectiveProfile.text = getString(R.string.obiettivo_view, it.obiettivo)
             }
         }
-
         disconnect()
-
         return root
     }
 
@@ -79,7 +74,6 @@ class UserFragment : Fragment() {
         userViewModel.loadUserData(DB(requireContext()), SessionManager(requireContext()))
         loadProfileImage() // carica l'immagine del profilo per l'utente corrente
     }
-
 
     private fun setupEditProfileLauncher() {
         editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -121,8 +115,6 @@ class UserFragment : Fragment() {
         }
     }
 
-
-
     private fun loadUserData() {
         val userName = sessionManager.userName ?: ""
         Log.d("UserFragment", "Caricamento dei dati di: $userName")
@@ -149,6 +141,7 @@ class UserFragment : Fragment() {
 
     private fun saveProfileImage(bitmap: Bitmap) {
         try {
+            val userName = sessionManager.userName ?: return
             val filename = "profile_picture_${System.currentTimeMillis()}.jpg"
             val contentValues = ContentValues().apply {
                 put(MediaStore.Images.Media.DISPLAY_NAME, filename)
@@ -162,20 +155,17 @@ class UserFragment : Fragment() {
                 requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
                 }
-                sessionManager.saveProfileImageUri(uri)
+                sessionManager.saveProfileImageUri(uri, userName)
             }
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Errore nel salvataggio dell'immagine", Toast.LENGTH_SHORT).show()
-        }
+            }
     }
 
     private fun loadProfileImage() {
-        // recupera il nome dell'utente attualmente connesso
         val userName = sessionManager.userName ?: return
+        imageUri = sessionManager.getProfileImageUri(userName)
 
-        imageUri = sessionManager.getProfileImageUri()
-
-        // se esiste, carica l'immagine
         imageUri?.let {
             binding.profilePicture.setImageURI(it)
         }
