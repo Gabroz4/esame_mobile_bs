@@ -19,10 +19,10 @@ class HomeViewModel : ViewModel() {
     fun initialize(context: Context, userName: String) {
         this.db = DB(context)
         this.userName = userName
-        loadTrainingSessions()
+        loadTrainingSessionsUser()
     }
 
-    private fun loadTrainingSessions() {
+    private fun loadTrainingSessionsUser() {
         viewModelScope.launch {
             val sessions = db.getUserTrainingSessions(userName)
             _trainingSessions.postValue(sessions)
@@ -33,7 +33,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             val success = db.deleteTrainingSession(sessionId)
             if (success) {
-                loadTrainingSessions()
+                loadTrainingSessionsUser()
             }
         }
     }

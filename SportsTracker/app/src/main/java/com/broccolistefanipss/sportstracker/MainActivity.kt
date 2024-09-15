@@ -16,21 +16,25 @@ class MainActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
 
         // controlla se l'utente è già loggato
         val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
-            // reindirizza l'utente alla BotMenuActivity
-            val intent = Intent(this, BotMenuActivity::class.java)
-            startActivity(intent)
-            finish()
+            botMenuIntent() // reindirizza l'utente a BotMenuActivity
         } else {
-            // avvia la WelcomeActivity
-            startActivity(Intent(this, WelcomeActivity::class.java))
-            finish() // termina attività
+            welcomeIntent() // avvia WelcomeActivity
         }
+    }
+
+    private fun botMenuIntent() {
+        startActivity(Intent(this, BotMenuActivity::class.java))
+        finish()
+    }
+
+    private fun welcomeIntent() {
+        startActivity(Intent(this, WelcomeActivity::class.java))
+        finish()
     }
 }
 

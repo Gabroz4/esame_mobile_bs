@@ -57,10 +57,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         viewModel = ViewModelProvider(this)[MapsViewModel::class.java]
 
         _binding!!.addTrainingButton.setOnClickListener {
-            val intent = Intent(context, NewTrainingActivity::class.java)
-            startActivity(intent)
+            viewModel.newTrainingOnClick(requireContext())
         }
-
         return binding.root
     }
 

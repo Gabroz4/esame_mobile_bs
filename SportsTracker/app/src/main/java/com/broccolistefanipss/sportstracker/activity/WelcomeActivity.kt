@@ -66,10 +66,10 @@ class WelcomeActivity : AppCompatActivity() {
         nextButton.setOnClickListener {
             saveUserData()
         }
-        loginButton.setOnClickListener { btnLoginOnclick() }
+        loginButton.setOnClickListener { loginIntentOnclick() }
     }
 
-    private fun btnLoginOnclick(){
+    private fun loginIntentOnclick(){
         val intent = Intent(this, LoginActivity::class.java)
         startActivity(intent)
     }

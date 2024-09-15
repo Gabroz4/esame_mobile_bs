@@ -104,9 +104,12 @@ class UserFragment : Fragment() {
 
     private fun setupEditProfileButton() {
         binding.btnEditProfile.setOnClickListener {
-            val intent = Intent(context, EditUserActivity::class.java)
-            editProfileLauncher.launch(intent)
+            editProfileIntentClick() // lancia l'intent solo quando l'utente clicca
         }
+    }
+
+    private fun editProfileIntentClick() {
+        editProfileLauncher.launch(Intent(requireContext(), EditUserActivity::class.java))
     }
 
     private fun setupChangeProfilePictureButton() {
@@ -117,11 +120,10 @@ class UserFragment : Fragment() {
 
     private fun loadUserData() {
         val userName = sessionManager.userName ?: ""
-        Log.d("UserFragment", "Caricamento dei dati di: $userName")
+        Log.d("UserFragment", "Caricamento dati di: $userName")
         val utente: User? = database.getUserData(userName)
 
         if (utente != null) {
-            Log.d("UserFragment", "Dati di: $utente")
             binding.UserProfile.text = utente.userName
             binding.SexProfile.text = utente.sesso
             binding.AgeProfile.text = utente.eta.toString()
@@ -129,7 +131,6 @@ class UserFragment : Fragment() {
             binding.WeightProfile.text = utente.peso.toString()
             binding.objectiveProfile.text = utente.obiettivo
         } else {
-            Log.e("UserFragment", "Nessun dato trovato di: $userName")
             Toast.makeText(requireContext(), "Username non trovato", Toast.LENGTH_SHORT).show()
         }
     }

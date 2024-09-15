@@ -1,10 +1,13 @@
 package com.broccolistefanipss.sportstracker.fragment.maps
 
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.broccolistefanipss.sportstracker.activity.NewTrainingActivity
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.google.android.gms.maps.model.PolylineOptions
@@ -36,6 +39,11 @@ class MapsViewModel(application: Application) : AndroidViewModel(application) {
         }
 
         _userTrainings.postValue(polylineOptionsList)
+    }
+
+    fun newTrainingOnClick(context: Context) {
+        val intent = Intent(context, NewTrainingActivity::class.java)
+        context.startActivity(intent)
     }
 
     private fun getRandomColor(): Int {

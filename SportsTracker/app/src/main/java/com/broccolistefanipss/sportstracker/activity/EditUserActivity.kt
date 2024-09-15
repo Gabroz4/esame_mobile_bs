@@ -57,7 +57,6 @@ class EditUserActivity : AppCompatActivity() {
             binding.editObjective.setSelection(getObjectiveIndex(user.obiettivo))
             binding.editSex.setSelection(getSexIndex(user.sesso))
         } else {
-            Log.e("EditUserActivity", "User not found: $currentUserName")
             Toast.makeText(this, "Errore: utente non trovato", Toast.LENGTH_SHORT).show()
             finish()
         }
@@ -66,7 +65,7 @@ class EditUserActivity : AppCompatActivity() {
     private fun setupSaveButton() {
         binding.saveButton.setOnClickListener {
             if (validateInputs()) {
-                saveUserData()
+                editUserData()
             }
         }
     }
@@ -82,7 +81,7 @@ class EditUserActivity : AppCompatActivity() {
         return true
     }
 
-    private fun saveUserData() {
+    private fun editUserData() {
         val currentUserName = sessionManager.userName ?: ""
         val newAge = binding.editAge.text.toString().toIntOrNull()
         val newHeight = binding.editHeight.text.toString().toIntOrNull()
@@ -100,7 +99,6 @@ class EditUserActivity : AppCompatActivity() {
                 newSesso = newSex
             )
         } catch (e: Exception) {
-            Log.e("EditUserActivity", "Error updating user data", e)
             Toast.makeText(this, "Errore nell'aggiornamento dei dati: ${e.message}", Toast.LENGTH_LONG).show()
             false
         }

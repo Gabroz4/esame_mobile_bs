@@ -61,16 +61,20 @@ class CalendarFragment : Fragment() {
 
     private fun setupSaveButtonListener() {
         binding.buttonSaveTraining.setOnClickListener {
-            val date = binding.editTextDate.text.toString()
-            val details = binding.editTextDetails.text.toString()
+            btnSaveOnClick()
+        }
+    }
 
-            if (date.isNotEmpty() && details.isNotEmpty()) {
-                calendarViewModel.saveCalendarTraining(date, details)  // Save via ViewModel
-                Toast.makeText(requireContext(), "Allenamento salvato", Toast.LENGTH_SHORT).show()
-                checkForExistingTraining(date)
-            } else {
-                Toast.makeText(requireContext(), "Compila tutti i campi", Toast.LENGTH_SHORT).show()
-            }
+    private fun btnSaveOnClick() {
+        val date = binding.editTextDate.text.toString()
+        val details = binding.editTextDetails.text.toString()
+
+        if (date.isNotEmpty() && details.isNotEmpty()) {
+            calendarViewModel.saveCalendarTraining(date, details)  // Save via ViewModel
+            Toast.makeText(requireContext(), "Allenamento salvato", Toast.LENGTH_SHORT).show()
+            checkForExistingTraining(date)
+        } else {
+            Toast.makeText(requireContext(), "Compila tutti i campi", Toast.LENGTH_SHORT).show()
         }
     }
 

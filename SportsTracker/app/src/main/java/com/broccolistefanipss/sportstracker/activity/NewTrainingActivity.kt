@@ -189,17 +189,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
     }
 
-    private fun printLocationData() {
-        if (locationList.isNotEmpty()) {
-            Log.d("NewTrainingActivity", "Dati posizione:")
-            locationList.forEach { location ->
-                Log.d("NewTrainingActivity", "Latitudine: ${location.latitude}, Longitudine: ${location.longitude}, Timestamp: ${location.timestamp}")
-            }
-        } else {
-            Log.d("NewTrainingActivity", "Nessun dato disponibile sulla posizione")
-        }
-    }
-
     private fun stopLocationUpdates() {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
@@ -336,7 +325,6 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         stopLocationUpdates()
         saveTrainingSession()
 
-        printLocationData()
         binding.closeButton.isEnabled = true
         updateButtonColor()
     }
