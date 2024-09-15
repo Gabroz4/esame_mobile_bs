@@ -149,7 +149,7 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         }
 
         // calcola le calorie usando sia l'accelerazione che la distanza (calcolo finto)
-        return ((calorieBurnRate * acceleration) + (distance * 0.1))/4
+        return ((calorieBurnRate * acceleration) + (distance * 0.1))/8
     }
 
     private val timerRunnable = object : Runnable {

@@ -10,7 +10,7 @@
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="414dp"
-        android:layout_height="410dp"
+        android:layout_height="450dp"
         android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,8 +23,10 @@
 
     <TextView
         android:id="@+id/textViewTrainingDetails"
+        android:fontFamily="@font/ubuntu_regular"
         android:layout_width="match_parent"
-        android:layout_height="36dp"
+        android:textSize="15sp"
+        android:layout_height="50dp"
         android:text=""
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/editTextDate"
@@ -38,19 +40,23 @@
         android:id="@+id/editTextDetails"
         android:layout_width="404dp"
         android:layout_height="64dp"
-        android:layout_marginBottom="36dp"
+        android:layout_marginBottom="20dp"
+        android:autofillHints=""
+        android:fontFamily="@font/ubuntu_light"
         android:hint="@string/inserisci_dettagli_allenamento"
         android:inputType="text"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonSaveTraining"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="parent"
-        android:autofillHints="" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editTextDate"
+        android:fontFamily="@font/ubuntu_light"
+        android:textSize="15sp"
         android:layout_width="408dp"
-        android:layout_height="64dp"
+        android:layout_height="50dp"
         android:layout_marginBottom="4dp"
         android:hint="@string/inserisci_data"
         android:inputType="date"
@@ -68,9 +74,9 @@
         android:layout_marginBottom="36dp"
         android:text="@string/salva_allenamento"
         android:background="@drawable/button_style"
-        android:fontFamily="@font/ubuntu_light"
+        android:fontFamily="@font/ubuntu_regular"
         android:textColor="@color/black"
-        android:textSize="18sp"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

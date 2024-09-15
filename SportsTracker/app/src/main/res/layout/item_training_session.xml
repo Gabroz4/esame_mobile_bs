@@ -15,6 +15,7 @@
         android:id="@+id/sessionIdTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/ubuntu_regular"
         android:text="@string/id_allenamento"
         android:layout_marginTop="2dp"
         android:padding="5dp"
@@ -26,6 +27,7 @@
 
     <TextView
         android:id="@+id/sessionDateTextView"
+        android:fontFamily="@font/ubuntu_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -38,6 +40,7 @@
 
     <TextView
         android:id="@+id/durationTextView"
+        android:fontFamily="@font/ubuntu_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -50,6 +53,7 @@
 
     <TextView
         android:id="@+id/trainingTypeTextView"
+        android:fontFamily="@font/ubuntu_light"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="5dp"
@@ -68,7 +72,7 @@
         android:layout_height="wrap_content"
         android:text="@string/elimina"
         android:background="@drawable/button_style"
-        android:fontFamily="@font/ubuntu_medium"
+        android:fontFamily="@font/ubuntu_regular"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
