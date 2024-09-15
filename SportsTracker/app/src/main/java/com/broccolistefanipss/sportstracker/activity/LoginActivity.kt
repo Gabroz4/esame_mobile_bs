@@ -13,52 +13,49 @@ import com.broccolistefanipss.sportstracker.manager.SessionManager
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
-    private val usernameEditText: EditText = binding.usernameLogin
-    private val passwordEditText: EditText = binding.passwordLogin
-    private val loginButton: Button = binding.loginButton
-    private val welcomeButton: TextView = binding.welcomeButton
-    private val sessionManager = SessionManager(this)
+    private lateinit var loginManager: LoginManager
+    private val sessionManager by lazy { SessionManager(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // controlla se l'utente è già loggato
+        // check se utente è loggato
         if (sessionManager.isLoggedIn) {
             val intent = Intent(this, BotMenuActivity::class.java)
             startActivity(intent)
             finish()
         }
 
-        // gestisce click del pulsante di login
-        loginButton.setOnClickListener {
+        loginManager = LoginManager(this)
+
+        // bottone per login
+        binding.loginButton.setOnClickListener {
             btnLoginOnClick()
         }
 
-        // pulsante per reindirizzare alla WelcomeActivity
-        welcomeButton.setOnClickListener {
+        // bottone per welcomeactivity
+        binding.welcomeButton.setOnClickListener {
             btnWelcomeOnclick()
         }
     }
 
     private fun btnLoginOnClick() {
-        val username = usernameEditText.text.toString()
-        val password = passwordEditText.text.toString()
+        val username = binding.usernameLogin.text.toString()
+        val password = binding.passwordLogin.text.toString()
 
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Inserisci sia nome utente che password", Toast.LENGTH_SHORT).show()
             return
         }
 
-        // utilizza LoginManager per tentare il login
-        val loginManager = LoginManager(this)
+        // tenta il login
         if (loginManager.attemptLogin(username, password)) {
-            // se il login ha successo, imposta i valori nel SessionManager
+            // se ha successo mette i dati in sessionManager
             sessionManager.setLogin(true)
             sessionManager.userName = username
-
-            // vai alla BotMenuActivity
+            //e va a botMenuActivity
             val intent = Intent(this, BotMenuActivity::class.java)
             startActivity(intent)
             finish()
@@ -66,6 +63,7 @@ class LoginActivity : AppCompatActivity() {
             Toast.makeText(this, "UserName o password errati, riprova", Toast.LENGTH_SHORT).show()
         }
     }
+
     private fun btnWelcomeOnclick() {
         val intent = Intent(this, WelcomeActivity::class.java)
         startActivity(intent)
