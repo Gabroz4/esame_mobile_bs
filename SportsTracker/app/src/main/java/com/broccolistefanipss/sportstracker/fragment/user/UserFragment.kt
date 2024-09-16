@@ -18,13 +18,13 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.activity.EditUserActivity
 import com.broccolistefanipss.sportstracker.databinding.FragmentUserBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.LoginManager
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.User
-import com.broccolistefanipss.sportstracker.R
 
 class UserFragment : Fragment() {
 
@@ -77,24 +77,24 @@ class UserFragment : Fragment() {
 
     private fun setupEditProfileLauncher() {
         editProfileLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
+            if (result.resultCode == Activity.RESULT_OK) { // chiede risultato a edituseractivity
                 Log.d("UserFragment", "Modifiche ricevute correttamente")
-                loadUserData()
+                loadUserData() //se tutto ok ricarica i dati utente
             } else {
                 Log.d("UserFragment", "Modifica fallita")
             }
         }
     }
 
-    private fun setupImagePicker() {
+    private fun setupImagePicker() {  // setup selezione immagine dalla galleria
         pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK && result.data != null) {
-                imageUri = result.data?.data
+                imageUri = result.data?.data //se immagine esiste da all'uri il suo nome
                 try {
-                    val inputStream = requireContext().contentResolver.openInputStream(imageUri!!)
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-                    binding.profilePicture.setImageBitmap(bitmap)
-                    saveProfileImage(bitmap)
+                    val inputStream = requireContext().contentResolver.openInputStream(imageUri!!) //apre input stream
+                    val bitmap = BitmapFactory.decodeStream(inputStream) //traduce stream in bitmap
+                    binding.profilePicture.setImageBitmap(bitmap) //imposta l'immagine
+                    saveProfileImage(bitmap) //salva e associa all'utente con sessionmanager
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "Errore nel caricamento dell'immagine", Toast.LENGTH_SHORT).show()
                 }
@@ -104,7 +104,7 @@ class UserFragment : Fragment() {
 
     private fun setupEditProfileButton() {
         binding.btnEditProfile.setOnClickListener {
-            editProfileIntentClick() // lancia l'intent solo quando l'utente clicca
+            editProfileIntentClick()
         }
     }
 
@@ -143,20 +143,21 @@ class UserFragment : Fragment() {
     private fun saveProfileImage(bitmap: Bitmap) {
         try {
             val userName = sessionManager.userName ?: return
-            val filename = "profile_picture_${System.currentTimeMillis()}.jpg"
-            val contentValues = ContentValues().apply {
-                put(MediaStore.Images.Media.DISPLAY_NAME, filename)
-                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/ProfilePictures")
+            val filename = "profile_picture_${System.currentTimeMillis()}.jpg" //nome di base univoco dell'immagine
+            val contentValues = ContentValues().apply { //prepara dati dell'immagine
+                put(MediaStore.Images.Media.DISPLAY_NAME, filename)  //nome
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg") // formato
+                put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/ProfilePictures") //path
             }
 
+            //inserisce riga con contentvalues nel db di sistema MediaStore.Images.Media
             val imageUri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
 
             imageUri?.let { uri ->
-                requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                requireContext().contentResolver.openOutputStream(uri)?.use { stream -> // apre stream di output
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream) //riconverte bitmap in jpeg
                 }
-                sessionManager.saveProfileImageUri(uri, userName)
+                sessionManager.saveProfileImageUri(uri, userName) //associa all'utente
             }
         } catch (e: Exception) {
             Toast.makeText(requireContext(), "Errore nel salvataggio dell'immagine", Toast.LENGTH_SHORT).show()

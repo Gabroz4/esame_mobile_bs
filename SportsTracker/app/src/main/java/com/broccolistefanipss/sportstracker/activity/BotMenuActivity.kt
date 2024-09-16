@@ -1,7 +1,6 @@
 package com.broccolistefanipss.sportstracker.activity
 
 import android.os.Bundle
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.findNavController
@@ -10,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.databinding.ActivityBotMenuBinding
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class BotMenuActivity : AppCompatActivity() {
 

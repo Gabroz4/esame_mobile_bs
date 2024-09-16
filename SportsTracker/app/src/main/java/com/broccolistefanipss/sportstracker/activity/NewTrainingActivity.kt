@@ -96,6 +96,16 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
         binding.closeButton.isEnabled = false
     }
 
+    private fun checkLocationPermissions(): Boolean {
+        return ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(
+            this,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -160,22 +170,21 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun startLocationUpdates() {
-        locationCallback = object : LocationCallback() {
-            override fun onLocationResult(locationResult: LocationResult) {
+        locationCallback = object : LocationCallback() { //crea listener per nuove posizioni
+            override fun onLocationResult(locationResult: LocationResult) { //quando riceve nuova posizione
                 super.onLocationResult(locationResult)
-                for (location in locationResult.locations) {
+                for (location in locationResult.locations) { //aggiorna i dati
                     updateLocation(location)
                 }
             }
         }
-
-        if (ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission( // check permessi
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_COARSE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED // se non ancora concessi
         ) {
             // richiedi i permessi
             ActivityCompat.requestPermissions(
@@ -194,20 +203,19 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     private fun updateLocation(location: android.location.Location) {
-        val newLocation = Location(
+        val newLocation = Location( // crea nuovo punto
             latitude = location.latitude,
             longitude = location.longitude,
             timestamp = System.currentTimeMillis()
         )
 
         if (locationList.isNotEmpty()) {
-            // calcola la distanza dall'ultima posizione
-            val lastLocation = locationList.last()
+            val lastLocation = locationList.last() //prende dati ultima posizione
             val previousLocation = android.location.Location("").apply {
                 latitude = lastLocation.latitude
                 longitude = lastLocation.longitude
             }
-            val distanceToLast = previousLocation.distanceTo(location)
+            val distanceToLast = previousLocation.distanceTo(location) // calcola la distanza dall'ultima posizione
             totalDistance += distanceToLast
 
             // calcola il tempo trascorso dall'ultima posizione
@@ -219,11 +227,9 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
                 binding.speedTextView.text = String.format(Locale.getDefault(), "Velocità: %.2f km/h", currentSpeed)
             }
         }
-        locationList.add(newLocation)
+        locationList.add(newLocation) // aggiunge a lista
         Log.d("NewTrainingActivity", "Posizione aggiunta: $newLocation, Distanza: $totalDistance m")
     }
-
-
 
     private fun formatDuration(durationInMillis: Long): String {
         val hours = durationInMillis / 3600000
@@ -269,14 +275,14 @@ class NewTrainingActivity : AppCompatActivity(), SensorEventListener {
     }
 
     override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) {
-        // Non implementato
+        // Non necessario aggiornare la precisione del sensore nel nostro caso
+        // metodo presente nell'interfaccia SensorEventListener
     }
 
     private fun saveTrainingSession() {
         val userName = sessionManager.userName
         val sessionDate = getCurrentDate()
         val durationInSeconds = (elapsedTime / 1000).toInt()
-
         val trainingType = sportSelectSpinner.selectedItem.toString()
         val burntCalories = calorieCount.toInt()
         val distance = totalDistance

@@ -1,9 +1,6 @@
 package com.broccolistefanipss.sportstracker.fragment.calendar
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,8 +12,6 @@ import com.broccolistefanipss.sportstracker.databinding.FragmentCalendarBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import java.time.LocalDate
 import java.time.format.DateTimeParseException
-import com.prolificinteractive.materialcalendarview.CalendarDay
-import java.time.format.DateTimeFormatter
 
 class CalendarFragment : Fragment() {
 
@@ -70,7 +65,7 @@ class CalendarFragment : Fragment() {
         val details = binding.editTextDetails.text.toString()
 
         if (date.isNotEmpty() && details.isNotEmpty()) {
-            calendarViewModel.saveCalendarTraining(date, details)  // Save via ViewModel
+            calendarViewModel.saveCalendarTraining(date, details)
             Toast.makeText(requireContext(), "Allenamento salvato", Toast.LENGTH_SHORT).show()
             checkForExistingTraining(date)
         } else {

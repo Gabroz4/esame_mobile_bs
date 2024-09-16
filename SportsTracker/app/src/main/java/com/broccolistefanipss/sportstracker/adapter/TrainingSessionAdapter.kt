@@ -4,9 +4,9 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.broccolistefanipss.sportstracker.R
 import com.broccolistefanipss.sportstracker.databinding.ItemTrainingSessionBinding
 import com.broccolistefanipss.sportstracker.model.TrainingSession
-import com.broccolistefanipss.sportstracker.R
 
 class TrainingSessionAdapter(
     private val context: Context,

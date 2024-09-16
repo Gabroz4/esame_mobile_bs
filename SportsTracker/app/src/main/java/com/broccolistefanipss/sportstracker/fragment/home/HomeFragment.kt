@@ -1,6 +1,5 @@
 package com.broccolistefanipss.sportstracker.fragment.home
 
-import com.broccolistefanipss.sportstracker.adapter.TrainingSessionAdapter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.broccolistefanipss.sportstracker.R
+import com.broccolistefanipss.sportstracker.adapter.TrainingSessionAdapter
 import com.broccolistefanipss.sportstracker.databinding.FragmentHomeBinding
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 import com.broccolistefanipss.sportstracker.model.TrainingSession

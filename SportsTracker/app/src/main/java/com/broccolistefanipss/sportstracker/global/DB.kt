@@ -40,13 +40,6 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
             val sqlQuery = "INSERT INTO User(userName, password, sesso, eta, altezza, peso, obiettivo) VALUES(?, ?, ?, ?, ?, ?, ?)"
             val db = this.writableDatabase
             db.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
-            Log.d("Username: ", userName)
-            Log.d("sesso: ", sesso)
-            Log.d("eta: ", eta.toString())
-            Log.d("altezza: ", altezza.toString())
-            Log.d("peso: ", peso.toString())
-            Log.d("obiettivo: ", obiettivo)
-
             db.close()
             return true
         } else {
@@ -243,7 +236,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
         val db = this.writableDatabase
 
-        val contentValues = ContentValues().apply {
+        val contentValues = ContentValues().apply { // incapsula i dati
             newEta?.let { put("eta", it) }
             newAltezza?.let { put("altezza", it) }
             newPeso?.let { put("peso", it) }
@@ -253,12 +246,9 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
         // verifica se ci sono valori da aggiornare
         return if (contentValues.size() > 0) {
-            val modifiedRows = db.update(
-                "User",
-                contentValues,
-                "userName = ?",
-                arrayOf(currentUserName)
-            )
+            val modifiedRows =
+                db.update("User", contentValues, "userName = ?", arrayOf(currentUserName))
+
             Log.d("EditUserActivity", "Valori aggiornati: $contentValues")
 
             db.close()
