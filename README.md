@@ -57,7 +57,24 @@ La permanenza dello stato di login e la gestione dei dati dell'utente è un altr
 
 ![](schema.svg)
 
+# Design
+## Architettura
+La struttura dell'app segue il pattern Model-View-ViewModel (MVVM), che garantisce una separazione chiara tra la logica di business, la gestione dei dati e l'interfaccia utente. Le principali componenti dell'app interagiscono nel seguente modo:
+
+- Model: Il Model rappresenta i dati e le operazioni di gestione legate alle sessioni di allenamento e agli utenti. Questo livello include l'accesso al database SQLite, che gestisce informazioni come le sessioni di allenamento e i dati degli utenti. Le operazioni sui dati vengono eseguite tramite repository, che incapsulano la logica di accesso e aggiornamento del database.
+
+- View: La View è costituita dai frammenti e dalle attività dell'applicazione, che rappresentano l'interfaccia grafica con cui l'utente interagisce. Il layout di queste interfacce è pensato per essere semplice e intuitivo, permettendo all'utente di visualizzare le proprie sessioni di allenamento e di accedere rapidamente alle funzionalità principali.
+
+- ViewModel: Il ViewModel funge da intermediario tra la View e il Model. Si occupa di esporre i dati necessari alla View in modo che questa possa osservarli e aggiornarli automaticamente quando cambiano. Ad esempio, il MapsViewModel gestisce i dati relativi alla posizione dell'utente durante l'allenamento, integrando i servizi di localizzazione tramite il FusedLocationProviderClient.
+
+## Interazione tra le componenti
+Sessione di allenamento: L'utente avvia una nuova sessione di allenamento tramite l'interfaccia utente. La View comunica con il MapsViewModel per avviare il tracciamento della posizione. Il MapsViewModel, a sua volta, utilizza il Model per salvare e recuperare i dati relativi alla sessione, che sono gestiti dal database SQLite.
+
+Gestione dell'utente: L'autenticazione e la gestione della sessione di login sono affidate a LoginManager e SessionManager. Le modifiche allo stato dell'utente vengono propagate al ViewModel, che aggiorna la View di conseguenza.
+
+SessionManager: componente cruciale dell'app per la gestione dello stato di login dell'utente. Viene utilizzato per mantenere la sessione dell'utente attiva tra le varie esecuzioni dell'applicazione, evitando di richiedere all'utente di effettuare nuovamente il login ogni volta che riapre l'app. Questa componente interagisce principalmente con il sistema di SharedPreferences.
 
 
-Broccoli Gabriele
-Stefani Tommaso
+
+ - Broccoli Gabriele
+ - Stefani Tommaso
