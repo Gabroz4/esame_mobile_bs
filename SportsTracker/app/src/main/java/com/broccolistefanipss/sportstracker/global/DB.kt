@@ -15,21 +15,29 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
 
     // quando il database viene creato, vengono create le tabelle.
     override fun onCreate(db: SQLiteDatabase?) {
-        // Esegue SQL per creare le tabelle User e TrainingSessions.
-        db?.execSQL(SqlTable.User)
-        db?.execSQL(SqlTable.TrainingSessions)
-        db?.execSQL(SqlTable.CalendarTraining)
-        db?.execSQL(SqlTable.Location)
+        createTables(db)
     }
 
     // chiamata quando il database deve essere aggiornato
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
         // rimuove le tabelle esistenti
+        dropTables(db)
+        onCreate(db) // ricrea le tabelle
+    }
+
+    private fun dropTables(db: SQLiteDatabase) {
         db.execSQL("DROP TABLE IF EXISTS TrainingSessions")
         db.execSQL("DROP TABLE IF EXISTS CalendarTraining")
         db.execSQL("DROP TABLE IF EXISTS User")
         db.execSQL("DROP TABLE IF EXISTS Location")
-        onCreate(db) // ricrea le tabelle
+    }
+
+    // Esegue SQL per creare le tabelle User e TrainingSessions.
+    private fun createTables(db: SQLiteDatabase?){
+        db?.execSQL(SqlTable.User)
+        db?.execSQL(SqlTable.TrainingSessions)
+        db?.execSQL(SqlTable.CalendarTraining)
+        db?.execSQL(SqlTable.Location)
     }
 
     // inserisce un nuovo utente nel database
@@ -90,7 +98,7 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     }
 
 
-    fun insertTrainingLocation(sessionId: Long, latitude: Double, longitude: Double, timestamp: Long) {
+        fun insertTrainingLocation(sessionId: Long, latitude: Double, longitude: Double, timestamp: Long) {
         val db = writableDatabase
         val values = ContentValues().apply {
             put("trainingId", sessionId)

@@ -70,9 +70,89 @@ La struttura dell'app segue il pattern Model-View-ViewModel (MVVM), che garantis
 ## Interazione tra le componenti
 Sessione di allenamento: L'utente avvia una nuova sessione di allenamento tramite l'interfaccia utente. La View comunica con il MapsViewModel per avviare il tracciamento della posizione. Il MapsViewModel, a sua volta, utilizza il Model per salvare e recuperare i dati relativi alla sessione, che sono gestiti dal database SQLite.
 
-Gestione dell'utente: L'autenticazione e la gestione della sessione di login sono affidate a LoginManager e SessionManager. Le modifiche allo stato dell'utente vengono propagate al ViewModel, che aggiorna la View di conseguenza.
+Gestione dell'utente: L'autenticazione e la gestione della sessione di login sono affidate a SessionManager. Questo viene utilizzato per mantenere la sessione dell'utente attiva tra le varie esecuzioni dell'applicazione, evitando di richiedere all'utente di effettuare nuovamente il login ogni volta che riapre l'app.
+Le modifiche allo stato dell'utente vengono propagate al ViewModel, che aggiorna la View di conseguenza.
 
-SessionManager: componente cruciale dell'app per la gestione dello stato di login dell'utente. Viene utilizzato per mantenere la sessione dell'utente attiva tra le varie esecuzioni dell'applicazione, evitando di richiedere all'utente di effettuare nuovamente il login ogni volta che riapre l'app. Questa componente interagisce principalmente con il sistema di SharedPreferences.
+# Design dettagliato - Broccoli Gabriele
+
+## MapsFragment 
+#### Problema:
+L'app deve tracciare il percorso di allenamento degli utenti, mostrando il percorso su una mappa. È inoltre necessario gestire la geolocalizzazione, il salvataggio delle coordinate, e l'aggiornamento continuo della posizione dell'utente durante l'allenamento.
+
+#### Soluzione:
+Ho implementato un MapsFragment che utilizza FusedLocationProviderClient per ottenere la posizione dell'utente in tempo reale e visualizzare il percorso su una mappa di Google. Questo fragment è separato dalla logica di business grazie all'uso di MapsViewModel, che gestisce i dati e li aggiorna nel fragment.
+
+#### Pattern Utilizzati:  
+MVVM (Model-View-ViewModel): Ho adottato il pattern MVVM per separare la logica dell'interfaccia utente dai dati. Il MapsViewModel funge da ViewModel, mantenendo lo stato del percorso di allenamento e gestendo le interazioni con il servizio di localizzazione.  
+Observer Pattern: Il MapsFragment osserva i dati nel MapsViewModel, aggiornando la mappa ogni volta che i dati della posizione cambiano. Questo pattern garantisce che la UI sia sincronizzata con i cambiamenti nei dati senza interazioni manuali.  
+
+#### Motivazioni:  
+L'utilizzo di MVVM consente una migliore organizzazione del codice, separando le responsabilità e facilitando il test.  
+Il pattern Observer garantisce che la mappa sia aggiornata automaticamente quando i dati cambiano, migliorando l'esperienza utente.
+
+![](MapsFragment.svg)
+
+#### UML
+Nello schema UML, MapsFragment interagisce con MapsViewModel, che a sua volta si interfaccia con FusedLocationProviderClient per ottenere i dati di geolocalizzazione. L'osservazione tra fragment e ViewModel è illustrata tramite una relazione di dipendenza.
+
+## TrainingSessionAdapter
+#### Problema
+L'app ha bisogno di una lista che mostri tutte le sessioni di allenamento registrate dall'utente. Ogni sessione deve essere rappresentata con un layout ricco di informazioni e facilmente navigabile.
+
+#### Soluzione
+Ho implementato un TrainingSessionAdapter che gestisce la visualizzazione delle sessioni di allenamento in una RecyclerView. Il TrainingSessionAdapter prende i dati dal DBManager e li passa alla RecyclerView per visualizzarli.
+
+#### Pattern Utilizzati
+Adapter Pattern: Il TrainingSessionAdapter segue il pattern Adapter per gestire la visualizzazione delle sessioni di allenamento all'interno di una RecyclerView, consentendo una rappresentazione flessibile dei dati.
+Motivazioni
+L'uso di un Adapter facilita la gestione dei dati in una RecyclerView, fornendo un modo modulare e flessibile di visualizzare e aggiornare le sessioni di allenamento.
+
+![](TrainingSessionAdapter.svg)
+
+#### UML
+Lo schema UML mostra la relazione tra TrainingSessionAdapter, RecyclerView, e TrainingSession, evidenziando come l'adapter media tra i dati e l'interfaccia utente.
+
+## DB
+
+#### Problema
+L'applicazione deve salvare in modo persistente i dati delle sessioni di allenamento, associando tali sessioni agli utenti. È necessario poter salvare, modificare, eliminare e recuperare i dati relativi a queste sessioni e agli utenti in modo efficiente.
+
+#### Soluzione
+Ho implementato una classe DBManager per gestire l'accesso al database SQLite. Questa classe segue il pattern Repository per separare la logica del database dall'interfaccia utente. Ciò consente un'interazione facile con i dati senza dover gestire direttamente le query SQLite all'interno dell'attività o dei fragment.
+
+#### Pattern Utilizzati
+Repository Pattern: La classe DBManager funge da repository centrale, gestendo l'accesso ai dati tramite metodi per creare, leggere, aggiornare e cancellare (CRUD) sessioni di allenamento e utenti. Questo pattern migliora la modularità e consente di astrarre il dettaglio implementativo del database.
+Singleton: DBManager viene inizializzato una sola volta per garantire che vi sia una sola istanza che gestisce l'accesso al database, evitando accessi concorrenti e garantendo che tutte le operazioni avvengano in un contesto gestito centralmente.
+Motivazioni
+L'utilizzo del pattern Repository con un database SQLite offre una struttura ben organizzata per la persistenza dei dati. Questo approccio facilita anche l'aggiunta di nuove funzionalità, come la gestione di ulteriori tipi di dati, poiché è possibile estendere la classe DBManager senza influenzare il resto dell'applicazione.
+
+![](DB.svg)
+
+#### UML
+Lo schema UML mostra la relazione tra DB e le classi User e TrainingSession, evidenziando come il repository gestisce l'accesso ai dati per ciascuna di queste entità.
+
+## NewTrainingSession
+#### Problema:
+L'applicazione deve salvare in modo persistente i dati relativi alle sessioni di allenamento degli utenti. Questo include la gestione di operazioni di creazione, lettura, aggiornamento e cancellazione (CRUD) dei dati relativi agli utenti e alle loro sessioni. Inoltre, è necessario che l’accesso ai dati avvenga in modo efficiente e che l'integrità delle operazioni sia garantita, specialmente in un contesto multi-thread. Questo è importante per evitare inconsistenze nel database e problemi di concorrenza.
+
+#### Soluzione:
+Repository Pattern: La classe DBManager funge da repository centrale, incapsulando tutta la logica di accesso al database e nascondendo i dettagli implementativi delle operazioni CRUD. Questo pattern semplifica l’interazione con i dati, rendendo possibile estendere o modificare le funzioni del database senza influenzare altre parti del codice.
+Singleton Pattern: La classe DBManager è progettata come un singleton per garantire che esista un'unica istanza della classe che gestisce tutte le interazioni con il database. Questo previene la creazione di più connessioni contemporanee e facilita la gestione centralizzata dell'accesso ai dati.
+Factory Method: Per gestire la creazione delle istanze degli oggetti User e TrainingSession, il DBManager utilizza metodi di factory che costruiscono e restituiscono le istanze corrette a partire dai dati recuperati dal database.
+
+![](NewTrainingActivity.svg)
+
+#### UML
+Il diagramma UML di DBManager mostra le relazioni tra il repository e le entità chiave (User e TrainingSession). Mostra anche le interazioni che permettono di eseguire operazioni CRUD su questi dati.
+
+# Design dettagliato - Stefani Tommaso
+
+# Sviluppo
+## Testing Automatizzato
+## Note di sviluppo
+# Commenti finali
+## Autovalutazione e lavori futuri
+# Guida Utente
 
 
 

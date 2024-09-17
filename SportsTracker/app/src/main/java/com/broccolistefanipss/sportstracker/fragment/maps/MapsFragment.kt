@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
@@ -64,20 +65,26 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         map = googleMap
         checkLocationPermission()
 
-        // disegna linea in corrispondenza dei percorsi di quell'utente
+        // Osserva le modifiche alle linee poligonali delle sessioni di allenamento
         viewModel.userTrainings.observe(viewLifecycleOwner) { polylineOptionsList ->
-            val bounds = LatLngBounds.Builder()
-            polylineOptionsList.forEach { polylineOptions ->
-                map.addPolyline(polylineOptions)
-                polylineOptions.points.forEach { bounds.include(it) }
-            }
-
-            if (polylineOptionsList.isNotEmpty()) {
-                map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
-            }
+            drawUserTrainings(polylineOptionsList)
         }
+
         viewModel.loadAllUserTrainings()
     }
+
+    private fun drawUserTrainings(polylineOptionsList: List<PolylineOptions>) {
+        val bounds = LatLngBounds.Builder()
+        polylineOptionsList.forEach { polylineOptions ->
+            map.addPolyline(polylineOptions)
+            polylineOptions.points.forEach { bounds.include(it) }
+        }
+
+        if (polylineOptionsList.isNotEmpty()) {
+            map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
+        }
+    }
+
 
     private fun checkLocationPermission() {
         when (PackageManager.PERMISSION_GRANTED) {
