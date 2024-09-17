@@ -43,16 +43,16 @@ class DB(context: Context) : SQLiteOpenHelper(context, DB_NAME, null, DB_VERSION
     // inserisce un nuovo utente nel database
     fun insertUser(userName: String, password: String, sesso: String, eta: Int, altezza: Int, peso: Int, obiettivo: String): Boolean {
         // verifica se l'utente esiste già.
-        if (!isNameExists(userName)) {
+        return if (!isNameExists(userName)) {
             // prepara la query SQL e inserisce i dati.
             val sqlQuery = "INSERT INTO User(userName, password, sesso, eta, altezza, peso, obiettivo) VALUES(?, ?, ?, ?, ?, ?, ?)"
             val db = this.writableDatabase
             db.execSQL(sqlQuery, arrayOf(userName, password, sesso, eta, altezza, peso, obiettivo))
             db.close()
-            return true
+            true
         } else {
             Log.d("DB", "Username '$userName' esiste già nel database")
-            return false
+            false
         }
 
     }
