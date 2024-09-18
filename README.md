@@ -279,7 +279,96 @@ private fun drawUserTrainings(polylineOptionsList: List<PolylineOptions>) {
 }
 ```
 In dettaglio il metodo che disegna una polilinea sulla mappa utilizzando le posizioni recuperate dal database.
+
+
 ## Note di sviluppo - Stefani Tommaso
+
+### Salvataggio dell'immagine con utilizzo di bitmap
+#### com.broccolistefanipss.sportstracker.fragment.user.UserFragment
+#### dove: https://stackoverflow.com/questions/41976885/cant-load-image-from-saved-uri-in-shared-preferences
+
+#### Snippet
+
+```kotlin
+private fun saveProfileImage(bitmap: Bitmap) {
+    try {
+        val userName = sessionManager.userName ?: return
+        val filename = "profile_picture_${System.currentTimeMillis()}.jpg"
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Images.Media.DISPLAY_NAME, filename)
+            put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+            put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/ProfilePictures")
+        }
+
+        val imageUri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+
+        imageUri?.let { uri ->
+            requireContext().contentResolver.openOutputStream(uri)?.use { stream ->
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+            }
+            sessionManager.saveProfileImageUri(uri, userName)
+        }
+    } catch (e: Exception) {
+        Toast.makeText(requireContext(), "Errore nel salvataggio dell'immagine", Toast.LENGTH_SHORT).show()
+    }
+}
+```
+
+#### Descrizione:
+Nel metodo saveProfileImage, viene creata una cartella "ProfilePictures" utilizzando l'API di archiviazione di Android, ovvero il MediaStore, specificando il percorso relativo, impostato su "Pictures/ProfilePictures", che indica la destinazione del file all'interno del dispositivo.
+L'uri dell'immagine viene salvato nelle SharedPreferences per utilizzi futuri
+
+L'immagine viene decostruita in un OutputStream di bit e ricostruita con il metodo .compress() per formattare l'immagine a JPEG riducendo la dimensione e standardizzando tutte le immagini inserite
+
+### Salvataggio dell'immagine del profilo tramite URI
+
+#### dove com.broccolistefanipss.sportstracker.manager.SessionManager
+
+#### Snippet
+
+```kotlin
+fun saveProfileImageUri(uri: Uri?, userName: String?) {
+    userName?.let {
+        editor.putString("profile_image_uri_$it", uri?.toString())
+        editor.apply()
+    }
+}
+```
+#### Descrizione:
+Questo metodo utilizza SharedPreferences per salvare l'URI di un'immagine del profilo in modo persistente. Il salvataggio è fatto in modo asincrono tramite apply(), più veloce rispetto a commit(). Inoltre, il metodo utilizza una chiave dinamica che include il nome utente per assicurare che ogni utente possa avere un'immagine di profilo unica. Questo approccio permette la gestione delle immagini di più utenti.
+
+### Salvataggio allenamento in una determinata data
+
+#### dove: com.broccolistefanipss.sportstracker.fragment.calendar.CalendarFragment
+
+#### Snippet
+
+```kotlin
+private fun checkForExistingTraining(date: String) {
+        calendarViewModel.calendarTrainingSessions.value?.let { sessions ->
+            val training = sessions.find { it.date == date }
+            if (training != null) {
+                // format data italiana
+                val formattedDate = try {
+                    val localDate = LocalDate.parse(date)
+                    String.format("%02d-%02d-%04d", localDate.dayOfMonth, localDate.monthValue, localDate.year)
+                } catch (e: DateTimeParseException) {
+                    date // in caso di errore, mostra la data nel formato originale
+                }
+
+                binding.textViewTrainingDetails.apply {
+                    text = context.getString(R.string.allenamento_per_data, formattedDate, training.description)
+                    visibility = View.VISIBLE
+                }
+            } else {
+                binding.textViewTrainingDetails.visibility = View.GONE
+            }
+        }
+    }
+```
+
+#### Descrizione
+Questo metodo utilizza un try-catch per gestire il parsing della data. Se la data non è formattata correttamente (se viene inserita una data non valida), il codice non si arresta, ma gestisce l'errore e visualizza la data originale.
 
 # Commenti finali
 ## Autovalutazione e lavori futuri
