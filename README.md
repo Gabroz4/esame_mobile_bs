@@ -158,8 +158,22 @@ gestisce il processo di login e aggiorna lo stato di autenticazione utilizzando 
 LoginActivity consente all'utente di autenticarsi inserendo nome utente e password. Le credenziali vengono verificate tramite il LoginManager, e se valide, l'utente viene autenticato e viene re-impostato la condizione per il mantenimento del login.
 # Sviluppo
 ## Testing Automatizzato
+Sono state testate le seguenti componenti:  
 
+*Database (DB):*
+Verifica dell'avvenuta modifica, inserimento, recupero ed eliminazione di dati nel DB.  
+
+*LoginManager:*
+controlla che i dati dell'utente vengano verificati correttamente durante la richiesta di login. 
+
+*SessionManager:*
+Controlla la corretta assegnazione dello stato di login e del nome utente, e assicura che i dati vengano memorizzati correttamente in SharedPreferences.  
+### Strumenti Utilizzati
+*JUnit 5:* Per i test unitari di classi e metodi.  
+*Mockito:* Utilizzato per simulare dipendenze nelle classi dove necessario.  
+*Roboelectric:* simulazione componenti di android come context e SharedPreferences
 ## Note di sviluppo
+
 # Commenti finali
 ## Autovalutazione e lavori futuri
 # Guida Utente
