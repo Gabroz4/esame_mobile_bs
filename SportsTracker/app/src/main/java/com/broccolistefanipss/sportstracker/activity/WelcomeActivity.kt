@@ -14,8 +14,6 @@ import com.broccolistefanipss.sportstracker.databinding.ActivityWelcomeBinding
 import com.broccolistefanipss.sportstracker.global.DB
 import com.broccolistefanipss.sportstracker.manager.SessionManager
 
-//TODO: dopo welcome non va a login
-
 class WelcomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityWelcomeBinding
@@ -36,14 +34,6 @@ class WelcomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         sessionManager = SessionManager(this)
-
-        //Controlla se l'utente è già loggato
-        if (sessionManager.isLoggedIn) {
-            // Reindirizza l'utente alla BotMenuActivity
-            val intent = Intent(this, BotMenuActivity::class.java)
-            startActivity(intent)
-            finish()
-        }
 
         // Inizializza EditText e Spinner
         userNameEditText = binding.userName
