@@ -160,19 +160,126 @@ LoginActivity consente all'utente di autenticarsi inserendo nome utente e passwo
 ## Testing Automatizzato
 Sono state testate le seguenti componenti:  
 
-*Database (DB):*
+**Database (DB):**
 Verifica dell'avvenuta modifica, inserimento, recupero ed eliminazione di dati nel DB.  
 
-*LoginManager:*
+**LoginManager:**
 controlla che i dati dell'utente vengano verificati correttamente durante la richiesta di login. 
 
-*SessionManager:*
+**SessionManager:**
 Controlla la corretta assegnazione dello stato di login e del nome utente, e assicura che i dati vengano memorizzati correttamente in SharedPreferences.  
 ### Strumenti Utilizzati
-*JUnit 5:* Per i test unitari di classi e metodi.  
-*Mockito:* Utilizzato per simulare dipendenze nelle classi dove necessario.  
-*Roboelectric:* simulazione componenti di android come context e SharedPreferences
-## Note di sviluppo
+**JUnit 5:** Per i test unitari di classi e metodi.  
+**Mockito:** Utilizzato per simulare dipendenze nelle classi dove necessario.  
+**Roboelectric:** simulazione componenti di android come context e SharedPreferences
+## Note di sviluppo - Broccoli Gabriele
+### Descrizione salvataggio posizioni, recupero e tracciamento grafico allenamenti
+```kotlin
+private fun startLocationUpdates() {
+    // crea un callback per ricevere aggiornamenti della posizione
+    locationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            super.onLocationResult(locationResult)
+            // itera attraverso le nuove posizioni ricevute
+            for (location in locationResult.locations) {
+                // aggiorna la posizione corrente nell'interfaccia utente e nella logica
+                updateLocation(location)
+                // salva ogni nuova posizione nel database
+                saveLocationToDatabase(location) // Salva ogni nuova posizione nel database
+            }
+        }
+    }
+
+    /* Controllo e richiesta dei permessi */
+
+    fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+}
+```
+Questo metodo avvia gli aggiornamenti della posizione e salva ogni nuova posizione nel database. La sincronizzazione in tempo reale delle posizioni con il database permette di recuperare facilmente le sessioni di allenamento anche dopo la chiusura dell'app.
+
+```kotlin
+private fun updateLocation(location: android.location.Location) {
+    val newLocation = Location(
+        latitude = location.latitude,
+        longitude = location.longitude,
+        timestamp = System.currentTimeMillis()
+    )
+    if (locationList.isNotEmpty()) {
+        val lastLocation = locationList.last() //prende dati ultima posizione
+        val distanceToLast = // calcola la distanza dall'ultima posizione
+        val timeDifference = // calcola il tempo trascorso dall'ultima posizione
+        if (timeDifference > 0) {
+            //calcola velocità e la mostra a schermo
+        }
+    }
+    locationList.add(newLocation)
+    saveLocationToDatabase(newLocation) // salva la nuova posizione sul db
+}
+```
+Il metodo updateLocation aggiorna la lista delle posizioni e salva la nuova posizione nel database. Questo approccio consente di mantenere traccia della cronologia delle posizioni e di recuperarle successivamente.
+
+```kotlin
+fun loadAllUserTrainings() {
+    val userName = sessionManager.userName
+    // prende sessioni di allenamento dal db
+    val trainings = userName?.let { db.getAllTrainingsByUserId(it) }
+
+    // inizializza una lista per contenere le opzioni delle polyline
+    val polylineOptionsList = mutableListOf<PolylineOptions>()
+    
+    // itera attraverso gli allenamenti recuperati
+    trainings?.forEach { training ->
+        // per ogni allenamento recupera le locations
+        val locations = db.getLocationsByTrainingId(training.sessionId.toLong())
+        
+        // crea una polyline
+        if (locations.isNotEmpty()) {
+            val color = getRandomColor()
+            val polylineOptions = PolylineOptions()
+                .addAll(locations) // aggiungi tutte le posizioni alla polyline
+                // imposta larghezza, colore e tipo di polyline
+
+            polylineOptionsList.add(polylineOptions)
+        }
+    }
+
+    // posta la lista di polyline come valore osservabile
+    _userTrainings.postValue(polylineOptionsList)
+}
+```
+
+Funzione di MapsViewModel che genera ed espone le polilinee come elemento osservabile da MapsFragment
+
+
+```kotlin
+viewModel.loadAllUserTrainings().observe(viewLifecycleOwner) { locations ->
+    drawUserTrainings(locations) // disegna le posizioni recuperate dal DB sulla mappa
+}
+```
+Questo codice recupera tutte le posizioni salvate nel database e le disegna sulla mappa.
+
+```kotlin
+private fun drawUserTrainings(polylineOptionsList: List<PolylineOptions>) {
+    val bounds = LatLngBounds.Builder()
+    
+    // aggiunge ogni polilinea alla mappa
+    polylineOptionsList.forEach { polylineOptions ->
+        // Aggiunge la polilinea alla mappa
+        map.addPolyline(polylineOptions)
+        
+        // Includi tutti i punti della polilinea nei confini della mappa
+        polylineOptions.points.forEach { bounds.include(it) }
+    }
+
+    if (polylineOptionsList.isNotEmpty()) {
+        // Muove la camera per adattarla ai confini delle polilinee aggiunte
+        // Il secondo parametro (100) specifica un padding in pixel per il margine
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
+    }
+}
+```
+In dettaglio il metodo che disegna una polilinea sulla mappa utilizzando le posizioni recuperate dal database.
+## Note di sviluppo - Stefani Tommaso
 
 # Commenti finali
 ## Autovalutazione e lavori futuri
