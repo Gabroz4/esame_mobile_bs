@@ -14,7 +14,6 @@ import org.robolectric.annotation.Config
 /**
  Mockito: simula oggetti complessi (ad esempio DB) senza dover ricreare tutti i metodi a mano
  Roboelectric: testare componenti di Android (context, activity, sharedpreferences)
- Espresso: testing dell'UI
  */
 @Config(manifest = Config.NONE)
 @RunWith(RobolectricTestRunner::class)

@@ -106,79 +106,59 @@ L'utilizzo del pattern Repository con un database SQLite offre una struttura ben
 ![](./Schemi/DB.svg)
 
 Lo schema UML mostra la relazione tra la mia classe DB e il reale database sottostante, evidenziando come il repository gestisce l'accesso ai dati senza influenzare direttamente il database.
-
 # Design dettagliato - Stefani Tommaso
-
 ### SessionManager - LoginManager
-
 #### Problema:
 Quando un utente riapre l'app non deve essere obbligato a rifare il login ogni volta.
 Bisogna quindi gestire le sessioni utente, memorizzando in modo persistente lo stato di login dell'utente, lo userName e l'URI dell'immagine profilo.
-
 #### Soluzione:
 SessionManager utilizza le SharedPreferences per salvare i dati principali della sessione dell'utente. Questo permette recuperare le informazioni in modo più facile dalle altre componenti del programma, e di recuperare lo stato di login anche dopo la chiusura dell'app.
-
 #### Pattern utilizzato
 SessionManager è implementato come singleton per garantire che ci sia solo un'istanza che gestisce lo stato di sessione dell'utente, evitando conflitti.
-
 #### UML
 ![](./Schemi/SessionManagerLoginManager.svg)
 
 SessionManager gestisce lo stato di login e le informazioni dell'utente, come il nome e l'immagine del profilo, utilizzando SharedPreferences. Permette di accedere in modo centralizzato a questi dati.
 
 ### UserFragment
-
 #### Problema:
 L'utente deve poter visualizzare e modificare le informazioni del proprio profilo, comprese l'immagine e i dati personali. È necessario anche gestire la persistenza delle modifiche effettuate, e il logout.
-
 #### Soluzione:
 UserFragment fa visualizzare i dati dell'utente e la sua immagine profilo(se precedentemente impostata) e ne consente le modifiche tramite EditUserActivity.
 
 Gli utenti possono scegliere un'immagine dalla galleria e salvarla.  
 L'utente può disconnettersi tramite il pulsante apposito.
-
 #### Pattern utilizzato
 MVVM: UserFragment utilizza un ViewModel per gestire i dati, mantenendo separata l'interfaccia utente dalla logica di aggiornamento e recupero dei dati del profilo.
-
 #### UML
 ![](./Schemi/UserFragment.svg)
 
 UserFragment gestisce la visualizzazione e l'aggiornamento delle informazioni personali dell'utente, come i dettagli del profilo e l'immagine, fornendo una UI aggiornata automaticamente quando i dati vengono modificati.
-
 ### CalendarFragment
-
 #### Problema:
 L'utente deve poter visualizzare e salvare allenamenti per le date selezionate nel calendario. Deve inoltre permettere all'utente di vedere se esistono allenamenti precedenti per quella data e aggiungere nuovi allenamenti.
-
 #### Soluzione:
 CalendarFragment consente all'utente di interagire con un calendario e salvare sessioni di allenamento per date specifiche.
-
 #### Pattern utilizzato
 MVVM: CalendarFragment utilizza un ViewModel per gestire i dati del calendario, separando l'aggiunta degli allenamenti al DB dalla UI.
-
 #### UML
 ![](./Schemi/CalendarFragment.svg)
 
 CalendarFragment permette agli utenti di selezionare una data e visualizzare o salvare degli allenamenti, aggiornadno la UI in tempo reale.
-
 ### LoginActivity
-
 #### Problema
 Permette di eseguire un accesso all'app senza dover necessariamente passare da WelcomeActivity se l'utente è già stato creato
-
 #### Soluzione
 Permette all'utente di inserire le credenziali e, tramite il LoginManager, verifica se il login è corretto. I dati dell'utente vengono gestiti dal SessionManager per mantenere l'utente autenticato
-
 #### Pattern utilizzato
 gestisce il processo di login e aggiorna lo stato di autenticazione utilizzando direttamente nell'activity per un fattore di semplicità.
-
 #### UML
 ![](./Schemi/LoginActivity.svg)
 
 LoginActivity consente all'utente di autenticarsi inserendo nome utente e password. Le credenziali vengono verificate tramite il LoginManager, e se valide, l'utente viene autenticato e viene re-impostato la condizione per il mantenimento del login.
-
 # Sviluppo
 ## Testing Automatizzato
+
 ## Note di sviluppo
 # Commenti finali
 ## Autovalutazione e lavori futuri

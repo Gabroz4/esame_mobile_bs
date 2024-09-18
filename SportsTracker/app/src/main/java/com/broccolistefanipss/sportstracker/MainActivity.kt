@@ -17,8 +17,11 @@ class MainActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         // controlla se l'utente è già loggato
+        checkLogin()
+    }
+
+    private fun checkLogin() {
         val sessionManager = SessionManager(this)
         if (sessionManager.isLoggedIn) {
             botMenuIntent() // reindirizza l'utente a BotMenuActivity

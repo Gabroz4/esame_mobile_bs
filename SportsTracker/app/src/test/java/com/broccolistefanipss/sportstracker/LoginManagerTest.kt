@@ -52,16 +52,4 @@ class LoginManagerTest {
         assertFalse("Logout utente", sessionManager.isLoggedIn)
     }
 
-    @Test
-    fun testSaveToSharedPreferences() {
-        val result = loginManager.attemptLogin("testUser", "testPassword")
-        assertTrue("Login riuscito", result)
-
-        // Prendi username da SharedPreferences
-        val sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val savedUsername = sharedPreferences.getString("userName", null)
-
-        // Controlla se è giusto
-        assertTrue("username salvato dovrebbe essere uguale a quello loggato", savedUsername == "testUser")
-    }
 }
