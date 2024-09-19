@@ -160,13 +160,13 @@ LoginActivity consente all'utente di autenticarsi inserendo nome utente e passwo
 ## Testing Automatizzato
 Sono state testate le seguenti componenti:  
 
-**Database (DB):**
+- **Database (DB):**
 Verifica dell'avvenuta modifica, inserimento, recupero ed eliminazione di dati nel DB.  
 
-**LoginManager:**
+- **LoginManager:**
 controlla che i dati dell'utente vengano verificati correttamente durante la richiesta di login. 
 
-**SessionManager:**
+- **SessionManager:**
 Controlla la corretta assegnazione dello stato di login e del nome utente, e assicura che i dati vengano memorizzati correttamente in SharedPreferences.  
 ### Strumenti Utilizzati
 **JUnit 5:** Per i test unitari di classi e metodi.  
@@ -195,7 +195,7 @@ private fun startLocationUpdates() {
     fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
 }
 ```
-Questo metodo avvia gli aggiornamenti della posizione e salva ogni nuova posizione nel database. La sincronizzazione in tempo reale delle posizioni con il database permette di recuperare facilmente le sessioni di allenamento anche dopo la chiusura dell'app.
+- Metodo che avvia gli aggiornamenti della posizione e salva ogni nuova posizione nel database. La sincronizzazione in tempo reale delle posizioni con il database permette di recuperare facilmente le sessioni di allenamento anche dopo la chiusura dell'app.
 
 ```kotlin
 private fun updateLocation(location: android.location.Location) {
@@ -216,7 +216,7 @@ private fun updateLocation(location: android.location.Location) {
     saveLocationToDatabase(newLocation) // salva la nuova posizione sul db
 }
 ```
-Il metodo updateLocation aggiorna la lista delle posizioni e salva la nuova posizione nel database. Questo approccio consente di mantenere traccia della cronologia delle posizioni e di recuperarle successivamente.
+- Il metodo updateLocation aggiorna la lista delle posizioni e salva la nuova posizione nel database. Questo approccio consente di mantenere traccia della cronologia delle posizioni e di recuperarle successivamente.
 
 ```kotlin
 fun loadAllUserTrainings() {
@@ -248,7 +248,7 @@ fun loadAllUserTrainings() {
 }
 ```
 
-Funzione di MapsViewModel che genera ed espone le polilinee come elemento osservabile da MapsFragment
+- Funzione di MapsViewModel che genera ed espone le polilinee come elemento osservabile da MapsFragment
 
 
 ```kotlin
@@ -256,7 +256,7 @@ viewModel.loadAllUserTrainings().observe(viewLifecycleOwner) { locations ->
     drawUserTrainings(locations) // disegna le posizioni recuperate dal DB sulla mappa
 }
 ```
-Questo codice recupera tutte le posizioni salvate nel database e le disegna sulla mappa.
+- Questo codice recupera tutte le posizioni salvate nel database e le disegna sulla mappa.
 
 ```kotlin
 private fun drawUserTrainings(polylineOptionsList: List<PolylineOptions>) {
@@ -264,21 +264,25 @@ private fun drawUserTrainings(polylineOptionsList: List<PolylineOptions>) {
     
     // aggiunge ogni polilinea alla mappa
     polylineOptionsList.forEach { polylineOptions ->
-        // Aggiunge la polilinea alla mappa
         map.addPolyline(polylineOptions)
         
-        // Includi tutti i punti della polilinea nei confini della mappa
+        // includi tutti i punti della polilinea nei confini della mappa
         polylineOptions.points.forEach { bounds.include(it) }
     }
 
     if (polylineOptionsList.isNotEmpty()) {
-        // Muove la camera per adattarla ai confini delle polilinee aggiunte
-        // Il secondo parametro (100) specifica un padding in pixel per il margine
+        // muove la camera per adattarla ai confini delle polilinee aggiunte
         map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
     }
 }
 ```
-In dettaglio il metodo che disegna una polilinea sulla mappa utilizzando le posizioni recuperate dal database.
+- In dettaglio il metodo che disegna una polilinea sulla mappa utilizzando le posizioni recuperate dal database.
+
+Risorse utilizzate:  
+https://developers.google.com/maps/documentation/android-sdk/polygon-tutorial  
+https://developer.android.com/develop/sensors-and-location/location/retrieve-current  
+https://developer.android.com/topic/libraries/architecture/livedata  
+https://codelabs.developers.google.com/codelabs/while-in-use-location#3
 
 
 ## Note di sviluppo - Stefani Tommaso
@@ -371,8 +375,36 @@ private fun checkForExistingTraining(date: String) {
 Questo metodo utilizza un try-catch per gestire il parsing della data. Se la data non è formattata correttamente (se viene inserita una data non valida), il codice non si arresta, ma gestisce l'errore e visualizza la data originale.
 
 # Commenti finali
-## Autovalutazione e lavori futuri
+## Autovalutazione - Broccoli Gabriele
+### Punti di forza
+- Ho gestito diverse componenti chiave del progetto, tra cui MainActivity, la gestione del database, MapsFragment, HomeFragment, TrainingSessionAdapter, NewTrainingActivity, e botmenu activity. Ogni parte ha richiesto un buon livello di comprensione e implementazione di concetti avanzati.  
+
+- Ho scritto test unitari utilizzando Robolectric e Mockito, coprendo diverse funzionalità e garantendo che il codice fosse ben testato, soprattutto per la gestione delle sessioni e delle chiamate al DB.
+
+- Ho contribuito in modo significativo alla stesura della documentazione, con particolare attenzione alle linee guida fornite.
+
+### Punti di debolezza
+- Non abbiamo fatto particolare attenzione all'uso delle risorse del dispositivo, anche se non ci sono stati particolari problemi di prestazioni o consumo di batteria durante i nostri test.
+
+- Avrei voluto implementare altre funzioni come ad esempio la generazione di grafici personalizzati per ogni utente in base ai dati dei propri allenamenti e ai propri obiettivi, un calcolo delle calorie più realistico e la condivisione tramite social.
+
+- Abbiamo letto la documentazione sulla relazione solo dopo aver sviluppato il progetto. Tornando indietro avrei fatto le due cose contemporaneamente
+
+- Ho testato manualmente le funzioni di tracciamento della polyline e aggiornamento posizione in mapsFragment perchè non sono riuscito a testarle in modo automatizzato
+### Ruolo nel gruppo
+Il mio ruolo all'interno del gruppo è stato focalizzato principalmente sulla parte tecnica, organizzativa e sull’implementazione delle funzionalità principali dell'applicazione.  
+Mi sono occupato della gestione dei dati, dell’integrazione della mappa e del sistema di tracciamento del percorso, della struttura dell'applicazione.
+
+Abbiamo in ogni caso lavorato a stretto contatto durante tutto lo sviluppo del progetto.
+
+### Lavori futuri
+Negli sviluppi futuri, lavorerei per migliorare la gestione delle risorse e del nostro tempo, attraverso uno sviluppo più documentato e facendo più testing automatizzati.  
+Potrei anche concentrarmi di più sull’esperienza utente, basandomi sui feedback di utenti reali.
+
+## Autovalutazione - Stefani Tommaso
+### Punti di forza
+### Punti di debolezza
+
 # Guida Utente
-
-
+Seppur migliorabile, l'app risulta molto intuitiva e il suo utilizzo non dovrebbe richiedere particolari guide.
 
