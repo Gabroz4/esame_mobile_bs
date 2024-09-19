@@ -322,7 +322,7 @@ private fun saveProfileImage(bitmap: Bitmap) {
 Nel metodo saveProfileImage, viene creata una cartella "ProfilePictures" utilizzando l'API di archiviazione di Android, ovvero il MediaStore, specificando il percorso relativo, impostato su "Pictures/ProfilePictures", che indica la destinazione del file all'interno del dispositivo.
 L'uri dell'immagine viene salvato nelle SharedPreferences per utilizzi futuri
 
-L'immagine viene decostruita in un OutputStream di bit e ricostruita con il metodo .compress() per formattare l'immagine a JPEG riducendo la dimensione e standardizzando tutte le immagini inserite
+L'immagine viene decostruita in un OutputStream di bit e ricostruita per avere ogni immagine come JPEG riducendo la dimensione e standardizzando tutte le immagini inserite
 
 ### Salvataggio dell'immagine del profilo tramite URI
 
@@ -339,7 +339,7 @@ fun saveProfileImageUri(uri: Uri?, userName: String?) {
 }
 ```
 #### Descrizione:
-Questo metodo utilizza SharedPreferences per salvare l'URI di un'immagine del profilo in modo persistente. Il salvataggio è fatto in modo asincrono tramite apply(), più veloce rispetto a commit(). Inoltre, il metodo utilizza una chiave dinamica che include il nome utente per assicurare che ogni utente possa avere un'immagine di profilo unica. Questo approccio permette la gestione delle immagini di più utenti.
+Questo metodo salva l'URI dell'immagine nelle SharedPreferences utilizzando una chiave dinamica che include il nome utente per assicurare che ogni utente possa avere un'immagine di profilo unica.
 
 ### Salvataggio allenamento in una determinata data
 
@@ -402,9 +402,30 @@ Negli sviluppi futuri, lavorerei per migliorare la gestione delle risorse e del 
 Potrei anche concentrarmi di più sull’esperienza utente, basandomi sui feedback di utenti reali.
 
 ## Autovalutazione - Stefani Tommaso
+Nella mia parte del progetto, il mio contributo principale è stato nella gestione delle funzionalità legate all’autenticazione, alla gestione delle sessioni e alla creazione delle interfacce utente per la WelcomeActivity e la LoginActivity.
+
+Mi sono concentrato sull'uso del pattern MVVM, quando applicabile.
 ### Punti di forza
+- Capacità di applicare il pattern MVVM in CalendarFragment, separando la logica dalla UI.
+
+- Implementazione della gestione delle sessioni con il SessionManager e l'utilizzo dell'URI per il salvataggio delle immagini del profilo.
+
+- Buona gestione del lavoro in gruppo, coordinazione nello sviluppo delle funzionalità
 ### Punti di debolezza
+- Avrei potuto approfondire l'uso dei ViewModel anche in altre attività, come WelcomeActivity per mantenere un approccio più uniforme.
+
+- Parte di testing migliorabile 
+
+- L'immagine del profilo non è scalabile nelle dimensioni, e manca la possibilità di selezionarne solo porzioni.
+
+### Ruolo nel gruppo
+Durante tutto lo sviluppo dell'applicazione abbiamo sempre lavoranto insieme sia per confronti che per semplicità nella comunicazione. Io in particolare mi sono concentrato principalmente sulle sezioni riguardanti l’autenticazione e la gestione delle sessioni, oltre alla parte di design dettagliato per alcune attività.
+
+### Sviluppi futuri
+- Utilizzo maggiore di testing automatizzato
+- Utilizzo maggiore dei viewmodel per rendere il codice più lineare
+- Aggiunta di uno stile personalizzato al calendario per renderlo più accattivante
+- Rivedere lo stile generale dell'applicazione per migliorare la user experience.
 
 # Guida Utente
 Seppur migliorabile, l'app risulta molto intuitiva e il suo utilizzo non dovrebbe richiedere particolari guide.
-
