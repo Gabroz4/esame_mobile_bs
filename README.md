@@ -419,7 +419,7 @@ Mi sono concentrato sull'uso del pattern MVVM, quando applicabile.
 - L'immagine del profilo non è scalabile nelle dimensioni, e manca la possibilità di selezionarne solo porzioni.
 
 ### Ruolo nel gruppo
-Durante tutto lo sviluppo dell'applicazione abbiamo sempre lavoranto insieme sia per confronti che per semplicità nella comunicazione. Io in particolare mi sono concentrato principalmente sulle sezioni riguardanti l’autenticazione e la gestione delle sessioni, oltre alla parte di design dettagliato per alcune attività.
+Durante tutto lo sviluppo dell'applicazione abbiamo sempre lavorato insieme sia per confronti che per semplicità nella comunicazione. Io in particolare mi sono concentrato principalmente sulle sezioni riguardanti l’autenticazione e la gestione delle sessioni, oltre alla parte di layout dei vari xml.
 
 ### Sviluppi futuri
 - Utilizzo maggiore di testing automatizzato
