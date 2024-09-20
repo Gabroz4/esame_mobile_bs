@@ -377,26 +377,22 @@ Questo metodo utilizza un try-catch per gestire il parsing della data. Se la dat
 # Commenti finali
 ## Autovalutazione - Broccoli Gabriele
 ### Punti di forza
-- Ho gestito diverse componenti chiave del progetto, tra cui MainActivity, la gestione del database, MapsFragment, HomeFragment, TrainingSessionAdapter, NewTrainingActivity, e botmenu activity. Ogni parte ha richiesto un buon livello di comprensione e implementazione di concetti avanzati.  
+- Ho gestito diverse componenti chiave del progetto, tra cui MainActivity, la gestione del database, MapsFragment, HomeFragment, TrainingSessionAdapter, NewTrainingActivity, e botmenu activity. Ogni parte ha richiesto un buon livello di comprensione e implementazione di concetti avanzati e spesso non trattati a lezione.  
 
-- Ho scritto test unitari utilizzando Robolectric e Mockito, coprendo diverse funzionalità e garantendo che il codice fosse ben testato, soprattutto per la gestione delle sessioni e delle chiamate al DB.
+- Ho scritto test unitari utilizzando Junit, Robolectric e Mockito, coprendo diverse funzionalità e garantendo che il codice fosse ben testato, soprattutto per la gestione delle sessioni e delle chiamate al DB.
 
 - Ho contribuito in modo significativo alla stesura della documentazione, con particolare attenzione alle linee guida fornite.
 
 ### Punti di debolezza
 - Non abbiamo fatto particolare attenzione all'uso delle risorse del dispositivo, anche se non ci sono stati particolari problemi di prestazioni o consumo di batteria durante i nostri test.
 
-- Avrei voluto implementare altre funzioni come ad esempio la generazione di grafici personalizzati per ogni utente in base ai dati dei propri allenamenti e ai propri obiettivi, un calcolo delle calorie più realistico e la condivisione tramite social.
+- Avrei voluto implementare altre funzioni come ad esempio la generazione di grafici personalizzati per ogni utente in base ai dati dei propri allenamenti e ai propri obiettivi, un calcolo delle calorie più realistico e la condivisione tramite social, ma non c'è stato tempo.
 
-- Abbiamo letto la documentazione sulla relazione solo dopo aver sviluppato il progetto. Tornando indietro avrei fatto le due cose contemporaneamente
-
-- Ho testato manualmente le funzioni di tracciamento della polyline e aggiornamento posizione in mapsFragment perchè non sono riuscito a testarle in modo automatizzato
+- Ho testato manualmente le funzioni di tracciamento della polyline e aggiornamento posizione in mapsFragment perchè non sono riuscito a testarle in modo automatizzato.
 ### Ruolo nel gruppo
-Il mio ruolo all'interno del gruppo è stato focalizzato principalmente sulla parte tecnica, organizzativa e sull’implementazione delle funzionalità principali dell'applicazione.  
-Mi sono occupato della gestione dei dati, dell’integrazione della mappa e del sistema di tracciamento del percorso, della struttura dell'applicazione.
+Mi sono occupato dell'impostazione iniziale del progetto, implementazione del database, integrazione della mappa, del menu, del sistema di tracciamento del percorso, della home, creazione nuovi allenamenti e in generale della struttura dell'applicazione.
 
 Abbiamo in ogni caso lavorato a stretto contatto durante tutto lo sviluppo del progetto.
-
 ### Lavori futuri
 Negli sviluppi futuri, lavorerei per migliorare la gestione delle risorse e del nostro tempo, attraverso uno sviluppo più documentato e facendo più testing automatizzati.  
 Potrei anche concentrarmi di più sull’esperienza utente, basandomi sui feedback di utenti reali.
@@ -428,4 +424,4 @@ Durante tutto lo sviluppo dell'applicazione abbiamo sempre lavorato insieme sia 
 - Rivedere lo stile generale dell'applicazione per migliorare la user experience.
 
 # Guida Utente
-Seppur migliorabile, l'app risulta molto intuitiva e il suo utilizzo non dovrebbe richiedere particolari guide.
+L'app risulta molto intuitiva e il suo utilizzo non dovrebbe richiedere particolari guide.
